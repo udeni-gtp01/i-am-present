@@ -4,7 +4,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -44,15 +43,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.util.Preconditions
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import lk.lnbti.iampresent.R
 import lk.lnbti.iampresent.data.Contact
+import lk.lnbti.iampresent.data.Lecture
+import lk.lnbti.iampresent.repo.LectureListRepo
 import lk.lnbti.iampresent.ui.theme.IAmPresentTheme
 import lk.lnbti.iampresent.view_model.LectureListViewModel
 
@@ -61,15 +64,21 @@ import lk.lnbti.iampresent.view_model.LectureListViewModel
 fun LectureListScreen(
     onLectureItemClicked: (String) -> Unit,
     onNewLectureClicked: () -> Unit,
-    lectureListViewModel: LectureListViewModel = viewModel(),
+    lectureListViewModel: LectureListViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
-    val lectureList: List<Contact> by lectureListViewModel.lectureList.observeAsState(emptyList())
+    val lectureList: List<Lecture> by lectureListViewModel.lectureList.observeAsState(emptyList())
 
     Scaffold(
-        topBar = { TopAppBar(title = { Text("GFG | Drop Down Menu", color = Color.Black
-        ) },
-           ) },
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        stringResource(id = R.string.app_name)
+                    )
+                },
+            )
+        },
         floatingActionButton = {
             AddNewContactButton()
         },
@@ -81,12 +90,12 @@ fun LectureListScreen(
         ) {
             SearchBar(Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_main_content)))
             Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
-            OrderByBar(Modifier.padding(horizontal =dimensionResource(id = R.dimen.padding_main_content) ))
+            OrderByBar(Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_main_content)))
             Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
             LectureListSection(
                 lectureList = lectureList,
                 onLectureItemClicked = onLectureItemClicked,
-                Modifier.padding(horizontal =dimensionResource(id = R.dimen.padding_main_content) )
+                Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_main_content))
             )
         }
     }
@@ -117,9 +126,10 @@ fun SearchBar(
             .heightIn(min = dimensionResource(id = R.dimen.height_search_bar))
     )
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OrderByBar(modifier: Modifier = Modifier){
+fun OrderByBar(modifier: Modifier = Modifier) {
     val options = listOf("Option 1", "Option 2", "Option 3", "Option 4", "Option 5")
     var expanded by remember { mutableStateOf(false) }
     var selectedOptionText by remember { mutableStateOf(options[0]) }
@@ -178,6 +188,7 @@ fun OrderByBar(modifier: Modifier = Modifier){
         }
     }
 }
+
 @Composable
 fun AddNewContactButton() {
     FloatingActionButton(
@@ -192,9 +203,9 @@ fun AddNewContactButton() {
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LectureListSection(
-    lectureList: List<Contact>,
+    lectureList: List<Lecture>,
     onLectureItemClicked: (String) -> Unit,
-    modifier: Modifier=Modifier
+    modifier: Modifier = Modifier
 ) {
     val listState = rememberLazyListState()
     LazyColumn(
@@ -203,7 +214,7 @@ fun LectureListSection(
         contentPadding = WindowInsets.navigationBars.asPaddingValues(),
         modifier = modifier
     ) {
-        val grouped = lectureList.groupBy { it.name[0] }
+        val grouped = lectureList.groupBy { it.startdate }
         grouped.forEach { (initial, lectureList) ->
             stickyHeader {
                 LectureGroupHeader(initial.toString())
@@ -215,7 +226,7 @@ fun LectureListSection(
 //                }
                 LectureListItem(
                     item = it,
-                    onContactItemClicked = onLectureItemClicked
+                    onLectureItemClicked = onLectureItemClicked
                 )
             }
         }
@@ -242,12 +253,23 @@ fun LectureGroupHeader(header: String) {
         modifier = Modifier
             .fillMaxWidth()
     )
+    Text(
+        text = header,
+        modifier = Modifier
+            .fillMaxWidth()
+            .drawBehind {
+                drawRoundRect(
+                    Color(0xFFBBAAEE),
+                    cornerRadius = CornerRadius(10.dp.toPx())
+                )
+            }
+    )
 }
 
 @Composable
 fun LectureListItem(
-    item: Contact,
-    onContactItemClicked: (String) -> Unit,
+    item: Lecture,
+    onLectureItemClicked: (String) -> Unit,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -257,23 +279,39 @@ fun LectureListItem(
             .background(color = Color.LightGray)
             .padding(horizontal = 15.dp, vertical = 20.dp)
             .fillMaxWidth()
-            .clickable { onContactItemClicked(item.name) }
+            .clickable { }
     ) {
         Column {
+            item.subjectid.subjectname?.let {
+                Text(
+                    text = it,
+                    style = MaterialTheme.typography.titleLarge
+                )
+            }
             Text(
-                text = item.name,
-                style = MaterialTheme.typography.bodyLarge,
-                color = Color.Black
+                text = item.topic.toString(),
+                style = MaterialTheme.typography.titleLarge
             )
+            Text(
+                text = item.batchcode.batchcode,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.primary
+            )
+            Text(
+                text = "${item.startdate.toString()} ${item.starttime.toString()}",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.primary
+            )
+
         }
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+//@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun LectureListScreenPreview() {
     IAmPresentTheme {
-        LectureListScreen({}, {})
+       // LectureListScreen({}, {})
 
     }
 }
