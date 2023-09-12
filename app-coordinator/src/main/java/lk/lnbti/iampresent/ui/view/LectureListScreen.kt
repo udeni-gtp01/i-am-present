@@ -1,10 +1,12 @@
 package lk.lnbti.iampresent.ui.view
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -15,13 +17,17 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -29,6 +35,8 @@ import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -51,11 +59,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import lk.lnbti.iampresent.R
-import lk.lnbti.iampresent.data.Contact
 import lk.lnbti.iampresent.data.Lecture
-import lk.lnbti.iampresent.repo.LectureListRepo
 import lk.lnbti.iampresent.ui.theme.IAmPresentTheme
 import lk.lnbti.iampresent.view_model.LectureListViewModel
 
@@ -82,15 +89,16 @@ fun LectureListScreen(
         floatingActionButton = {
             AddNewContactButton()
         },
-        bottomBar = {}
+        bottomBar = { BottomNavigation() }
     ) { padding ->
         Column(
             modifier
                 .padding(padding)
         ) {
+            FilterSection()
             SearchBar(Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_main_content)))
             Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
-            OrderByBar(Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_main_content)))
+            //OrderByBar(Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_main_content)))
             Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
             LectureListSection(
                 lectureList = lectureList,
@@ -99,6 +107,42 @@ fun LectureListScreen(
             )
         }
     }
+}
+
+@Composable
+fun FilterSection(modifier: Modifier = Modifier) {
+    val criteriaList = listOf(
+        R.string.filter_by_date,
+        R.string.filter_by_lecture_status,
+        R.string.filter_by_batch,
+        R.string.filter_by_subject,
+        R.string.filter_by_lecturer,
+        R.string.filter_by_location
+    )
+    LazyRow(
+        horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_between_list_item)),
+        contentPadding = PaddingValues(horizontal = 16.dp),
+        modifier = modifier
+    ) {
+        items(criteriaList) { item ->
+            FilterItem(criteria = item)
+        }
+    }
+}
+
+@Composable
+fun FilterItem(@StringRes criteria: Int, modifier: Modifier = Modifier) {
+    Text(
+        text = stringResource(id = criteria),
+        style = MaterialTheme.typography.bodyMedium,
+        modifier = Modifier
+            .drawBehind {
+                drawRoundRect(
+                    Color(0xFFBBAAEE),
+                    cornerRadius = CornerRadius(10.dp.toPx())
+                )
+            }
+    )
 }
 
 @Composable
@@ -252,11 +296,6 @@ fun LectureGroupHeader(header: String) {
         text = header,
         modifier = Modifier
             .fillMaxWidth()
-    )
-    Text(
-        text = header,
-        modifier = Modifier
-            .fillMaxWidth()
             .drawBehind {
                 drawRoundRect(
                     Color(0xFFBBAAEE),
@@ -306,12 +345,72 @@ fun LectureListItem(
         }
     }
 }
-
-//@Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun LectureListScreenPreview() {
-    IAmPresentTheme {
-       // LectureListScreen({}, {})
-
+private fun BottomNavigation(modifier: Modifier = Modifier) {
+    NavigationBar(
+        containerColor = MaterialTheme.colorScheme.surfaceVariant,
+        modifier = modifier
+    ) {
+        NavigationBarItem(
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.Star,
+                    contentDescription = null
+                )
+            },
+            label = {
+                Text(stringResource(R.string.today))
+            },
+            selected = false,
+            onClick = {}
+        )
+        NavigationBarItem(
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.List,
+                    contentDescription = null
+                )
+            },
+            label = {
+                Text(stringResource(R.string.all))
+            },
+            selected = true,
+            onClick = {}
+        )
     }
+}
+@Preview(showBackground = true)
+@Composable
+fun PreviewFilterSection(){
+    IAmPresentTheme {
+        FilterSection()
+    }
+}
+@Preview(showBackground = true)
+@Composable
+fun PreviewLectureListSection() {
+
+    val jsonString =
+        "[{\"lectureid\":7,\"venueid\":{\"venueid\":1,\"venuename\":\"online\"},\"startdate\":\"2023-08-09\",\"starttime\":\"16:36:00\",\"enddate\":\"2023-08-09\",\"endtime\":\"17:36:00\",\"semester\":1,\"topic\":\"kotlin\",\"subjectid\":{\"subjectid\":1,\"subjectname\":\"technical subject\"},\"batchcode\":{\"batchcode\":\"gtp01\"},\"organizerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturestatusid\":{\"lecturestatusid\":1,\"statusname\":\"new\"}},{\"lectureid\":8,\"venueid\":{\"venueid\":1,\"venuename\":\"online\"},\"startdate\":\"2023-08-09\",\"starttime\":\"16:38:00\",\"enddate\":\"2023-08-09\",\"endtime\":\"16:38:00\",\"semester\":1,\"topic\":\"test2\",\"subjectid\":{\"subjectid\":1,\"subjectname\":\"technical subject\"},\"batchcode\":{\"batchcode\":\"gtp01\"},\"organizerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturestatusid\":{\"lecturestatusid\":1,\"statusname\":\"new\"}},{\"lectureid\":9,\"venueid\":{\"venueid\":1,\"venuename\":\"online\"},\"startdate\":\"2023-08-09\",\"starttime\":\"16:39:00\",\"enddate\":\"2023-08-09\",\"endtime\":\"17:39:00\",\"semester\":1,\"topic\":\"day9\",\"subjectid\":{\"subjectid\":1,\"subjectname\":\"technical subject\"},\"batchcode\":{\"batchcode\":\"gtp01\"},\"organizerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturestatusid\":{\"lecturestatusid\":1,\"statusname\":\"new\"}},{\"lectureid\":10,\"venueid\":{\"venueid\":1,\"venuename\":\"online\"},\"startdate\":\"2023-08-09\",\"starttime\":\"19:57:00\",\"enddate\":\"2023-08-09\",\"endtime\":\"20:57:00\",\"semester\":2,\"topic\":\"test\",\"subjectid\":{\"subjectid\":1,\"subjectname\":\"technical subject\"},\"batchcode\":{\"batchcode\":\"gtp01\"},\"organizerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturestatusid\":{\"lecturestatusid\":1,\"statusname\":\"new\"}},{\"lectureid\":11,\"venueid\":{\"venueid\":1,\"venuename\":\"online\"},\"startdate\":\"2023-08-13\",\"starttime\":\"13:43:00\",\"enddate\":\"2023-08-13\",\"endtime\":\"13:43:00\",\"semester\":1,\"topic\":\"test\",\"subjectid\":{\"subjectid\":1,\"subjectname\":\"technical subject\"},\"batchcode\":{\"batchcode\":\"gtp01\"},\"organizerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturestatusid\":{\"lecturestatusid\":1,\"statusname\":\"new\"}},{\"lectureid\":12,\"venueid\":{\"venueid\":1,\"venuename\":\"online\"},\"startdate\":\"2023-08-14\",\"starttime\":\"14:21:00\",\"enddate\":\"2023-08-13\",\"endtime\":\"15:21:00\",\"semester\":1,\"topic\":\"individual project \",\"subjectid\":{\"subjectid\":1,\"subjectname\":\"technical subject\"},\"batchcode\":{\"batchcode\":\"gtp01\"},\"organizerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturestatusid\":{\"lecturestatusid\":1,\"statusname\":\"new\"}},{\"lectureid\":1,\"venueid\":{\"venueid\":1,\"venuename\":\"online\"},\"startdate\":\"2023-12-12\",\"starttime\":\"08:00:00\",\"enddate\":\"2023-12-12\",\"endtime\":\"12:00:00\",\"semester\":2,\"topic\":\"Kotlin\",\"subjectid\":{\"subjectid\":1,\"subjectname\":\"technical subject\"},\"batchcode\":{\"batchcode\":\"gtp01\"},\"organizerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturestatusid\":{\"lecturestatusid\":1,\"statusname\":\"new\"}},{\"lectureid\":2,\"venueid\":{\"venueid\":1,\"venuename\":\"online\"},\"startdate\":\"2023-12-12\",\"starttime\":\"08:00:00\",\"enddate\":\"2023-12-12\",\"endtime\":\"12:00:00\",\"semester\":2,\"topic\":\"Kotlin\",\"subjectid\":{\"subjectid\":1,\"subjectname\":\"technical subject\"},\"batchcode\":{\"batchcode\":\"gtp01\"},\"organizerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturestatusid\":{\"lecturestatusid\":1,\"statusname\":\"new\"}},{\"lectureid\":3,\"venueid\":{\"venueid\":1,\"venuename\":\"online\"},\"startdate\":\"2023-12-12\",\"starttime\":\"08:00:00\",\"enddate\":\"2023-12-12\",\"endtime\":\"12:00:00\",\"semester\":2,\"topic\":\"Kotlin\",\"subjectid\":{\"subjectid\":1,\"subjectname\":\"technical subject\"},\"batchcode\":{\"batchcode\":\"gtp01\"},\"organizerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturestatusid\":{\"lecturestatusid\":1,\"statusname\":\"new\"}},{\"lectureid\":4,\"venueid\":{\"venueid\":1,\"venuename\":\"online\"},\"startdate\":\"2023-12-12\",\"starttime\":\"08:00:00\",\"enddate\":\"2023-12-12\",\"endtime\":\"12:00:00\",\"semester\":2,\"topic\":\"Kotlin\",\"subjectid\":{\"subjectid\":1,\"subjectname\":\"technical subject\"},\"batchcode\":{\"batchcode\":\"gtp01\"},\"organizerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturestatusid\":{\"lecturestatusid\":1,\"statusname\":\"new\"}},{\"lectureid\":5,\"venueid\":{\"venueid\":1,\"venuename\":\"online\"},\"startdate\":\"2023-12-12\",\"starttime\":\"08:00:00\",\"enddate\":\"2023-12-12\",\"endtime\":\"12:00:00\",\"semester\":2,\"topic\":\"Kotlin\",\"subjectid\":{\"subjectid\":1,\"subjectname\":\"technical subject\"},\"batchcode\":{\"batchcode\":\"gtp01\"},\"organizerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturestatusid\":{\"lecturestatusid\":1,\"statusname\":\"new\"}},{\"lectureid\":6,\"venueid\":{\"venueid\":1,\"venuename\":\"online\"},\"startdate\":\"2023-12-12\",\"starttime\":\"08:00:00\",\"enddate\":\"2023-12-12\",\"endtime\":\"12:00:00\",\"semester\":2,\"topic\":\"Kotlin\",\"subjectid\":{\"subjectid\":1,\"subjectname\":\"technical subject\"},\"batchcode\":{\"batchcode\":\"gtp01\"},\"organizerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturestatusid\":{\"lecturestatusid\":1,\"statusname\":\"new\"}}]"
+// Create a Gson instance
+    val gson = Gson()
+
+// Define a TypeToken for the list of Lecture objects
+    val lectureListType = object : TypeToken<List<Lecture>>() {}.type
+
+// Parse the JSON string into a list of Lecture objects
+    val lectureList: List<Lecture> = gson.fromJson(jsonString, lectureListType)
+
+    IAmPresentTheme {
+        LectureListSection(
+            lectureList = lectureList,
+            onLectureItemClicked = { },
+            Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_main_content))
+        )
+    }
+}
+@Preview
+@Composable
+fun PreviewBottomNavigation(){
+    BottomNavigation()
 }

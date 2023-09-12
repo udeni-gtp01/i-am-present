@@ -77,9 +77,4 @@ object NetworkModule {
     fun provideLectureListRepo(lectureListService: LectureListService): LectureListRepo {
         return LectureListRepo(lectureListService)
     }
-//    @Singleton
-//    @Provides
-//    fun provideLectureListViewModel(lectureListRepo: LectureListRepo): LectureListViewModel {
-//        return LectureListViewModel(lectureListRepo)
-//    }
 }

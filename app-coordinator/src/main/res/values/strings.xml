@@ -2,4 +2,12 @@
     <string name="app_name">I am present</string>
     <string name="placeholder_search">Search</string>
     <string name="order_by">Order by</string>
+    <string name="filter_by_date">Date</string>
+    <string name="filter_by_lecture_status">Status</string>
+    <string name="filter_by_batch">Batch</string>
+    <string name="filter_by_subject">Subject</string>
+    <string name="filter_by_lecturer">Lecturer</string>
+    <string name="filter_by_location">Location</string>
+    <string name="all">All</string>
+    <string name="today">Today</string>
 </resources>

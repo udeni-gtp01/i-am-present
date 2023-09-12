@@ -8,8 +8,9 @@ import java.sql.Time
 
 @Parcelize
 data class LectureList(
-    @SerializedName("lecturestatusid") val lecturestatusid: Int,
-    @SerializedName("statusname") val statusname: String?=null
+   // @SerializedName("lecturestatusid") val lecturestatusid: Int,
+   // @SerializedName("statusname") val statusname: String?=null,
+    val items:List<Lecture>
 ) : Parcelable
 
 @Parcelize
