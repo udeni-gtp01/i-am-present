@@ -16,7 +16,7 @@ data class LectureList(
 @Parcelize
 data class LectureStatus(
     @SerializedName("lecturestatusid") val lecturestatusid: Int,
-    @SerializedName("statusname") val statusname: String?=null
+    @SerializedName("statusname") val statusname: String=""
 ) : Parcelable
 
 @Parcelize
@@ -27,7 +27,7 @@ data class Batch(
 @Parcelize
 data class Lecture(
     @SerializedName("lectureid") val lectureid: Int?=null,
-    @SerializedName("venueid") val venueid: Venue?,
+    @SerializedName("venueid") val venueid: Venue,
     @SerializedName("startdate") val startdate: String,
     @SerializedName("starttime") val starttime: String,
     @SerializedName("enddate") val enddate: String,
@@ -44,11 +44,11 @@ data class Lecture(
 @Parcelize
 data class Subject(
     @SerializedName("subjectid") val subjectid: Int,
-    @SerializedName("subjectname") val subjectname: String?=null
+    @SerializedName("subjectname") val subjectname: String=""
 ) : Parcelable
 
 @Parcelize
 data class Venue(
     @SerializedName("venueid") val venueid: Int,
-    @SerializedName("venuename") val venuename: String?=null
+    @SerializedName("venuename") val venuename: String=""
 ) : Parcelable

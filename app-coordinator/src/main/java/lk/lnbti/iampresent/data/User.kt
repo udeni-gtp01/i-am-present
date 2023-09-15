@@ -13,7 +13,7 @@ data class Role(
 @Parcelize
 data class User(
     @SerializedName("userid") val userid: Int?=null,
-    @SerializedName("name") val name: String?=null,
+    @SerializedName("name") val name: String="",
     @SerializedName("email") val email: String?=null,
     @SerializedName("token") val token: String?=null,
     @SerializedName("roleid") val roleid: Role?=null,

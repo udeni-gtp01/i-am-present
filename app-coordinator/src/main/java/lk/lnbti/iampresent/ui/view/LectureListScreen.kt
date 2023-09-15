@@ -23,7 +23,6 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Search
@@ -47,6 +46,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -95,55 +95,18 @@ fun LectureListScreen(
             modifier
                 .padding(padding)
         ) {
-            FilterSection()
-            SearchBar(Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_main_content)))
-            Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
-            //OrderByBar(Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_main_content)))
-            Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
-            LectureListSection(
+            LectureListContent(
                 lectureList = lectureList,
                 onLectureItemClicked = onLectureItemClicked,
-                Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_main_content))
+                modifier = modifier
             )
+            //SearchBar(Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_main_content)))
+            //Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
+            Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
         }
     }
 }
 
-@Composable
-fun FilterSection(modifier: Modifier = Modifier) {
-    val criteriaList = listOf(
-        R.string.filter_by_date,
-        R.string.filter_by_lecture_status,
-        R.string.filter_by_batch,
-        R.string.filter_by_subject,
-        R.string.filter_by_lecturer,
-        R.string.filter_by_location
-    )
-    LazyRow(
-        horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_between_list_item)),
-        contentPadding = PaddingValues(horizontal = 16.dp),
-        modifier = modifier
-    ) {
-        items(criteriaList) { item ->
-            FilterItem(criteria = item)
-        }
-    }
-}
-
-@Composable
-fun FilterItem(@StringRes criteria: Int, modifier: Modifier = Modifier) {
-    Text(
-        text = stringResource(id = criteria),
-        style = MaterialTheme.typography.bodyMedium,
-        modifier = Modifier
-            .drawBehind {
-                drawRoundRect(
-                    Color(0xFFBBAAEE),
-                    cornerRadius = CornerRadius(10.dp.toPx())
-                )
-            }
-    )
-}
 
 @Composable
 fun SearchBar(
@@ -227,7 +190,6 @@ fun OrderByBar(modifier: Modifier = Modifier) {
                         selectedOptionText = selectionOption
                         expanded = false
                     })
-
             }
         }
     }
@@ -244,10 +206,73 @@ fun AddNewContactButton() {
     }
 }
 
+@Composable
+fun LectureListContent(
+    lectureList: List<Lecture>,
+    onLectureItemClicked: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val criteriaList = listOf(
+        R.string.filter_by_date,
+        R.string.filter_by_lecture_status,
+        R.string.filter_by_batch,
+        R.string.filter_by_subject,
+        R.string.filter_by_lecturer,
+        R.string.filter_by_location
+    )
+    var selectedItem by rememberSaveable { mutableStateOf(criteriaList.first()) }
+    Column {
+
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_between_list_item)),
+            contentPadding = PaddingValues(horizontal = 16.dp),
+            modifier = modifier
+        ) {
+            items(criteriaList) { item ->
+                val isSelected = selectedItem == item
+                FilterItem(
+                    criteria = item,
+                    isSelected = isSelected,
+                    onClick = { selectedItem = item })
+            }
+        }
+        LectureListSection(
+            lectureList = lectureList,
+            selectedFilter = selectedItem,
+            onLectureItemClicked = onLectureItemClicked,
+            modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_main_content))
+        )
+    }
+}
+
+@Composable
+fun FilterItem(
+    @StringRes criteria: Int,
+    isSelected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val backgroundColor = if (isSelected) Color.Yellow else Color(0xFFBBAAEE)
+
+    Text(
+        text = stringResource(id = criteria),
+        style = MaterialTheme.typography.bodyMedium,
+        modifier = Modifier
+            .drawBehind {
+                drawRoundRect(
+                    backgroundColor,
+                    cornerRadius = CornerRadius(10.dp.toPx())
+                )
+            }
+            .clickable { onClick() }
+    )
+}
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LectureListSection(
     lectureList: List<Lecture>,
+    selectedFilter: Int,
     onLectureItemClicked: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -258,16 +283,38 @@ fun LectureListSection(
         contentPadding = WindowInsets.navigationBars.asPaddingValues(),
         modifier = modifier
     ) {
-        val grouped = lectureList.groupBy { it.startdate }
-        grouped.forEach { (initial, lectureList) ->
+        var grouped: Map<String, List<Lecture>>? = null
+        when (selectedFilter) {
+            R.string.filter_by_date -> {
+                grouped = lectureList.groupBy { it.startdate }
+            }
+
+            R.string.filter_by_lecture_status -> {
+                grouped = lectureList.groupBy { it.lecturestatusid.statusname }
+            }
+
+            R.string.filter_by_batch -> {
+                grouped = lectureList.groupBy { it.batchcode.batchcode }
+            }
+
+            R.string.filter_by_subject -> {
+                grouped = lectureList.groupBy { it.subjectid.subjectname }
+            }
+
+            R.string.filter_by_lecturer -> {
+                grouped = lectureList.groupBy { it.lecturerid.name }
+            }
+
+            R.string.filter_by_location -> {
+                grouped = lectureList.groupBy { it.venueid.venuename }
+            }
+        }
+
+        grouped?.forEach { (initial, lectureList) ->
             stickyHeader {
                 LectureGroupHeader(initial.toString())
             }
             items(lectureList) {
-//                var showLabel = true
-//                if (lectureList.indexOf(it) > 0) {
-//                    showLabel = false
-//                }
                 LectureListItem(
                     item = it,
                     onLectureItemClicked = onLectureItemClicked
@@ -276,19 +323,6 @@ fun LectureListSection(
         }
     }
 }
-//if (showLabel) {
-//    Text(
-//        text = "000",
-//        modifier = Modifier
-//            .drawBehind {
-//                drawCircle(
-//                    Color(0xFFBBAAEE),
-//                    radius = 50f
-//                    //cornerRadius = CornerRadius(10.dp.toPx())
-//                )
-//            }
-//    )
-//}
 
 @Composable
 fun LectureGroupHeader(header: String) {
@@ -345,6 +379,7 @@ fun LectureListItem(
         }
     }
 }
+
 @Composable
 private fun BottomNavigation(modifier: Modifier = Modifier) {
     NavigationBar(
@@ -379,14 +414,8 @@ private fun BottomNavigation(modifier: Modifier = Modifier) {
         )
     }
 }
-@Preview(showBackground = true)
-@Composable
-fun PreviewFilterSection(){
-    IAmPresentTheme {
-        FilterSection()
-    }
-}
-@Preview(showBackground = true)
+
+@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PreviewLectureListSection() {
 
@@ -402,15 +431,15 @@ fun PreviewLectureListSection() {
     val lectureList: List<Lecture> = gson.fromJson(jsonString, lectureListType)
 
     IAmPresentTheme {
-        LectureListSection(
+        LectureListContent(
             lectureList = lectureList,
             onLectureItemClicked = { },
-            Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_main_content))
         )
     }
 }
-@Preview
+
+//@Preview
 @Composable
-fun PreviewBottomNavigation(){
+fun PreviewBottomNavigation() {
     BottomNavigation()
 }
