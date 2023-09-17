@@ -3,10 +3,11 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import lk.lnbti.iampresent.nav.AddLectureDestination
 import lk.lnbti.iampresent.nav.LectureInfoDestination
 import lk.lnbti.iampresent.nav.LectureListDestination
+import lk.lnbti.iampresent.nav.NewLectureDestination
 import lk.lnbti.iampresent.ui.view.LectureListScreen
+import lk.lnbti.iampresent.ui.view.NewLectureScreen
 
 @Composable
 fun AppNavHost(navController: NavHostController) {
@@ -16,7 +17,14 @@ fun AppNavHost(navController: NavHostController) {
                 onLectureItemClicked = { lectureId ->
                     navController.navigateToLectureInfo(lectureId)
                 },
-                onNewLectureClicked = { navController.navigateSingleTopTo(AddLectureDestination.route) }
+                onNewLectureClicked = { navController.navigateSingleTopTo(NewLectureDestination.route) }
+            )
+        }
+        composable(route = NewLectureDestination.route) {
+            NewLectureScreen(onSaveButtonClicked = { lectureId ->
+                navController.navigateToLectureInfo(lectureId)
+            },
+                onCancelButtonClicked = {}
             )
         }
     }
@@ -37,6 +45,7 @@ fun NavHostController.navigateSingleTopTo(route: String) =
         // Restore state when reselecting a previously selected item
         restoreState = true
     }
+
 private fun NavHostController.navigateToLectureInfo(lectureId: String) {
     this.navigateSingleTopTo("${LectureInfoDestination.route}/$lectureId")
 }

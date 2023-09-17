@@ -18,6 +18,7 @@ object LectureInfoDestination : AppDestination {
         navArgument(lectureIdArg) { type = NavType.StringType }
     )
 }
-object AddLectureDestination : AppDestination {
-    override val route = "add_lecture"
+object NewLectureDestination : AppDestination {
+    override val route = "new_lecture"
 }
+

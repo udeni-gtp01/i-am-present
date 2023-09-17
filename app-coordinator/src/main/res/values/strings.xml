@@ -10,4 +10,6 @@
     <string name="filter_by_location">Location</string>
     <string name="all">All</string>
     <string name="today">Today</string>
+    <string name="enter_batch">Enter batch</string>
+    <string name="enter_correct_batch">Enter correct batch</string>
 </resources>

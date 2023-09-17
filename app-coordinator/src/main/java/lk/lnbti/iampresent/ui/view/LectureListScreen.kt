@@ -87,7 +87,7 @@ fun LectureListScreen(
             )
         },
         floatingActionButton = {
-            AddNewContactButton()
+            AddNewLectureButton(onNewLectureClicked= onNewLectureClicked)
         },
         bottomBar = { BottomNavigation() }
     ) { padding ->
@@ -106,8 +106,6 @@ fun LectureListScreen(
         }
     }
 }
-
-
 @Composable
 fun SearchBar(
     modifier: Modifier = Modifier
@@ -133,7 +131,6 @@ fun SearchBar(
             .heightIn(min = dimensionResource(id = R.dimen.height_search_bar))
     )
 }
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OrderByBar(modifier: Modifier = Modifier) {
@@ -196,11 +193,11 @@ fun OrderByBar(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun AddNewContactButton() {
+fun AddNewLectureButton(onNewLectureClicked: () -> Unit) {
     FloatingActionButton(
         shape = MaterialTheme.shapes.large.copy(CornerSize(percent = 50)),
         //contentColor = Color.White,
-        onClick = { }
+        onClick = onNewLectureClicked
     ) {
         Icon(Icons.Default.Add, contentDescription = null)
     }
@@ -294,11 +291,11 @@ fun LectureListSection(
             }
 
             R.string.filter_by_batch -> {
-                grouped = lectureList.groupBy { it.batchcode.batchcode }
+                grouped = lectureList.groupBy { it.batch }
             }
 
             R.string.filter_by_subject -> {
-                grouped = lectureList.groupBy { it.subjectid.subjectname }
+                grouped = lectureList.groupBy { it.subject }
             }
 
             R.string.filter_by_lecturer -> {
@@ -306,7 +303,7 @@ fun LectureListSection(
             }
 
             R.string.filter_by_location -> {
-                grouped = lectureList.groupBy { it.venueid.venuename }
+                grouped = lectureList.groupBy { it.venue }
             }
         }
 
@@ -355,18 +352,14 @@ fun LectureListItem(
             .clickable { }
     ) {
         Column {
-            item.subjectid.subjectname?.let {
+            item.subject?.let {
                 Text(
                     text = it,
                     style = MaterialTheme.typography.titleLarge
                 )
             }
             Text(
-                text = item.topic.toString(),
-                style = MaterialTheme.typography.titleLarge
-            )
-            Text(
-                text = item.batchcode.batchcode,
+                text = item.batch,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.primary
             )
@@ -381,7 +374,7 @@ fun LectureListItem(
 }
 
 @Composable
-private fun BottomNavigation(modifier: Modifier = Modifier) {
+public fun BottomNavigation(modifier: Modifier = Modifier) {
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.surfaceVariant,
         modifier = modifier
@@ -415,12 +408,12 @@ private fun BottomNavigation(modifier: Modifier = Modifier) {
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+//@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PreviewLectureListSection() {
 
     val jsonString =
-        "[{\"lectureid\":7,\"venueid\":{\"venueid\":1,\"venuename\":\"online\"},\"startdate\":\"2023-08-09\",\"starttime\":\"16:36:00\",\"enddate\":\"2023-08-09\",\"endtime\":\"17:36:00\",\"semester\":1,\"topic\":\"kotlin\",\"subjectid\":{\"subjectid\":1,\"subjectname\":\"technical subject\"},\"batchcode\":{\"batchcode\":\"gtp01\"},\"organizerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturestatusid\":{\"lecturestatusid\":1,\"statusname\":\"new\"}},{\"lectureid\":8,\"venueid\":{\"venueid\":1,\"venuename\":\"online\"},\"startdate\":\"2023-08-09\",\"starttime\":\"16:38:00\",\"enddate\":\"2023-08-09\",\"endtime\":\"16:38:00\",\"semester\":1,\"topic\":\"test2\",\"subjectid\":{\"subjectid\":1,\"subjectname\":\"technical subject\"},\"batchcode\":{\"batchcode\":\"gtp01\"},\"organizerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturestatusid\":{\"lecturestatusid\":1,\"statusname\":\"new\"}},{\"lectureid\":9,\"venueid\":{\"venueid\":1,\"venuename\":\"online\"},\"startdate\":\"2023-08-09\",\"starttime\":\"16:39:00\",\"enddate\":\"2023-08-09\",\"endtime\":\"17:39:00\",\"semester\":1,\"topic\":\"day9\",\"subjectid\":{\"subjectid\":1,\"subjectname\":\"technical subject\"},\"batchcode\":{\"batchcode\":\"gtp01\"},\"organizerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturestatusid\":{\"lecturestatusid\":1,\"statusname\":\"new\"}},{\"lectureid\":10,\"venueid\":{\"venueid\":1,\"venuename\":\"online\"},\"startdate\":\"2023-08-09\",\"starttime\":\"19:57:00\",\"enddate\":\"2023-08-09\",\"endtime\":\"20:57:00\",\"semester\":2,\"topic\":\"test\",\"subjectid\":{\"subjectid\":1,\"subjectname\":\"technical subject\"},\"batchcode\":{\"batchcode\":\"gtp01\"},\"organizerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturestatusid\":{\"lecturestatusid\":1,\"statusname\":\"new\"}},{\"lectureid\":11,\"venueid\":{\"venueid\":1,\"venuename\":\"online\"},\"startdate\":\"2023-08-13\",\"starttime\":\"13:43:00\",\"enddate\":\"2023-08-13\",\"endtime\":\"13:43:00\",\"semester\":1,\"topic\":\"test\",\"subjectid\":{\"subjectid\":1,\"subjectname\":\"technical subject\"},\"batchcode\":{\"batchcode\":\"gtp01\"},\"organizerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturestatusid\":{\"lecturestatusid\":1,\"statusname\":\"new\"}},{\"lectureid\":12,\"venueid\":{\"venueid\":1,\"venuename\":\"online\"},\"startdate\":\"2023-08-14\",\"starttime\":\"14:21:00\",\"enddate\":\"2023-08-13\",\"endtime\":\"15:21:00\",\"semester\":1,\"topic\":\"individual project \",\"subjectid\":{\"subjectid\":1,\"subjectname\":\"technical subject\"},\"batchcode\":{\"batchcode\":\"gtp01\"},\"organizerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturestatusid\":{\"lecturestatusid\":1,\"statusname\":\"new\"}},{\"lectureid\":1,\"venueid\":{\"venueid\":1,\"venuename\":\"online\"},\"startdate\":\"2023-12-12\",\"starttime\":\"08:00:00\",\"enddate\":\"2023-12-12\",\"endtime\":\"12:00:00\",\"semester\":2,\"topic\":\"Kotlin\",\"subjectid\":{\"subjectid\":1,\"subjectname\":\"technical subject\"},\"batchcode\":{\"batchcode\":\"gtp01\"},\"organizerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturestatusid\":{\"lecturestatusid\":1,\"statusname\":\"new\"}},{\"lectureid\":2,\"venueid\":{\"venueid\":1,\"venuename\":\"online\"},\"startdate\":\"2023-12-12\",\"starttime\":\"08:00:00\",\"enddate\":\"2023-12-12\",\"endtime\":\"12:00:00\",\"semester\":2,\"topic\":\"Kotlin\",\"subjectid\":{\"subjectid\":1,\"subjectname\":\"technical subject\"},\"batchcode\":{\"batchcode\":\"gtp01\"},\"organizerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturestatusid\":{\"lecturestatusid\":1,\"statusname\":\"new\"}},{\"lectureid\":3,\"venueid\":{\"venueid\":1,\"venuename\":\"online\"},\"startdate\":\"2023-12-12\",\"starttime\":\"08:00:00\",\"enddate\":\"2023-12-12\",\"endtime\":\"12:00:00\",\"semester\":2,\"topic\":\"Kotlin\",\"subjectid\":{\"subjectid\":1,\"subjectname\":\"technical subject\"},\"batchcode\":{\"batchcode\":\"gtp01\"},\"organizerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturestatusid\":{\"lecturestatusid\":1,\"statusname\":\"new\"}},{\"lectureid\":4,\"venueid\":{\"venueid\":1,\"venuename\":\"online\"},\"startdate\":\"2023-12-12\",\"starttime\":\"08:00:00\",\"enddate\":\"2023-12-12\",\"endtime\":\"12:00:00\",\"semester\":2,\"topic\":\"Kotlin\",\"subjectid\":{\"subjectid\":1,\"subjectname\":\"technical subject\"},\"batchcode\":{\"batchcode\":\"gtp01\"},\"organizerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturestatusid\":{\"lecturestatusid\":1,\"statusname\":\"new\"}},{\"lectureid\":5,\"venueid\":{\"venueid\":1,\"venuename\":\"online\"},\"startdate\":\"2023-12-12\",\"starttime\":\"08:00:00\",\"enddate\":\"2023-12-12\",\"endtime\":\"12:00:00\",\"semester\":2,\"topic\":\"Kotlin\",\"subjectid\":{\"subjectid\":1,\"subjectname\":\"technical subject\"},\"batchcode\":{\"batchcode\":\"gtp01\"},\"organizerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturestatusid\":{\"lecturestatusid\":1,\"statusname\":\"new\"}},{\"lectureid\":6,\"venueid\":{\"venueid\":1,\"venuename\":\"online\"},\"startdate\":\"2023-12-12\",\"starttime\":\"08:00:00\",\"enddate\":\"2023-12-12\",\"endtime\":\"12:00:00\",\"semester\":2,\"topic\":\"Kotlin\",\"subjectid\":{\"subjectid\":1,\"subjectname\":\"technical subject\"},\"batchcode\":{\"batchcode\":\"gtp01\"},\"organizerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturestatusid\":{\"lecturestatusid\":1,\"statusname\":\"new\"}}]"
+        "[{\"lectureid\":1,\"venue\":\"online\",\"startdate\":\"2023-12-12\",\"starttime\":\"08:00:00\",\"enddate\":\"2023-12-12\",\"endtime\":\"12:00:00\",\"semester\":2,\"subject\":\"kotlin\",\"batch\":\"gtp01\",\"organizerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturestatusid\":{\"lecturestatusid\":1,\"statusname\":\"new\"}}]"
 // Create a Gson instance
     val gson = Gson()
 
@@ -442,4 +435,9 @@ fun PreviewLectureListSection() {
 @Composable
 fun PreviewBottomNavigation() {
     BottomNavigation()
+}
+@Preview( showBackground = true)
+@Composable
+fun PreviewAddNewLectureButton(){
+    AddNewLectureButton({ })
 }
