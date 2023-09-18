@@ -34,8 +34,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import lk.lnbti.iampresent.R
+import lk.lnbti.iampresent.view_model.LectureListViewModel
 import lk.lnbti.iampresent.view_model.NewLectureViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -43,7 +45,7 @@ import java.util.Calendar
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewLectureScreen(
-    newLectureViewModel: NewLectureViewModel = viewModel(),
+    newLectureViewModel: NewLectureViewModel = hiltViewModel(),
     onSaveButtonClicked: (String) -> Unit,
     onCancelButtonClicked: () -> Unit,
     modifier: Modifier = Modifier
@@ -205,6 +207,7 @@ fun NewLectureContent(
                     }
                 },
                 onValueChange = onSemesterChange,
+                keyboardType = KeyboardType.Number,
                 isError = isSemesterError,
                 modifier = modifier
             )
@@ -388,6 +391,8 @@ fun NewTimeField(
     onValueChange: (String) -> Unit,
 ) {
     val context = LocalContext.current
+    val defaultTimeFormat = SimpleDateFormat("H:m")
+    val newTimeFormat = SimpleDateFormat("h:mm a")
     val calendar = Calendar.getInstance()
     val hour = calendar[Calendar.HOUR_OF_DAY]
     val minute = calendar[Calendar.MINUTE]
@@ -396,7 +401,9 @@ fun NewTimeField(
     val timePicker = TimePickerDialog(
         context,
         { _, selectedHour: Int, selectedMinute: Int ->
-            selectedTime = "$selectedHour:$selectedMinute"
+            val newTime= "$selectedHour:$selectedMinute"
+            val time = defaultTimeFormat.parse(newTime)
+            selectedTime = newTimeFormat.format(time)
             onValueChange(selectedTime)
         },
         hour,

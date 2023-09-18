@@ -5,7 +5,7 @@ package lk.lnbti.iampresent.constant
  */
 object Constant {
 
-    const val BASE_URL = "http://192.168.8.105:8080/api/public/"
+    const val BASE_URL = "http://192.168.8.100:8080/api/public/"
 
 
     const val ENDPOINT_LECTURE_ALL = "lecture/all"

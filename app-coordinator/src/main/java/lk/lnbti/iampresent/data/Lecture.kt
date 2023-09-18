@@ -26,7 +26,7 @@ data class Lecture(
     @SerializedName("starttime") val startTime: String,
     @SerializedName("enddate") val endDate: String,
     @SerializedName("endtime") val endTime: String,
-    @SerializedName("semester") val semester: String,
+    @SerializedName("semester") val semester: Int,
     @SerializedName("subject") val subject: String,
     @SerializedName("batch") val batch: String,
     @SerializedName("organizerid") val organizer: User,

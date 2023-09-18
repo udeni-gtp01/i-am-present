@@ -11,12 +11,18 @@ import lk.lnbti.iampresent.data.Lecture
 import lk.lnbti.iampresent.data.LectureStatus
 import lk.lnbti.iampresent.data.User
 import lk.lnbti.iampresent.repo.LectureRepo
+import lk.lnbti.iampresent.ui_state.LectureListUiState
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
 class NewLectureViewModel @Inject constructor(
+    private val lectureListUiState: LectureListUiState,
     private val lectureRepo: LectureRepo,
 ) : ViewModel() {
+
     private val _batch: MutableLiveData<String> = MutableLiveData("")
     val batch: LiveData<String> = _batch
 
@@ -78,54 +84,109 @@ class NewLectureViewModel @Inject constructor(
     val isLecturerEmailError: LiveData<Boolean> = _isLecturerEmailError
     fun onBatchChange(newBatch: String) {
         _batch.value = newBatch
+        checkBatchValidation()
+    }
+
+    private fun checkBatchValidation() {
         _isBatchError.value = _batch.value.isNullOrBlank()
     }
 
     fun onSemesterChange(newSemester: String) {
         _semester.value = newSemester
+        checkSemesterValidation()
+    }
+
+    private fun checkSemesterValidation() {
         _isSemesterError.value = _semester.value.isNullOrBlank()
     }
 
     fun onSubjectChange(newSubject: String) {
         _subject.value = newSubject
+        checkSubjectValidation()
+    }
+
+    private fun checkSubjectValidation() {
         _isSubjectError.value = _subject.value.isNullOrBlank()
     }
 
     fun onLocationChange(newLocation: String) {
         _location.value = newLocation
+        checkLocationValidation()
+    }
+
+    private fun checkLocationValidation() {
         _isLocationError.value = _location.value.isNullOrBlank()
     }
 
     fun onStartDateChange(newStartDate: String) {
         _startDate.value = newStartDate
+        checkStartDateValidation()
+    }
+
+    private fun checkStartDateValidation() {
         _isStartDateError.value = _startDate.value.isNullOrBlank()
     }
 
     fun onStartTimeChange(newStartTime: String) {
         _startTime.value = newStartTime
+        checkStartTimeValidation()
+    }
+
+    private fun checkStartTimeValidation() {
         _isStartTimeError.value = _startTime.value.isNullOrBlank()
     }
 
     fun onEndDateChange(newEndDate: String) {
         _endDate.value = newEndDate
+        checkEndDateValidation()
+    }
+
+    private fun checkEndDateValidation() {
         _isEndDateError.value = _endDate.value.isNullOrBlank()
     }
 
     fun onEndTimeChange(newEndTime: String) {
         _endTime.value = newEndTime
+        checkEndTimeValidation()
+    }
+
+    private fun checkEndTimeValidation() {
         _isEndTimeError.value = _endTime.value.isNullOrBlank()
     }
 
     fun onLecturerNameChange(newLecturerName: String) {
         _lecturerName.value = newLecturerName
+        checkLecturerNameValidation()
+    }
+
+    private fun checkLecturerNameValidation() {
         _isLecturerNameError.value = _lecturerName.value.isNullOrBlank()
     }
 
     fun onLecturerEmailChange(newLecturerEmail: String) {
         _lecturerEmail.value = newLecturerEmail
+        checkLecturerEmailValidation()
+    }
+
+    private fun checkLecturerEmailValidation() {
         _isLecturerEmailError.value = _lecturerEmail.value.isNullOrBlank()
     }
+
+    fun checkAllValidation() {
+        checkBatchValidation()
+        checkSemesterValidation()
+        checkSubjectValidation()
+        checkLocationValidation()
+        checkStartDateValidation()
+        checkStartTimeValidation()
+        checkEndDateValidation()
+        checkEndTimeValidation()
+        checkLecturerNameValidation()
+        checkLecturerEmailValidation()
+    }
+
     fun isValidationSuccess(): Boolean {
+        checkAllValidation()
         return _isBatchError.value == false &&
                 _isSemesterError.value == false &&
                 _isSubjectError.value == false &&
@@ -141,13 +202,13 @@ class NewLectureViewModel @Inject constructor(
     fun saveLecture(): String {
         val newLecture: Lecture = Lecture(
             batch = _batch.value.toString(),
-            semester = _semester.value.toString(),
+            semester = _semester.value.toString().toInt(),
             subject = _subject.value.toString(),
             location = _location.value.toString(),
-            startDate = _startDate.value.toString(),
-            startTime = _startTime.value.toString(),
-            endDate = _endDate.value.toString(),
-            endTime = _endTime.value.toString(),
+            startDate = convertDateToSqlFormat(_startDate.value.toString()),
+            startTime = convertTimeToSqlFormat(_startTime.value.toString()),
+            endDate = convertDateToSqlFormat(_endDate.value.toString()),
+            endTime = convertTimeToSqlFormat(_endTime.value.toString()),
             organizer = User(
                 name = "admin",
             ),
@@ -157,11 +218,38 @@ class NewLectureViewModel @Inject constructor(
             ),
             lectureStatus = LectureStatus(statusName = "")
         )
-        val respose=""
+        val respose = ""
         viewModelScope.launch {
+            Log.d("oyasumi", "Subject says: " + newLecture.subject)
+
             val respose = lectureRepo.saveLecture(lecture = newLecture)
+            searchLectureList()
             Log.d("oyasumi", "Saved lecture says: " + respose)
         }
         return respose
+    }
+
+    fun searchLectureList() {
+        viewModelScope.launch {
+            //_lectureList.value = lectureListRepo.searchLectureList()
+            //_uiState.value= LectureListUiState(lectureListRepo.searchLectureList())
+            lectureListUiState.loadLectureList(lectureRepo.searchLectureList())
+        }
+    }
+
+    private fun convertDateToSqlFormat(myDate: String): String {
+        val selectedDateFormat = SimpleDateFormat("MMMM d, yyyy", Locale.getDefault())
+        val sqlDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
+        val selectedDate: Date = selectedDateFormat.parse(myDate)
+        return sqlDateFormat.format(selectedDate)
+    }
+
+    private fun convertTimeToSqlFormat(myTime: String): String {
+        val selectedTimeFormat = SimpleDateFormat("h:mm a", Locale.getDefault())
+        val sqlTimeFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+
+        val selectedTime: Date = selectedTimeFormat.parse(myTime)
+        return sqlTimeFormat.format(selectedTime)
     }
 }
