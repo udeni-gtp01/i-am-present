@@ -283,11 +283,11 @@ fun LectureListSection(
         var grouped: Map<String, List<Lecture>>? = null
         when (selectedFilter) {
             R.string.filter_by_date -> {
-                grouped = lectureList.groupBy { it.startdate }
+                grouped = lectureList.groupBy { it.startDate }
             }
 
             R.string.filter_by_lecture_status -> {
-                grouped = lectureList.groupBy { it.lecturestatusid.statusname }
+                grouped = lectureList.groupBy { it.lectureStatus.statusName }
             }
 
             R.string.filter_by_batch -> {
@@ -299,11 +299,11 @@ fun LectureListSection(
             }
 
             R.string.filter_by_lecturer -> {
-                grouped = lectureList.groupBy { it.lecturerid.name }
+                grouped = lectureList.groupBy { it.lecturer.name }
             }
 
             R.string.filter_by_location -> {
-                grouped = lectureList.groupBy { it.venue }
+                grouped = lectureList.groupBy { it.location }
             }
         }
 
@@ -364,7 +364,7 @@ fun LectureListItem(
                 color = MaterialTheme.colorScheme.primary
             )
             Text(
-                text = "${item.startdate.toString()} ${item.starttime.toString()}",
+                text = "${item.startDate.toString()} ${item.startTime.toString()}",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.primary
             )

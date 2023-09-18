@@ -15,22 +15,22 @@ data class LectureList(
 
 @Parcelize
 data class LectureStatus(
-    @SerializedName("lecturestatusid") val lecturestatusid: Int,
-    @SerializedName("statusname") val statusname: String=""
+    @SerializedName("lecturestatusid") val lectureStatusId: Int?=0,
+    @SerializedName("statusname") val statusName: String=""
 ) : Parcelable
 @Parcelize
 data class Lecture(
-    @SerializedName("lectureid") val lectureid: Int?=null,
-    @SerializedName("venue") val venue: String,
-    @SerializedName("startdate") val startdate: String,
-    @SerializedName("starttime") val starttime: String,
-    @SerializedName("enddate") val enddate: String,
-    @SerializedName("endtime") val endtime: String,
-    @SerializedName("semester") val semester: Int,
+    @SerializedName("lectureid") val lectureId: Int?=null,
+    @SerializedName("venue") val location: String,
+    @SerializedName("startdate") val startDate: String,
+    @SerializedName("starttime") val startTime: String,
+    @SerializedName("enddate") val endDate: String,
+    @SerializedName("endtime") val endTime: String,
+    @SerializedName("semester") val semester: String,
     @SerializedName("subject") val subject: String,
     @SerializedName("batch") val batch: String,
-    @SerializedName("organizerid") val organizerid: User,
-    @SerializedName("lecturerid") val lecturerid: User,
-    @SerializedName("lecturestatusid") val lecturestatusid: LectureStatus
+    @SerializedName("organizerid") val organizer: User,
+    @SerializedName("lecturerid") val lecturer: User,
+    @SerializedName("lecturestatusid") val lectureStatus: LectureStatus
 ) : Parcelable
 

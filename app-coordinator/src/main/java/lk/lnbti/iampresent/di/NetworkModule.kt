@@ -5,9 +5,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import lk.lnbti.iampresent.constant.Constant
-import lk.lnbti.iampresent.repo.LectureListRepo
-import lk.lnbti.iampresent.service.LectureListService
-import lk.lnbti.iampresent.view_model.LectureListViewModel
+import lk.lnbti.iampresent.repo.LectureRepo
+import lk.lnbti.iampresent.service.LectureService
 import okhttp3.OkHttpClient
 import retrofit2.Converter
 import retrofit2.Retrofit
@@ -68,13 +67,13 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideLectureListService(retrofit: Retrofit): LectureListService {
-        return retrofit.create(LectureListService::class.java)
+    fun provideLectureListService(retrofit: Retrofit): LectureService {
+        return retrofit.create(LectureService::class.java)
     }
 
     @Singleton
     @Provides
-    fun provideLectureListRepo(lectureListService: LectureListService): LectureListRepo {
-        return LectureListRepo(lectureListService)
+    fun provideLectureListRepo(lectureListService: LectureService): LectureRepo {
+        return LectureRepo(lectureListService)
     }
 }

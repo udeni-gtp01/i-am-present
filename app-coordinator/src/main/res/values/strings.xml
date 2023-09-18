@@ -12,4 +12,19 @@
     <string name="today">Today</string>
     <string name="enter_batch">Enter batch</string>
     <string name="enter_correct_batch">Enter correct batch</string>
+    <string name="save">Save</string>
+    <string name="enter_correct_semester">Enter correct semester</string>
+    <string name="enter_semester">Enter semester</string>
+    <string name="enter_correct_subject">Enter correct subject</string>
+    <string name="enter_subject">Enter subject</string>
+    <string name="start_date">Start date</string>
+    <string name="start_time">Start time</string>
+    <string name="enter_correct_location">Enter correct location</string>
+    <string name="enter_location">Enter location</string>
+    <string name="enter_correct_lecturer_name">Enter correct lecturer name</string>
+    <string name="enter_lecturer_name">Enter lecturer name</string>
+    <string name="enter_correct_lecturer_email">Enter correct lecturer email</string>
+    <string name="enter_lecturer_email">Enter lecturer email</string>
+    <string name="end_date">End date</string>
+    <string name="end_time">ENd time</string>
 </resources>
