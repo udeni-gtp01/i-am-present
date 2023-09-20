@@ -10,9 +10,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="09752cd7-2185-4973-ab93-8732b59a454f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui_state/LectureInfoUiState.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/view_model/LectureInfoViewModel.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/IamPresent.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/constant/Constant.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/data/ContactData.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/data/Lecture.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/data/User.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/di/DispatchersModule.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/di/NetworkModule.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/nav/AppDestination.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/nav/AppNavHost.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/repo/LectureRepo.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/service/LectureService.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/ui/theme/view/BarcodeAnalyser.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/ui/theme/view/LectureInfoScreen.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/ui/theme/view/LectureListScreen.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/ui/theme/view/NewLectureScreen.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/ui_state/LectureInfoUiState.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/ui_state/LectureListUiState.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/view_model/LectureInfoViewModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/view_model/LectureListViewModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/view_model/NewLectureViewModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app-student/src/main/res/values/dimens.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.3/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.3/checksums/checksums.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.3/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.3/checksums/md5-checksums.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.3/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.3/checksums/sha1-checksums.bin" afterDir="false" />
@@ -23,32 +40,25 @@
       <change beforePath="$PROJECT_DIR$/.gradle/8.3/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.3/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/app-student/I_am_present.app-student.iml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-coordinator/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/build.gradle.kts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/constant/Constant.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/constant/Constant.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/data/Lecture.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/data/Lecture.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/di/NetworkModule.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/di/NetworkModule.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/nav/AppDestination.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/nav/AppDestination.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/nav/AppNavHost.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/nav/AppNavHost.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/repo/LectureRepo.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/repo/LectureRepo.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/service/LectureService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/service/LectureService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/theme/Type.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/theme/Type.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/view/LectureInfoScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/view/LectureInfoScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/view/LectureListScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/view/LectureListScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/view_model/LectureListViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/view_model/LectureListViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/view_model/NewLectureViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/view_model/NewLectureViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/res/values/dimens.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/res/values/dimens.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/view_model/LectureInfoViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/view_model/LectureInfoViewModel.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/res/values/strings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app-student/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/app-student/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app-student/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app-student/src/main/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/MainActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app-student/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app-student/src/main/res/values/strings.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[2b099b450e3f7ece]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -95,22 +105,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;android-custom-viewC:/Users/ukuis/.gradle/caches/modules-2/files-2.1/androidx.compose.ui/ui-android/1.5.0/d096c6e1ab398990ce7c05e3003f79320b4235c/ui-android-1.5.0-sources.jar!/androidMain/androidx/compose/ui/platform/ComposeView.android.kt_SELECTED&quot;: &quot;AbstractComposeView&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;com.google.services.firebase.aqiPopupShown&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/AndroidStudioProjects/Online_course/codelab-android-compose/BasicLayoutsCodelab&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Suggestions&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.17&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "android-custom-viewC:/Users/ukuis/.gradle/caches/modules-2/files-2.1/androidx.compose.ui/ui-android/1.5.0/d096c6e1ab398990ce7c05e3003f79320b4235c/ui-android-1.5.0-sources.jar!/androidMain/androidx/compose/ui/platform/ComposeView.android.kt_SELECTED": "AbstractComposeView",
+    "cidr.known.project.marker": "true",
+    "com.google.services.firebase.aqiPopupShown": "true",
+    "last_opened_file_path": "D:/AndroidStudioProjects/semester end/i-am-present/app-student/src/main/res/values",
+    "project.structure.last.edited": "Suggestions",
+    "project.structure.proportion": "0.17",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
-}</component>
+}]]></component>
   <component name="PsdUISettings">
     <option name="MODULE_TAB" value="Properties" />
     <option name="BUILD_VARIANTS_TAB" value="Flavors" />
@@ -119,6 +129,9 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\AndroidStudioProjects\semester end\i-am-present\app-student\src\main\res\values" />
+      <recent name="D:\AndroidStudioProjects\semester end\i-am-present\app-student\src\main\java\lk\lnbti\app_student" />
+      <recent name="D:\AndroidStudioProjects\semester end\i-am-present\app-student\src\main\java\lk\lnbti\app_student\ui\theme" />
       <recent name="D:\AndroidStudioProjects\semester end\i-am-present\app-coordinator\src\main\java\lk\lnbti\iampresent" />
       <recent name="D:\AndroidStudioProjects\semester end\i-am-present\app-coordinator\src\main\java\lk\lnbti\iampresent\data" />
     </key>
@@ -130,7 +143,7 @@
       <recent name="lk.lnbti.iampresent.repo" />
     </key>
   </component>
-  <component name="RunManager" selected="Android App.app-coordinator">
+  <component name="RunManager" selected="Android App.app-student">
     <configuration name="app-coordinator" type="AndroidRunConfigurationType" factoryName="Android App">
       <module name="I_am_present.app-coordinator.main" />
       <option name="DEPLOY" value="true" />

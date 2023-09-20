@@ -86,6 +86,9 @@ fun LectureInfoScreen(
                     onOpenButtonClicked = { lectureId ->
                         lectureInfoViewModel.openForAttendance(lectureId)
                     },
+                    onCloseButtonClicked = { lectureId ->
+                        lectureInfoViewModel.closeForAttendance(lectureId)
+                    },
                     qrText = lectureInfoViewModel.qrText.toString()
                 )
             }
@@ -101,6 +104,7 @@ fun LectureInfoContent(
     lecture: Lecture,
     qrText: String,
     onOpenButtonClicked: (Int) -> Unit,
+    onCloseButtonClicked: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(contentPadding = PaddingValues(16.dp)) {
@@ -140,21 +144,36 @@ fun LectureInfoContent(
             labelHeader(text = R.string.current_status)
             labelBody(text = lecture.lectureStatus.statusName)
         }
-        item {
-            Button(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = { onOpenButtonClicked(lecture.lectureId) }
-            ) {
-                Text(
-                    text = stringResource(R.string.open_for_attendance),
-                    //fontSize = 16.sp
-                )
+        if (lecture.lectureStatus.lectureStatusId !=2) {
+            item {
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = { onOpenButtonClicked(lecture.lectureId) }
+                ) {
+                    Text(
+                        text = stringResource(R.string.open_for_attendance),
+                        //fontSize = 16.sp
+                    )
+                }
             }
         }
         if (lecture.lectureStatus.lectureStatusId == 2) {
             item {
                 Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
                 ShowQR(qrText)
+                Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
+            }
+
+            item {
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = { onCloseButtonClicked(lecture.lectureId) }
+                ) {
+                    Text(
+                        text = stringResource(R.string.close_for_attendance),
+                        //fontSize = 16.sp
+                    )
+                }
             }
         }
     }

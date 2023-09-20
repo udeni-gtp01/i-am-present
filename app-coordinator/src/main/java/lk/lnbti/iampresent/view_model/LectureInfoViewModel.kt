@@ -30,11 +30,23 @@ class LectureInfoViewModel @Inject constructor(
     fun openForAttendance(lectureId: Int) {
         viewModelScope.launch {
             val lecture: Lecture? = lectureRepo.openLectureForAttendance(lectureId)
-            Log.d("oyasumi", "opening for attendance 2 : ${lecture?.lectureId}")
-            lecture?.let { lectureInfoUiState.loadLecture(it) }
+            lecture?.let {
+                lectureInfoUiState.loadLecture(it)
+                setQrText()
+            }
+
         }
     }
+    fun closeForAttendance(lectureId: Int) {
+        viewModelScope.launch {
+            val lecture: Lecture? = lectureRepo.closeLectureForAttendance(lectureId)
+            lecture?.let {
+                lectureInfoUiState.loadLecture(it)
+                setQrText()
+            }
 
+        }
+    }
     fun findLecture(lectureId: String) {
         viewModelScope.launch {
             lectureInfoUiState.loadLecture(lectureRepo.findLectureById(lectureId))

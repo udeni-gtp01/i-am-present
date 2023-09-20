@@ -22,4 +22,7 @@ interface LectureService {
 
     @PUT(Constant.ENDPOINT_LECTURE_OPEN_FOR_ATTENDANCE)
     suspend fun openLectureForAttendance(@Path(value = "id") id: Int): Response<Lecture>
+
+    @PUT(Constant.ENDPOINT_LECTURE_CLOSE_FOR_ATTENDANCE)
+    suspend fun closeLectureForAttendance(@Path(value = "id") id: Int): Response<Lecture>
 }

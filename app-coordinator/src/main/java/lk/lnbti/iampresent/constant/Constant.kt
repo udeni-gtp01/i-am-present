@@ -12,6 +12,7 @@ object Constant {
     const val ENDPOINT_LECTURE_SAVE = "lecture/save"
     const val ENDPOINT_LECTURE_FIND = "lecture/{id}"
     const val ENDPOINT_LECTURE_OPEN_FOR_ATTENDANCE = "lecture/open-for-attendance/{id}"
+    const val ENDPOINT_LECTURE_CLOSE_FOR_ATTENDANCE = "lecture/close-for-attendance/{id}"
 
 
     const val HEADER_1 = "Accept: application/vnd.github.v3+json"

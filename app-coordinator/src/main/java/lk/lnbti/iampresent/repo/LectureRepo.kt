@@ -58,12 +58,27 @@ class LectureRepo @Inject constructor(private val lectureService: LectureService
 
     suspend fun openLectureForAttendance(lectureId: Int): Lecture? {
         return withContext(Dispatchers.IO) {
-            return@withContext updateLectureStatus(lectureId = lectureId)
+            return@withContext updateLectureStatusToOpen(lectureId = lectureId)
         }
     }
 
-    private suspend fun updateLectureStatus(lectureId: Int): Lecture? {
+    private suspend fun updateLectureStatusToOpen(lectureId: Int): Lecture? {
         val response = lectureService.openLectureForAttendance(lectureId)
+        lateinit var lecture: Lecture
+        if (response.isSuccessful) {
+            lecture = response.body()!!
+        }
+        return lecture
+    }
+
+    suspend fun closeLectureForAttendance(lectureId: Int): Lecture? {
+        return withContext(Dispatchers.IO) {
+            return@withContext updateLectureStatusToClose(lectureId = lectureId)
+        }
+    }
+
+    private suspend fun updateLectureStatusToClose(lectureId: Int): Lecture? {
+        val response = lectureService.closeLectureForAttendance(lectureId)
         lateinit var lecture: Lecture
         if (response.isSuccessful) {
             lecture = response.body()!!

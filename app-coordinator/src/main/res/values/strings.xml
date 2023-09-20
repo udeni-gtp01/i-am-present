@@ -37,4 +37,5 @@
     <string name="lecturer_email">Lecturer email</string>
     <string name="current_status">Current status</string>
     <string name="open_for_attendance">Open for attendance</string>
+    <string name="close_for_attendance">Close for attendance</string>
 </resources>
