@@ -3,6 +3,7 @@ package lk.lnbti.iampresent.data
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
+import java.io.Serializable
 import java.sql.Date
 import java.sql.Time
 
@@ -20,7 +21,7 @@ data class LectureStatus(
 ) : Parcelable
 @Parcelize
 data class Lecture(
-    @SerializedName("lectureid") val lectureId: Int?=null,
+    @SerializedName("lectureid") val lectureId: Int=0,
     @SerializedName("venue") val location: String,
     @SerializedName("startdate") val startDate: String,
     @SerializedName("starttime") val startTime: String,

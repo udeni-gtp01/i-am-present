@@ -66,10 +66,11 @@ import lk.lnbti.iampresent.data.Lecture
 import lk.lnbti.iampresent.ui.theme.IAmPresentTheme
 import lk.lnbti.iampresent.view_model.LectureListViewModel
 
+typealias OnLectureItemClicked = (String) -> Unit
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LectureListScreen(
-    onLectureItemClicked: (String) -> Unit,
+    onLectureItemClicked: OnLectureItemClicked,
     onNewLectureClicked: () -> Unit,
     lectureListViewModel: LectureListViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
@@ -206,7 +207,7 @@ fun AddNewLectureButton(onNewLectureClicked: () -> Unit) {
 @Composable
 fun LectureListContent(
     lectureList: List<Lecture>,
-    onLectureItemClicked: (String) -> Unit,
+    onLectureItemClicked: OnLectureItemClicked,
     modifier: Modifier = Modifier
 ) {
     val criteriaList = listOf(
@@ -270,7 +271,7 @@ fun FilterItem(
 fun LectureListSection(
     lectureList: List<Lecture>,
     selectedFilter: Int,
-    onLectureItemClicked: (String) -> Unit,
+    onLectureItemClicked: OnLectureItemClicked,
     modifier: Modifier = Modifier
 ) {
     val listState = rememberLazyListState()
@@ -339,7 +340,7 @@ fun LectureGroupHeader(header: String) {
 @Composable
 fun LectureListItem(
     item: Lecture,
-    onLectureItemClicked: (String) -> Unit,
+    onLectureItemClicked: OnLectureItemClicked,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -349,7 +350,7 @@ fun LectureListItem(
             .background(color = Color.LightGray)
             .padding(horizontal = 15.dp, vertical = 20.dp)
             .fillMaxWidth()
-            .clickable { }
+            .clickable { onLectureItemClicked(item.lectureId.toString())}
     ) {
         Column {
             item.subject?.let {

@@ -7,6 +7,7 @@ import dagger.hilt.components.SingletonComponent
 import lk.lnbti.iampresent.constant.Constant
 import lk.lnbti.iampresent.repo.LectureRepo
 import lk.lnbti.iampresent.service.LectureService
+import lk.lnbti.iampresent.ui_state.LectureInfoUiState
 import lk.lnbti.iampresent.ui_state.LectureListUiState
 import okhttp3.OkHttpClient
 import retrofit2.Converter
@@ -81,5 +82,10 @@ object NetworkModule {
     @Provides
     fun provideLectureListUiState(): LectureListUiState {
         return LectureListUiState()
+    }
+    @Singleton
+    @Provides
+    fun provideLectureInfoUiState(): LectureInfoUiState {
+        return LectureInfoUiState()
     }
 }

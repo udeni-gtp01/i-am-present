@@ -83,6 +83,10 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     implementation("io.ktor:ktor-client-android:2.3.4")
+
+    //QR code
+    implementation("com.google.zxing:core:3.5.1")
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("com.google.dagger:hilt-android-testing:2.48")

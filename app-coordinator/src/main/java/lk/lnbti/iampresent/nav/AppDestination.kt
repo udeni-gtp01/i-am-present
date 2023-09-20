@@ -2,6 +2,7 @@ package lk.lnbti.iampresent.nav
 
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import lk.lnbti.iampresent.data.Lecture
 
 interface AppDestination {
     val route: String
@@ -12,7 +13,7 @@ object LectureListDestination : AppDestination{
 }
 object LectureInfoDestination : AppDestination {
     override val route = "lecture_info"
-    private const val lectureIdArg = "lecture_id"
+    const val lectureIdArg = "lecture_id"
     val routeWithArgs = "$route/{$lectureIdArg}"
     val arguments = listOf(
         navArgument(lectureIdArg) { type = NavType.StringType }

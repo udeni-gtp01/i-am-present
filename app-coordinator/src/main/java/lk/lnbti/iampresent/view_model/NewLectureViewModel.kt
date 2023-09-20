@@ -223,17 +223,15 @@ class NewLectureViewModel @Inject constructor(
             Log.d("oyasumi", "Subject says: " + newLecture.subject)
 
             val respose = lectureRepo.saveLecture(lecture = newLecture)
-            searchLectureList()
+            findLectureList()
             Log.d("oyasumi", "Saved lecture says: " + respose)
         }
         return respose
     }
 
-    fun searchLectureList() {
+    fun findLectureList() {
         viewModelScope.launch {
-            //_lectureList.value = lectureListRepo.searchLectureList()
-            //_uiState.value= LectureListUiState(lectureListRepo.searchLectureList())
-            lectureListUiState.loadLectureList(lectureRepo.searchLectureList())
+            lectureListUiState.loadLectureList(lectureRepo.findLectureList())
         }
     }
 

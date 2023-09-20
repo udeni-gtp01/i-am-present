@@ -7,4 +7,6 @@
     <dimen name="height_default_spacer">20dp</dimen>
     <dimen name="height_search_bar">50dp</dimen>
     <dimen name="padding_between_field">6dp</dimen>
+    <dimen name="padding_between_label_header">5dp</dimen>
+    <dimen name="padding_between_label">10dp</dimen>
 </resources>
