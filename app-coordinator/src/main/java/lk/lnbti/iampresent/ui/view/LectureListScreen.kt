@@ -3,6 +3,7 @@ package lk.lnbti.iampresent.ui.view
 import androidx.annotation.StringRes
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -27,6 +29,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -51,22 +54,27 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import lk.lnbti.iampresent.R
 import lk.lnbti.iampresent.data.Lecture
+import lk.lnbti.iampresent.ui.theme.DefaultColorScheme
 import lk.lnbti.iampresent.ui.theme.IAmPresentTheme
 import lk.lnbti.iampresent.view_model.LectureListViewModel
 
+
 typealias OnLectureItemClicked = (String) -> Unit
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LectureListScreen(
@@ -81,14 +89,25 @@ fun LectureListScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(
-                        stringResource(id = R.string.app_name)
-                    )
+                    Column {
+                        Text(
+                            stringResource(id = R.string.all),
+                            color = DefaultColorScheme.primary,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 24.sp
+                        )
+                        Text(
+                            stringResource(id = R.string.all_description),
+                            color = DefaultColorScheme.primary,
+                            fontSize = 20.sp
+                        )
+                    }
                 },
+                Modifier.padding(vertical = 20.dp)
             )
         },
         floatingActionButton = {
-            AddNewLectureButton(onNewLectureClicked= onNewLectureClicked)
+            AddNewLectureButton(onNewLectureClicked = onNewLectureClicked)
         },
         bottomBar = { BottomNavigation() }
     ) { padding ->
@@ -101,12 +120,11 @@ fun LectureListScreen(
                 onLectureItemClicked = onLectureItemClicked,
                 modifier = modifier
             )
-            //SearchBar(Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_main_content)))
-            //Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
             Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
         }
     }
 }
+
 @Composable
 fun SearchBar(
     modifier: Modifier = Modifier
@@ -132,6 +150,7 @@ fun SearchBar(
             .heightIn(min = dimensionResource(id = R.dimen.height_search_bar))
     )
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OrderByBar(modifier: Modifier = Modifier) {
@@ -146,18 +165,6 @@ fun OrderByBar(modifier: Modifier = Modifier) {
         }
 
     ) {
-//        TextField(
-//            readOnly = true,
-//            value = selectedOptionText,
-//            onValueChange = { },
-//            label = { Text("Label") },
-//            trailingIcon = {
-//                ExposedDropdownMenuDefaults.TrailingIcon(
-//                    expanded = expanded
-//                )
-//            },
-//            colors = ExposedDropdownMenuDefaults.textFieldColors()
-//        )
         TextField(
             readOnly = true,
             value = selectedOptionText,
@@ -197,10 +204,12 @@ fun OrderByBar(modifier: Modifier = Modifier) {
 fun AddNewLectureButton(onNewLectureClicked: () -> Unit) {
     FloatingActionButton(
         shape = MaterialTheme.shapes.large.copy(CornerSize(percent = 50)),
-        //contentColor = Color.White,
-        onClick = onNewLectureClicked
+        onClick = onNewLectureClicked,
+        contentColor = DefaultColorScheme.accent,
+        containerColor = DefaultColorScheme.secondary,
+        //modifier = Modifier.background(DefaultColorScheme.secondary)
     ) {
-        Icon(Icons.Default.Add, contentDescription = null)
+        Icon(Icons.Default.Add, contentDescription = null, tint = DefaultColorScheme.accent)
     }
 }
 
@@ -224,16 +233,21 @@ fun LectureListContent(
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_between_list_item)),
             contentPadding = PaddingValues(horizontal = 16.dp),
-            modifier = modifier
+            modifier = modifier.background(DefaultColorScheme.accent)
+                .padding(vertical = 16.dp)
         ) {
             items(criteriaList) { item ->
                 val isSelected = selectedItem == item
                 FilterItem(
                     criteria = item,
                     isSelected = isSelected,
-                    onClick = { selectedItem = item })
+                    onClick = { selectedItem = item },
+                    modifier = Modifier.weight(1f)
+                )
+
             }
         }
+
         LectureListSection(
             lectureList = lectureList,
             selectedFilter = selectedItem,
@@ -250,19 +264,29 @@ fun FilterItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val backgroundColor = if (isSelected) Color.Yellow else Color(0xFFBBAAEE)
+    //val backgroundColor = if (isSelected) Color.Yellow else Color(0xFFBBAAEE)
+    val backgroundColor = if (isSelected) DefaultColorScheme.secondary else Color.White
 
     Text(
         text = stringResource(id = criteria),
         style = MaterialTheme.typography.bodyMedium,
         modifier = Modifier
-            .drawBehind {
-                drawRoundRect(
-                    backgroundColor,
-                    cornerRadius = CornerRadius(10.dp.toPx())
-                )
-            }
+            .background(
+                color = backgroundColor,
+                shape = RoundedCornerShape(10.dp)
+            )
+//            .drawBehind {
+//                drawRoundRect(
+//                    backgroundColor,
+//                    cornerRadius = CornerRadius(10.dp.toPx())
+//                )
+//            }
             .clickable { onClick() }
+            .padding(8.dp)
+            .defaultMinSize(minWidth = 50.dp),
+        textAlign = TextAlign.Center,
+        fontWeight = FontWeight.Bold,
+        color = if (isSelected) DefaultColorScheme.accent else DefaultColorScheme.primary,
     )
 }
 
@@ -328,12 +352,17 @@ fun LectureGroupHeader(header: String) {
         text = header,
         modifier = Modifier
             .fillMaxWidth()
-            .drawBehind {
-                drawRoundRect(
-                    Color(0xFFBBAAEE),
-                    cornerRadius = CornerRadius(10.dp.toPx())
-                )
-            }
+//            .drawBehind {
+//                drawRoundRect(
+//                    Color(0xFFBBAAEE),
+//                    cornerRadius = CornerRadius(10.dp.toPx())
+//                )
+//            }
+            .background(Color.White)
+            .padding(15.dp),
+
+        color = DefaultColorScheme.primary,
+        fontWeight = FontWeight.Bold,
     )
 }
 
@@ -347,29 +376,48 @@ fun LectureListItem(
         modifier = Modifier
             //.padding(15.dp)
             .clip(RoundedCornerShape(10.dp))
-            .background(color = Color.LightGray)
-            .padding(horizontal = 15.dp, vertical = 20.dp)
+            .border(
+                width = 2.dp,
+                brush = Brush.verticalGradient(
+                    colors = listOf(
+                        DefaultColorScheme.primary, // Top color
+                        DefaultColorScheme.secondary // Bottom color
+                    )
+                ),
+                shape = RoundedCornerShape(10.dp),
+            )
+            .border(color = DefaultColorScheme.primary, width = 2.dp)
+            .padding(horizontal = 7.dp, vertical = 10.dp)
             .fillMaxWidth()
-            .clickable { onLectureItemClicked(item.lectureId.toString())}
+            .clickable { onLectureItemClicked(item.lectureId.toString()) }
     ) {
-        Column {
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+        ) {
+            Text(
+                text = item.batch,
+                style = MaterialTheme.typography.titleLarge,
+                color = DefaultColorScheme.primary
+            )
             item.subject?.let {
                 Text(
                     text = it,
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = DefaultColorScheme.primary
                 )
             }
-            Text(
-                text = item.batch,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.primary
-            )
-            Text(
-                text = "${item.startDate.toString()} ${item.startTime.toString()}",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.primary
-            )
 
+            Text(
+                text = "${item.startDate.toString()} @ ${item.startTime.toString()}",
+                style = MaterialTheme.typography.bodyMedium,
+                color = DefaultColorScheme.primary
+            )
+            Text(
+                text =item.location ,
+                style = MaterialTheme.typography.bodyMedium,
+                color = DefaultColorScheme.primary
+            )
         }
     }
 }
@@ -409,7 +457,7 @@ public fun BottomNavigation(modifier: Modifier = Modifier) {
     }
 }
 
-//@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun PreviewLectureListSection() {
 
@@ -437,8 +485,22 @@ fun PreviewLectureListSection() {
 fun PreviewBottomNavigation() {
     BottomNavigation()
 }
-@Preview( showBackground = true)
+
+//@Preview( showBackground = true)
 @Composable
-fun PreviewAddNewLectureButton(){
+fun PreviewAddNewLectureButton() {
     AddNewLectureButton({ })
 }
+//dropdown
+//        TextField(
+//            readOnly = true,
+//            value = selectedOptionText,
+//            onValueChange = { },
+//            label = { Text("Label") },
+//            trailingIcon = {
+//                ExposedDropdownMenuDefaults.TrailingIcon(
+//                    expanded = expanded
+//                )
+//            },
+//            colors = ExposedDropdownMenuDefaults.textFieldColors()
+//        )

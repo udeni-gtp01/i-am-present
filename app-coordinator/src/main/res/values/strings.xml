@@ -38,4 +38,5 @@
     <string name="current_status">Current status</string>
     <string name="open_for_attendance">Open for attendance</string>
     <string name="close_for_attendance">Close for attendance</string>
+    <string name="all_description">See all lectures you coordinate</string>
 </resources>
