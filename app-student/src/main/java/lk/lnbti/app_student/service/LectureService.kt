@@ -1,7 +1,7 @@
 package lk.lnbti.iampresent.service
 
 import lk.lnbti.iampresent.constant.Constant
-import lk.lnbti.iampresent.data.Lecture
+import lk.lnbti.app_student.data.Lecture
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET

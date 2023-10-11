@@ -3,13 +3,12 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import lk.lnbti.iampresent.data.Lecture
 import lk.lnbti.iampresent.nav.LectureInfoDestination
 import lk.lnbti.iampresent.nav.LectureListDestination
 import lk.lnbti.iampresent.nav.NewLectureDestination
-import lk.lnbti.iampresent.ui.view.LectureInfoScreen
-import lk.lnbti.iampresent.ui.view.LectureListScreen
-import lk.lnbti.iampresent.ui.view.NewLectureScreen
+import lk.lnbti.app_student.ui.theme.view.LectureInfoScreen
+import lk.lnbti.app_student.ui.theme.view.LectureListScreen
+import lk.lnbti.app_student.ui.theme.view.NewLectureScreen
 
 @Composable
 fun AppNavHost(navController: NavHostController) {
@@ -23,8 +22,8 @@ fun AppNavHost(navController: NavHostController) {
             )
         }
         composable(route = NewLectureDestination.route) {
-            NewLectureScreen(onSaveButtonClicked = {},
-                onCancelButtonClicked = {}
+            NewLectureScreen(
+                onYesButtonClicked={navController.navigateSingleTopTo(LectureListDestination.route)}
             )
         }
         composable(

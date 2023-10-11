@@ -1,4 +1,4 @@
-package lk.lnbti.iampresent.ui.view
+package lk.lnbti.app_student.ui.theme.view
 
 import android.graphics.Bitmap
 import android.graphics.Color
@@ -6,15 +6,12 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -47,9 +44,9 @@ import com.google.zxing.qrcode.QRCodeWriter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import lk.lnbti.iampresent.R
-import lk.lnbti.iampresent.data.Lecture
+import lk.lnbti.app_student.data.Lecture
 import lk.lnbti.app_student.ui.theme.IAmPresentTheme
-import lk.lnbti.iampresent.view_model.LectureInfoViewModel
+import lk.lnbti.app_student.view_model.LectureInfoViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -61,7 +58,7 @@ fun LectureInfoScreen(
     onEditButtonClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    lectureInfoViewModel.findLecture(lectureId!!)
+   // lectureInfoViewModel.findLecture(lectureId!!)
     val lecture: Lecture? by lectureInfoViewModel.lecture.observeAsState(null)
     Scaffold(
         topBar = {
@@ -103,7 +100,7 @@ fun LectureInfoContent(
     onOpenButtonClicked: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LazyColumn(contentPadding = PaddingValues(16.dp)) {
+ /*   LazyColumn(contentPadding = PaddingValues(16.dp)) {
         item {
             labelHeader(text = R.string.batch)
             labelBody(text = lecture.batch)
@@ -157,7 +154,7 @@ fun LectureInfoContent(
                 ShowQR(qrText)
             }
         }
-    }
+    }*/
 }
 
 @Composable

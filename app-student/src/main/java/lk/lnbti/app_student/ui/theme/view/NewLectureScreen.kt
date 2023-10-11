@@ -1,25 +1,32 @@
-package lk.lnbti.iampresent.ui.view
+package lk.lnbti.app_student.ui.theme.view
 
-import android.Manifest
-import android.os.Bundle
 import android.util.Log
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -30,9 +37,10 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
+import com.google.accompanist.permissions.shouldShowRationale
 import com.google.common.util.concurrent.ListenableFuture
-import lk.lnbti.app_student.ui.theme.view.BarCodeAnalyser
 import lk.lnbti.iampresent.R
 import lk.lnbti.iampresent.constant.Constant
 import lk.lnbti.iampresent.view_model.NewLectureViewModel
@@ -43,10 +51,11 @@ import java.util.concurrent.Executors
 @Composable
 fun NewLectureScreen(
     newLectureViewModel: NewLectureViewModel = hiltViewModel(),
-    onSaveButtonClicked: (String) -> Unit,
-    onCancelButtonClicked: () -> Unit,
+    onYesButtonClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val qrData: String? by newLectureViewModel.qrData.observeAsState(null)
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -60,56 +69,92 @@ fun NewLectureScreen(
 
         //bottomBar = { BottomNavigation() }
     ) { padding ->
-//        Column(
-//            modifier
-//                .padding(padding)
-//        ) {
-//
-//            ScanQrContent(
-//                onPresentButtonClicked = {},
-//                modifier = modifier
-//            )
-//            Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
-//        }
-        Surface(modifier = Modifier.fillMaxSize()
-            .padding(padding),
+        Surface(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding),
             //color = MaterialTheme.colorScheme.background
-            ) {
+        ) {
             Column(
                 verticalArrangement = Arrangement.Bottom,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Spacer(modifier = Modifier.height(10.dp))
-                val cameraPermissionState = rememberPermissionState(permission = Constant.PERMISSION_CAMERA)
-                //PreviewViewComposable()
-                Button(
-                    onClick = {
-                        cameraPermissionState.launchPermissionRequest()
+                val cameraPermissionState =
+                    rememberPermissionState(permission = Constant.PERMISSION_CAMERA)
+
+                when {
+                    cameraPermissionState.status.isGranted -> {
+                        // Camera permission is granted, show the camera preview
+                        CameraPreview(
+                            qrData = qrData,
+                            isValidQr = { qrData -> newLectureViewModel.isValidQr(qrData) },
+                            onQrScanned = { newLectureViewModel.onQrDataChange() },
+                            onYesButtonClicked = {
+                                onYesButtonClicked()
+                                newLectureViewModel.saveAttendance()
+                            }
+                        )
                     }
-                ) {
-                    Text(text = "Camera Permission")
+
+                    cameraPermissionState.status.shouldShowRationale -> {
+                        // Permission is denied, but a rationale should be shown
+                        Text("Please grant camera permission in app settings.")
+                    }
+
+                    else -> {
+                        // Permission is denied, show the permission request button
+                        Button(
+                            onClick = {
+                                cameraPermissionState.launchPermissionRequest()
+                            }
+                        ) {
+                            Text(text = "Request Camera Permission")
+                        }
+                    }
                 }
-
                 Spacer(modifier = Modifier.height(10.dp))
-
-                CameraPreview()
-
-//                Text(
-//                    text = "Scan QR Code",
-//                    modifier = Modifier.padding(padding)
-//                )
-
             }
         }
     }
 }
-////////////////
+
 @Composable
-fun CameraPreview() {
+fun CameraPreview(
+    qrData: String?,
+    onQrScanned: () -> Unit,
+    isValidQr: (String) -> Boolean,
+    onYesButtonClicked: () -> Unit
+) {
+
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
+    var cameraProviderShare: ProcessCameraProvider? by remember { mutableStateOf(null) }
     var preview by remember { mutableStateOf<Preview?>(null) }
-    val barCodeVal = remember { mutableStateOf("") }
+    var showSuccessDialog by rememberSaveable { mutableStateOf(false) } // State variable to control the dialog
+    var showErrorDialog by rememberSaveable { mutableStateOf(false) } // State variable to control the dialog
+
+    if (showSuccessDialog) {
+        ConfirmationDialog(
+            qrData = qrData,
+            onConfirm = {
+                cameraProviderShare?.unbindAll()
+                onYesButtonClicked() // Save attendance
+                showSuccessDialog = false // Close the dialog
+
+            },
+            onDismiss = {
+                showSuccessDialog = false // Close the dialog
+            }
+        )
+    } else if (showErrorDialog) {
+        ErrorDialog(
+            onDismiss = {
+                showErrorDialog = false // Close the dialog
+            }
+        )
+    }
+
 
     AndroidView(
         factory = { AndroidViewContext ->
@@ -138,11 +183,18 @@ fun CameraPreview() {
                     it.setSurfaceProvider(previewView.surfaceProvider)
                 }
                 val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
+                cameraProviderShare=cameraProvider
                 val barcodeAnalyser = BarCodeAnalyser { barcodes ->
                     barcodes.forEach { barcode ->
                         barcode.rawValue?.let { barcodeValue ->
-                            barCodeVal.value = barcodeValue
-                            Toast.makeText(context, barcodeValue, Toast.LENGTH_SHORT).show()
+                            //read qr
+                            if (isValidQr(barcodeValue)) {
+                                onQrScanned()
+                                showSuccessDialog = true // Display the dialog when QR is detected
+                            } else {
+                                showErrorDialog = true
+                            }
+                            //Toast.makeText(context, barcodeValue, Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
@@ -168,187 +220,48 @@ fun CameraPreview() {
         }
     )
 }
-////////////
 
-//@androidx.annotation.OptIn(ExperimentalGetImage::class) @Composable
-//fun ScanQrContent(
-//
-//    modifier: Modifier = Modifier,
-//    onPresentButtonClicked: () -> Unit,
-//) {
-//    PreviewViewComposable()
-//}
-//
-//@Composable
-//fun NewOutlinedTextField(
-//    value: String,
-//    label: @Composable (() -> Unit)? = null,
-//    onValueChange: (String) -> Unit,
-//    singleLine: Boolean = true,
-//    isError: Boolean = false,
-//    keyboardType: KeyboardType = KeyboardType.Text,
-//    keyboardActions: KeyboardActions = KeyboardActions.Default,
-//    modifier: Modifier = Modifier,
-//) {
-//    OutlinedTextField(
-//        value = value,
-//        label = label,
-//        onValueChange = onValueChange,
-//        singleLine = singleLine,
-//        isError = isError,
-//        keyboardOptions = KeyboardOptions.Default.copy(
-//            capitalization = KeyboardCapitalization.Sentences,
-//            keyboardType = keyboardType
-//        ),
-//        keyboardActions = keyboardActions,
-//        modifier = modifier.fillMaxWidth()
-//    )
-//    Spacer(Modifier.height(dimensionResource(id = R.dimen.padding_between_field)))
-//}
-//
-//@Composable
-//fun NewDateField(
-//    value: String,
-//    label: String,
-//    onValueChange: (String) -> Unit,
-//) {
-//    val context = LocalContext.current
-//    val defaultDateFormat = SimpleDateFormat("yyyy-M-d")
-//    val newDateFormat = SimpleDateFormat("MMMM d, yyyy")
-//    val calendar = Calendar.getInstance()
-//    val year = calendar[Calendar.YEAR]
-//    val month = calendar[Calendar.MONTH]
-//    val dayOfMonth = calendar[Calendar.DAY_OF_MONTH]
-//    var selectedDate: String = ""
-//
-//    val datePicker = DatePickerDialog(
-//        context,
-//        { _: DatePicker, selectedYear: Int, selectedMonth: Int, SelectedDayOfMonth: Int ->
-//            val newDate = "$selectedYear-${selectedMonth + 1}-$SelectedDayOfMonth"
-//            val date = defaultDateFormat.parse(newDate)
-//            selectedDate = newDateFormat.format(date)
-//            onValueChange(selectedDate)
-//        },
-//        year,
-//        month,
-//        dayOfMonth
-//    )
-//    Row(
-//        horizontalArrangement = Arrangement.SpaceBetween,
-//        verticalAlignment = Alignment.CenterVertically,
-//        modifier = Modifier
-//            .fillMaxWidth()
-//    ) {
-//        OutlinedButton(
-//            onClick = { datePicker.show() }
-//        ) {
-//            Text(text = label)
-//        }
-//        Text(text = value)
-//    }
-//    Spacer(Modifier.height(dimensionResource(id = R.dimen.padding_between_field)))
-//}
-//
-//@Composable
-//fun NewTimeField(
-//    value: String,
-//    label: String,
-//    onValueChange: (String) -> Unit,
-//) {
-//    val context = LocalContext.current
-//    val defaultTimeFormat = SimpleDateFormat("H:m")
-//    val newTimeFormat = SimpleDateFormat("h:mm a")
-//    val calendar = Calendar.getInstance()
-//    val hour = calendar[Calendar.HOUR_OF_DAY]
-//    val minute = calendar[Calendar.MINUTE]
-//    var selectedTime: String = ""
-//
-//    val timePicker = TimePickerDialog(
-//        context,
-//        { _, selectedHour: Int, selectedMinute: Int ->
-//            val newTime = "$selectedHour:$selectedMinute"
-//            val time = defaultTimeFormat.parse(newTime)
-//            selectedTime = newTimeFormat.format(time)
-//            onValueChange(selectedTime)
-//        },
-//        hour,
-//        minute,
-//        true
-//    )
-//    Row(
-//        horizontalArrangement = Arrangement.SpaceBetween,
-//        verticalAlignment = Alignment.CenterVertically,
-//        modifier = Modifier
-//            .fillMaxWidth()
-//    ) {
-//        OutlinedButton(
-//            onClick = { timePicker.show() }
-//        ) {
-//            Text(text = label)
-//        }
-//        Text(text = value)
-//
-//    }
-//    Spacer(Modifier.height(dimensionResource(id = R.dimen.padding_between_field)))
-//}
-//
-//@Preview(showSystemUi = true, showBackground = true)
-//@Composable
-//fun PreviewNewLectureContent() {
-//
-//}
-//
-//
-//@androidx.annotation.OptIn(ExperimentalGetImage::class) @Composable
-//fun PreviewViewComposable() {
-//    AndroidView(
-//        { context ->
-//            val cameraExecutor = Executors.newSingleThreadExecutor()
-//            val previewView = PreviewView(context).also {
-//                it.scaleType = PreviewView.ScaleType.FILL_CENTER
-//            }
-//            val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
-//            cameraProviderFuture.addListener({
-//                val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
-//
-//                val preview = androidx.camera.core.Preview.Builder()
-//                    .build()
-//                    .also {
-//                        it.setSurfaceProvider(previewView.surfaceProvider)
-//                    }
-//
-//                val imageCapture = ImageCapture.Builder().build()
-//
-//                val imageAnalyzer = ImageAnalysis.Builder()
-//                    .build()
-//                    .also {
-//                        it.setAnalyzer(cameraExecutor, BarcodeAnalyser {
-//                            Toast.makeText(context, "Barcode found", Toast.LENGTH_SHORT).show()
-//                        })
-//                    }
-//
-//                val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
-//
-//                try {
-//                    // Unbind use cases before rebinding
-//                    cameraProvider.unbindAll()
-//
-//                    // Bind use cases to camera
-//                    cameraProvider.bindToLifecycle(
-//                        context as ComponentActivity,
-//                        cameraSelector,
-//                        preview,
-//                        imageCapture,
-//                        imageAnalyzer
-//                    )
-//
-//                } catch (exc: Exception) {
-//                    Log.e("DEBUG", "Use case binding failed", exc)
-//                }
-//            }, ContextCompat.getMainExecutor(context))
-//            previewView
-//        },
-//        modifier = Modifier
-//            .size(width = 250.dp, height = 250.dp)
-//    )
-//}
+@Composable
+fun ConfirmationDialog(
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit,
+    qrData: String?
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Are you present?") },
+        text = { Text("Do you want to check in to this lecture?\n${qrData}") },
+        confirmButton = {
+            Button(
+                onClick = onConfirm
+            ) {
+                Text("Yes")
+            }
+        },
+        dismissButton = {
+            Button(
+                onClick = onDismiss
+            ) {
+                Text("No")
+            }
+        }
+    )
+}
+
+@Composable
+fun ErrorDialog(
+    onDismiss: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Error") },
+        text = { Text("Please scan QR again") },
+        confirmButton = {
+            Button(
+                onClick = onDismiss
+            ) {
+                Text("OK")
+            }
+        }
+    )
+}

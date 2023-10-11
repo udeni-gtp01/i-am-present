@@ -1,9 +1,8 @@
 package lk.lnbti.iampresent.repo
 
-import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import lk.lnbti.iampresent.data.Lecture
+import lk.lnbti.app_student.data.Lecture
 import lk.lnbti.iampresent.service.LectureService
 import javax.inject.Inject
 

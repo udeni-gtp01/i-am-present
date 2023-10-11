@@ -1,8 +1,10 @@
-package lk.lnbti.iampresent.ui.view
+package lk.lnbti.app_student.ui.theme.view
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,6 +18,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -53,17 +56,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import lk.lnbti.app_student.data.Attendance
+import lk.lnbti.app_student.ui.theme.DefaultColorScheme
 import lk.lnbti.iampresent.R
-import lk.lnbti.iampresent.data.Lecture
-import lk.lnbti.app_student.ui.theme.IAmPresentTheme
 import lk.lnbti.iampresent.view_model.LectureListViewModel
 
 typealias OnLectureItemClicked = (String) -> Unit
@@ -75,7 +82,7 @@ fun LectureListScreen(
     lectureListViewModel: LectureListViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
-    val lectureList: List<Lecture> by lectureListViewModel.lectureList.observeAsState(emptyList())
+    val attendanceList: List<Attendance> by lectureListViewModel.lectureList.observeAsState(emptyList())
 
     Scaffold(
         topBar = {
@@ -97,7 +104,7 @@ fun LectureListScreen(
                 .padding(padding)
         ) {
             LectureListContent(
-                lectureList = lectureList,
+                lectureList = attendanceList,
                 onLectureItemClicked = onLectureItemClicked,
                 modifier = modifier
             )
@@ -197,16 +204,20 @@ fun OrderByBar(modifier: Modifier = Modifier) {
 fun AddNewLectureButton(onNewLectureClicked: () -> Unit) {
     FloatingActionButton(
         shape = MaterialTheme.shapes.large.copy(CornerSize(percent = 50)),
-        //contentColor = Color.White,
-        onClick = onNewLectureClicked
+        onClick = onNewLectureClicked,
+        contentColor = DefaultColorScheme.accent,
+        containerColor = DefaultColorScheme.secondary,
+        //modifier = Modifier.background(DefaultColorScheme.secondary)
     ) {
-        Icon(Icons.Default.Add, contentDescription = null)
+        val painter: Painter = painterResource(id = R.drawable.baseline_qr_code_scanner_24)
+
+        Icon(painter, contentDescription = null, tint = DefaultColorScheme.accent)
     }
 }
 
 @Composable
 fun LectureListContent(
-    lectureList: List<Lecture>,
+    lectureList: List<Attendance>,
     onLectureItemClicked: OnLectureItemClicked,
     modifier: Modifier = Modifier
 ) {
@@ -269,7 +280,7 @@ fun FilterItem(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LectureListSection(
-    lectureList: List<Lecture>,
+    lectureList: List<Attendance>,
     selectedFilter: Int,
     onLectureItemClicked: OnLectureItemClicked,
     modifier: Modifier = Modifier
@@ -281,30 +292,10 @@ fun LectureListSection(
         contentPadding = WindowInsets.navigationBars.asPaddingValues(),
         modifier = modifier
     ) {
-        var grouped: Map<String, List<Lecture>>? = null
+        var grouped: Map<String, List<Attendance>>? = null
         when (selectedFilter) {
             R.string.filter_by_date -> {
-                grouped = lectureList.groupBy { it.startDate }
-            }
-
-            R.string.filter_by_lecture_status -> {
-                grouped = lectureList.groupBy { it.lectureStatus.statusName }
-            }
-
-            R.string.filter_by_batch -> {
-                grouped = lectureList.groupBy { it.batch }
-            }
-
-            R.string.filter_by_subject -> {
-                grouped = lectureList.groupBy { it.subject }
-            }
-
-            R.string.filter_by_lecturer -> {
-                grouped = lectureList.groupBy { it.lecturer.name }
-            }
-
-            R.string.filter_by_location -> {
-                grouped = lectureList.groupBy { it.location }
+                grouped = lectureList.groupBy { it.lecture.subject }
             }
         }
 
@@ -339,7 +330,7 @@ fun LectureGroupHeader(header: String) {
 
 @Composable
 fun LectureListItem(
-    item: Lecture,
+    item: Attendance,
     onLectureItemClicked: OnLectureItemClicked,
 ) {
     Row(
@@ -347,29 +338,42 @@ fun LectureListItem(
         modifier = Modifier
             //.padding(15.dp)
             .clip(RoundedCornerShape(10.dp))
-            .background(color = Color.LightGray)
-            .padding(horizontal = 15.dp, vertical = 20.dp)
+            .border(
+                width = 2.dp,
+                brush = Brush.verticalGradient(
+                    colors = listOf(
+                        DefaultColorScheme.primary, // Top color
+                        DefaultColorScheme.secondary // Bottom color
+                    )
+                ),
+                shape = RoundedCornerShape(10.dp),
+            )
+            .border(color = DefaultColorScheme.primary, width = 2.dp)
+            .padding(horizontal = 7.dp, vertical = 10.dp)
             .fillMaxWidth()
-            .clickable { onLectureItemClicked(item.lectureId.toString())}
+            .clickable {}
     ) {
-        Column {
-            item.subject?.let {
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+        ) {
+            Text(
+                text = item.lecture.batch,
+                style = MaterialTheme.typography.titleLarge,
+                color = DefaultColorScheme.primary
+            )
+            item.lecture.subject?.let {
                 Text(
                     text = it,
-                    style = MaterialTheme.typography.titleLarge
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = DefaultColorScheme.primary
                 )
             }
             Text(
-                text = item.batch,
+                text =item.lecture.location ,
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.primary
+                color = DefaultColorScheme.primary
             )
-            Text(
-                text = "${item.startDate.toString()} ${item.startTime.toString()}",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.primary
-            )
-
         }
     }
 }
@@ -409,28 +413,7 @@ public fun BottomNavigation(modifier: Modifier = Modifier) {
     }
 }
 
-//@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun PreviewLectureListSection() {
 
-    val jsonString =
-        "[{\"lectureid\":1,\"venue\":\"online\",\"startdate\":\"2023-12-12\",\"starttime\":\"08:00:00\",\"enddate\":\"2023-12-12\",\"endtime\":\"12:00:00\",\"semester\":2,\"subject\":\"kotlin\",\"batch\":\"gtp01\",\"organizerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturestatusid\":{\"lecturestatusid\":1,\"statusname\":\"new\"}}]"
-// Create a Gson instance
-    val gson = Gson()
-
-// Define a TypeToken for the list of Lecture objects
-    val lectureListType = object : TypeToken<List<Lecture>>() {}.type
-
-// Parse the JSON string into a list of Lecture objects
-    val lectureList: List<Lecture> = gson.fromJson(jsonString, lectureListType)
-
-    IAmPresentTheme {
-        LectureListContent(
-            lectureList = lectureList,
-            onLectureItemClicked = { },
-        )
-    }
-}
 
 //@Preview
 @Composable

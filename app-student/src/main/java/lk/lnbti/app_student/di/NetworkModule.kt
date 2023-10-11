@@ -4,6 +4,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import lk.lnbti.app_student.repo.AttendanceRepo
+import lk.lnbti.app_student.service.AttendanceService
 import lk.lnbti.iampresent.constant.Constant
 import lk.lnbti.iampresent.repo.LectureRepo
 import lk.lnbti.iampresent.service.LectureService
@@ -77,6 +79,18 @@ object NetworkModule {
     @Provides
     fun provideLectureListRepo(lectureListService: LectureService): LectureRepo {
         return LectureRepo(lectureListService)
+    }
+
+    @Singleton
+    @Provides
+    fun provideAttendanceService(retrofit: Retrofit): AttendanceService {
+        return retrofit.create(AttendanceService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun provideAttendanceRepo(attendanceService: AttendanceService): AttendanceRepo {
+        return AttendanceRepo(attendanceService)
     }
     @Singleton
     @Provides
