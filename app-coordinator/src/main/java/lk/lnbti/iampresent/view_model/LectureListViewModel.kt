@@ -22,7 +22,7 @@ class LectureListViewModel @Inject constructor(
         findLectureList()
     }
 
-    fun findLectureList() {
+    private fun findLectureList() {
         viewModelScope.launch {
             lectureListUiState.loadLectureList(lectureRepo.findLectureList())
         }

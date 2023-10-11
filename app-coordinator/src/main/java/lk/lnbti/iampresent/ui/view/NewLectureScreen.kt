@@ -166,16 +166,6 @@ fun NewLectureContent(
     onEndTimeChange: (String) -> Unit,
     onLecturerNameChange: (String) -> Unit,
     onLecturerEmailChange: (String) -> Unit,
-
-//
-//    subject: String,
-//    lectureTopic: String,
-//    startDate: String,
-//
-//    endDate: String,
-//    endTime: String,
-//    venue: String,
-//    lecturerEmail: String,
     modifier: Modifier = Modifier,
     onSaveButtonClicked: () -> Unit,
 ) {

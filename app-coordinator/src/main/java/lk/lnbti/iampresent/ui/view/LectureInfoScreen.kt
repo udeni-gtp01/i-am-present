@@ -2,6 +2,8 @@ package lk.lnbti.iampresent.ui.view
 
 import android.graphics.Bitmap
 import android.graphics.Color
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -35,6 +37,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -44,13 +47,20 @@ import com.google.zxing.BarcodeFormat
 import com.google.zxing.EncodeHintType
 import com.google.zxing.WriterException
 import com.google.zxing.qrcode.QRCodeWriter
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import lk.lnbti.iampresent.R
 import lk.lnbti.iampresent.data.Lecture
 import lk.lnbti.iampresent.ui.theme.IAmPresentTheme
 import lk.lnbti.iampresent.view_model.LectureInfoViewModel
+import java.nio.charset.Charset
+import java.security.MessageDigest
+import java.util.Base64
+import javax.crypto.Cipher
+import javax.crypto.spec.SecretKeySpec
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LectureInfoScreen(
@@ -63,6 +73,7 @@ fun LectureInfoScreen(
 ) {
     lectureInfoViewModel.findLecture(lectureId!!)
     val lecture: Lecture? by lectureInfoViewModel.lecture.observeAsState(null)
+    val qrText: String? by lectureInfoViewModel.qrText.observeAsState(null)
     Scaffold(
         topBar = {
             TopAppBar(
@@ -89,7 +100,7 @@ fun LectureInfoScreen(
                     onCloseButtonClicked = { lectureId ->
                         lectureInfoViewModel.closeForAttendance(lectureId)
                     },
-                    qrText = lectureInfoViewModel.qrText.toString()
+                    qrText = qrText
                 )
             }
             //SearchBar(Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_main_content)))
@@ -102,7 +113,7 @@ fun LectureInfoScreen(
 @Composable
 fun LectureInfoContent(
     lecture: Lecture,
-    qrText: String,
+    qrText: String?,
     onOpenButtonClicked: (Int) -> Unit,
     onCloseButtonClicked: (Int) -> Unit,
     modifier: Modifier = Modifier
@@ -144,11 +155,15 @@ fun LectureInfoContent(
             labelHeader(text = R.string.current_status)
             labelBody(text = lecture.lectureStatus.statusName)
         }
-        if (lecture.lectureStatus.lectureStatusId !=2) {
+        if (lecture.lectureStatus.lectureStatusId != 2) {
             item {
                 Button(
                     modifier = Modifier.fillMaxWidth(),
-                    onClick = { onOpenButtonClicked(lecture.lectureId) }
+                    onClick = {
+                        CoroutineScope(Dispatchers.Default).launch {
+                            onOpenButtonClicked(lecture.lectureId)
+                        }
+                    }
                 ) {
                     Text(
                         text = stringResource(R.string.open_for_attendance),
@@ -159,15 +174,21 @@ fun LectureInfoContent(
         }
         if (lecture.lectureStatus.lectureStatusId == 2) {
             item {
-                Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
-                ShowQR(qrText)
-                Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
+                qrText?.let {
+                    Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
+                    ShowQR(qrText)
+                    Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
+                }
             }
 
             item {
                 Button(
                     modifier = Modifier.fillMaxWidth(),
-                    onClick = { onCloseButtonClicked(lecture.lectureId) }
+                    onClick = {
+                        CoroutineScope(Dispatchers.Default).launch {
+                            onCloseButtonClicked(lecture.lectureId)
+                        }
+                    }
                 ) {
                     Text(
                         text = stringResource(R.string.close_for_attendance),
@@ -206,7 +227,7 @@ fun labelBody(
 }
 
 @Composable
-fun ShowQR(qrString: String = "") {
+fun ShowQR(qrString: String) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -214,12 +235,12 @@ fun ShowQR(qrString: String = "") {
     ) {
         Image(
             painter = rememberQrBitmapPainter(qrString),
-            contentDescription = "DEV Communit Code",
+            contentDescription = "Scan me",
             contentScale = ContentScale.FillBounds,
             modifier = Modifier.size(135.dp),
         )
+        Text(text = qrString)
     }
-
 }
 
 @Composable
@@ -267,7 +288,6 @@ fun rememberQrBitmapPainter(
                 for (y in 0 until matrixHeight) {
                     val shouldColorPixel = bitmapMatrix?.get(x, y) ?: false
                     val pixelColor = if (shouldColorPixel) Color.BLACK else Color.WHITE
-
                     newBitmap.setPixel(x, y, pixelColor)
                 }
             }
@@ -280,7 +300,6 @@ fun rememberQrBitmapPainter(
             sizePx, sizePx,
             Bitmap.Config.ARGB_8888,
         ).apply { eraseColor(Color.TRANSPARENT) }
-
         BitmapPainter(currentBitmap.asImageBitmap())
     }
 }
@@ -300,4 +319,72 @@ fun PreviewLectureInfoContent() {
     IAmPresentTheme {
         //LectureInfoContent(lecture = lecture)
     }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview(showSystemUi = true, showBackground = true)
+@Composable
+fun previewTime() {
+    var dateNow by remember {
+        mutableStateOf("")
+    }
+    var b by remember {
+        mutableStateOf("")
+    }
+    val qrKey = "BYT765#76GHFaunY"
+//    Text(text = dateNow.toString() + "&" + b.toString())
+    val v = encrypt("abc",qrKey)
+    Column {
+        Text(text = v)
+        Text(text = decrypt(v,qrKey))
+    }
+
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+private fun encrypt(stringToEncrypt: String, k: String): String {
+    var key= SecretKeySpec(k.toByteArray(), "AES")
+    val cipher = Cipher.getInstance("AES")
+    cipher.init(Cipher.ENCRYPT_MODE, key)
+    var t= cipher.doFinal(stringToEncrypt.toByteArray(charset = Charsets.UTF_8))
+    var s=Base64.getEncoder().encodeToString(t)
+    return s
+
+
+//    val plainText = stringToEncrypt.toByteArray(Charsets.UTF_8)
+//    val key = generateKey(qrKey)
+//    val cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING")
+//    cipher.init(Cipher.ENCRYPT_MODE, key)
+//    var r:ByteArray=cipher.iv
+//    var t= cipher.doFinal(plainText)
+//    return t.toString()
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+private fun decrypt(dataToDecrypt: String, k: String): String {
+    var key= SecretKeySpec(k.toByteArray(), "AES")
+    val cipher = Cipher.getInstance("AES")
+    cipher.init(Cipher.DECRYPT_MODE, key)
+    var s=Base64.getDecoder().decode(dataToDecrypt)
+    return String(cipher.doFinal(s), charset = Charsets.UTF_8)
+
+//    val qrKey = "BYT765#76GHFaunY"
+//    val cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING")
+//    val key = generateKey(qrKey)
+////    cipher.init(Cipher.DECRYPT_MODE, key, IvParameterSpec(r))
+//    cipher.init(Cipher.DECRYPT_MODE, key)
+//    val cipherText = cipher.doFinal(dataToDecrypt?.toByteArray())
+//    val sb = StringBuilder()
+//    for (char in cipherText) {
+//        sb.append(char.toInt().toChar())
+//    }
+//    return sb.toString()
+}
+
+private fun generateKey(key: String): SecretKeySpec {
+    val digest: MessageDigest = MessageDigest.getInstance("SHA-256")
+    val bytes = key.toByteArray()
+    digest.update(bytes, 0, bytes.size)
+    val key = digest.digest()
+    return SecretKeySpec(key, "AES")
 }

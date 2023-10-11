@@ -10,7 +10,6 @@ import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface LectureService {
-    //@Headers(Constant.HEADER_1)
     @GET(Constant.ENDPOINT_LECTURE_ALL)
     suspend fun findLectureList(): Response<List<Lecture>>
 
