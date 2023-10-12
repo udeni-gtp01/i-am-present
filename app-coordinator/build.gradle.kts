@@ -4,6 +4,8 @@ plugins {
     id("dagger.hilt.android.plugin")
     id("kotlin-parcelize")
     id("com.google.devtools.ksp")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 kotlin {
     jvmToolchain(17)
@@ -66,8 +68,8 @@ dependencies {
     implementation("androidx.compose.runtime:runtime-livedata")
     //navigation
     implementation("androidx.navigation:navigation-compose:2.7.2")
-
     implementation("com.google.dagger:hilt-android:2.48")
+
     ksp("com.google.dagger:hilt-android-compiler:2.48")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
@@ -82,6 +84,14 @@ dependencies {
 
     //QR code
     implementation("com.google.zxing:core:3.5.1")
+
+    // Import the Firebase BoM
+    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-crashlytics-ktx")
+
+    // Add the dependencies for any other desired Firebase products
+    // https://firebase.google.com/docs/android/setup#available-libraries
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
