@@ -1,44 +1,55 @@
 package lk.lnbti.iampresent.repo
 
-import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import lk.lnbti.iampresent.data.Lecture
-import lk.lnbti.iampresent.service.LectureService
+import lk.lnbti.iampresent.data.Result
+import lk.lnbti.iampresent.dao.LectureDao
+import java.io.IOException
 import javax.inject.Inject
 
-class LectureRepo @Inject constructor(private val lectureService: LectureService) {
-    suspend fun findLectureList(): List<Lecture> {
+class LectureRepo @Inject constructor(private val lectureDao: LectureDao) {
+    suspend fun findLectureList(): Result<List<Lecture>> {
         return withContext(Dispatchers.IO) {
-            return@withContext getLectureList()
-        }
-    }
-
-    private suspend fun getLectureList(): List<Lecture> {
-        var lectureList: List<Lecture> = emptyList()
-        val response = lectureService.findLectureList()
-        if (response.isSuccessful) {
-            response.body()?.let {
-                lectureList = response.body()!!
+            return@withContext try {
+                val response = lectureDao.findLectureList()
+                if (response.isSuccessful) {
+                    Result.Success(response.body() ?: emptyList())
+                } else {
+                    Result.Error("Failed to fetch lecture list")
+                }
+            } catch (e: IOException) {
+                Result.Error("Network error: ${e.message}")
             }
         }
-        return lectureList
     }
-
-    suspend fun saveLecture(lecture: Lecture): Lecture? {
+    suspend fun findTodaysLectureList(): Result<List<Lecture>> {
         return withContext(Dispatchers.IO) {
-            return@withContext setLecture(lecture = lecture)
+            return@withContext try {
+                val response = lectureDao.findTodaysLectureList()
+                if (response.isSuccessful) {
+                    Result.Success(response.body() ?: emptyList())
+                } else {
+                    Result.Error("Failed to fetch lecture list")
+                }
+            } catch (e: IOException) {
+                Result.Error("Network error: ${e.message}")
+            }
         }
     }
-
-    private suspend fun setLecture(lecture: Lecture): Lecture? {
-
-        val response = lectureService.saveLecture(lecture)
-        var lecturenew: Lecture? = null
-        if (response!!.isSuccessful) {
-            lecturenew = response.body()
+    suspend fun saveLecture(lecture: Lecture): Result<Lecture?> {
+        return withContext(Dispatchers.IO) {
+            return@withContext try {
+                val response = lectureDao.saveLecture(lecture)
+                if (response.isSuccessful) {
+                    Result.Success(response.body()?:null)
+                } else {
+                    Result.Error("Failed to save lecture")
+                }
+            } catch (e: IOException) {
+                Result.Error("Network error: ${e.message}")
+            }
         }
-        return lecturenew
     }
 
     suspend fun findLectureById(lectureId: String): Lecture {
@@ -48,7 +59,7 @@ class LectureRepo @Inject constructor(private val lectureService: LectureService
     }
 
     private suspend fun getLecture(lectureId: String): Lecture {
-        val response = lectureService.findLectureById(lectureId.toInt())
+        val response = lectureDao.findLectureById(lectureId.toInt())
         lateinit var lecture: Lecture
         if (response.isSuccessful) {
             lecture = response.body()!!
@@ -63,7 +74,7 @@ class LectureRepo @Inject constructor(private val lectureService: LectureService
     }
 
     private suspend fun updateLectureStatusToOpen(lectureId: Int): Lecture? {
-        val response = lectureService.openLectureForAttendance(lectureId)
+        val response = lectureDao.openLectureForAttendance(lectureId)
         lateinit var lecture: Lecture
         if (response.isSuccessful) {
             lecture = response.body()!!
@@ -78,7 +89,7 @@ class LectureRepo @Inject constructor(private val lectureService: LectureService
     }
 
     private suspend fun updateLectureStatusToClose(lectureId: Int): Lecture? {
-        val response = lectureService.closeLectureForAttendance(lectureId)
+        val response = lectureDao.closeLectureForAttendance(lectureId)
         lateinit var lecture: Lecture
         if (response.isSuccessful) {
             lecture = response.body()!!

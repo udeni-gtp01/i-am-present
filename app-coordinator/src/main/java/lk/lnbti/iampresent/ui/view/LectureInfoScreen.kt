@@ -54,7 +54,6 @@ import lk.lnbti.iampresent.R
 import lk.lnbti.iampresent.data.Lecture
 import lk.lnbti.iampresent.ui.theme.IAmPresentTheme
 import lk.lnbti.iampresent.view_model.LectureInfoViewModel
-import java.nio.charset.Charset
 import java.security.MessageDigest
 import java.util.Base64
 import javax.crypto.Cipher
@@ -69,7 +68,10 @@ fun LectureInfoScreen(
     onCancelButtonClicked: () -> Unit,
     onDeleteButtonClicked: () -> Unit,
     onEditButtonClicked: () -> Unit,
-    modifier: Modifier = Modifier
+    onTodayNavButtonClicked: () -> Unit,
+    onAllNavButtonClicked: () -> Unit,
+    modifier: Modifier = Modifier,
+    onReportsNavButtonClicked: () -> Unit
 ) {
     lectureInfoViewModel.findLecture(lectureId!!)
     val lecture: Lecture? by lectureInfoViewModel.lecture.observeAsState(null)
@@ -85,7 +87,11 @@ fun LectureInfoScreen(
             )
         },
 
-        bottomBar = { BottomNavigation() }
+        bottomBar = { BottomNavigation(
+            onTodayNavButtonClicked = onTodayNavButtonClicked,
+            onAllNavButtonClicked = onAllNavButtonClicked,
+            onReportsNavButtonClicked = onReportsNavButtonClicked
+        ) }
     ) { padding ->
         Column(
             modifier

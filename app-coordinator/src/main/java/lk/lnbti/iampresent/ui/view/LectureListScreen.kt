@@ -1,5 +1,7 @@
 package lk.lnbti.iampresent.ui.view
 
+import ErrorScreen
+import LoadingScreen
 import androidx.annotation.StringRes
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -26,10 +28,7 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -37,13 +36,10 @@ import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -62,7 +58,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -71,55 +66,64 @@ import lk.lnbti.iampresent.data.Lecture
 import lk.lnbti.iampresent.ui.theme.DefaultColorScheme
 import lk.lnbti.iampresent.ui.theme.IAmPresentTheme
 import lk.lnbti.iampresent.view_model.LectureListViewModel
+import lk.lnbti.iampresent.data.Result
 
 
 typealias OnLectureItemClicked = (String) -> Unit
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LectureListScreen(
     onLectureItemClicked: OnLectureItemClicked,
     onNewLectureClicked: () -> Unit,
     lectureListViewModel: LectureListViewModel = hiltViewModel(),
-    modifier: Modifier = Modifier
+    onTodayNavButtonClicked: () -> Unit,
+    onReportsNavButtonClicked: () -> Unit,
+    onAllNavButtonClicked: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val lectureList: List<Lecture> by lectureListViewModel.lectureList.observeAsState(emptyList())
+    val lectureListResult by lectureListViewModel.lectureListResult.observeAsState(Result.Loading)
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Column {
-                        Text(
-                            stringResource(id = R.string.all),
-                            color = DefaultColorScheme.primary,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 24.sp
-                        )
-                        Text(
-                            stringResource(id = R.string.all_description),
-                            color = DefaultColorScheme.primary,
-                            fontSize = 20.sp
-                        )
-                    }
-                },
-                Modifier.padding(vertical = 20.dp)
-            )
+            TopAppBar(title = R.string.all, description = R.string.all_description)
         },
         floatingActionButton = {
             AddNewLectureButton(onNewLectureClicked = onNewLectureClicked)
         },
-        bottomBar = { BottomNavigation() }
+        bottomBar = { BottomNavigation(
+            onTodayNavButtonClicked = onTodayNavButtonClicked,
+            onReportsNavButtonClicked=onReportsNavButtonClicked,
+            onAllNavButtonClicked = onAllNavButtonClicked
+        ) }
     ) { padding ->
         Column(
             modifier
                 .padding(padding)
         ) {
-            LectureListContent(
-                lectureList = lectureList,
-                onLectureItemClicked = onLectureItemClicked,
-                modifier = modifier
-            )
+            when (lectureListResult) {
+                is Result.Loading -> {
+                    // Handle loading state
+                    // You can show a loading indicator or a message here
+                    LoadingScreen()
+                    
+                }
+                is Result.Success<*> -> {
+                    // Handle success state
+                    LectureListContent(
+                        lectureList = lectureList,
+                        onLectureItemClicked = onLectureItemClicked,
+                        modifier = modifier
+                    )
+                }
+                is Result.Error -> {
+                    // Handle error state
+                    val errorMessage = (lectureListResult as Result.Error).message
+                    ErrorScreen(
+                        errorMessage = errorMessage,
+                        onRetry ={lectureListViewModel.findLectureList()})
+                }
+            }
             Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
         }
     }
@@ -214,7 +218,7 @@ fun AddNewLectureButton(onNewLectureClicked: () -> Unit) {
 }
 
 @Composable
-fun LectureListContent(
+private fun LectureListContent(
     lectureList: List<Lecture>,
     onLectureItemClicked: OnLectureItemClicked,
     modifier: Modifier = Modifier
@@ -233,7 +237,8 @@ fun LectureListContent(
         LazyRow(
             horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_between_list_item)),
             contentPadding = PaddingValues(horizontal = 16.dp),
-            modifier = modifier.background(DefaultColorScheme.accent)
+            modifier = modifier
+                .background(DefaultColorScheme.accent)
                 .padding(vertical = 16.dp)
         ) {
             items(criteriaList) { item ->
@@ -308,27 +313,33 @@ fun LectureListSection(
         var grouped: Map<String, List<Lecture>>? = null
         when (selectedFilter) {
             R.string.filter_by_date -> {
-                grouped = lectureList.groupBy { it.startDate }
+                val sortedLectureList = lectureList.sortedByDescending { it.startDate }
+                grouped = sortedLectureList.groupBy { it.startDate }
             }
 
             R.string.filter_by_lecture_status -> {
-                grouped = lectureList.groupBy { it.lectureStatus.statusName }
+                val sortedLectureList = lectureList.sortedBy { it.lectureStatus.statusName }
+                grouped = sortedLectureList.groupBy { it.lectureStatus.statusName }
             }
 
             R.string.filter_by_batch -> {
-                grouped = lectureList.groupBy { it.batch }
+                val sortedLectureList = lectureList.sortedBy { it.batch }
+                grouped = sortedLectureList.groupBy { it.batch }
             }
 
             R.string.filter_by_subject -> {
-                grouped = lectureList.groupBy { it.subject }
+                val sortedLectureList = lectureList.sortedBy { it.subject }
+                grouped = sortedLectureList.groupBy { it.subject }
             }
 
             R.string.filter_by_lecturer -> {
-                grouped = lectureList.groupBy { it.lecturer.name }
+                val sortedLectureList = lectureList.sortedBy { it.lecturer.name }
+                grouped = sortedLectureList.groupBy { it.lecturer.name }
             }
 
             R.string.filter_by_location -> {
-                grouped = lectureList.groupBy { it.location }
+                val sortedLectureList = lectureList.sortedBy { it.location }
+                grouped = sortedLectureList.groupBy { it.location }
             }
         }
 
@@ -400,13 +411,11 @@ fun LectureListItem(
                 style = MaterialTheme.typography.titleLarge,
                 color = DefaultColorScheme.primary
             )
-            item.subject?.let {
-                Text(
-                    text = it,
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = DefaultColorScheme.primary
-                )
-            }
+            Text(
+                text = item.subject,
+                style = MaterialTheme.typography.bodyLarge,
+                color = DefaultColorScheme.primary
+            )
 
             Text(
                 text = "${item.startDate.toString()} @ ${item.startTime.toString()}",
@@ -422,40 +431,7 @@ fun LectureListItem(
     }
 }
 
-@Composable
-public fun BottomNavigation(modifier: Modifier = Modifier) {
-    NavigationBar(
-        containerColor = MaterialTheme.colorScheme.surfaceVariant,
-        modifier = modifier
-    ) {
-        NavigationBarItem(
-            icon = {
-                Icon(
-                    imageVector = Icons.Default.Star,
-                    contentDescription = null
-                )
-            },
-            label = {
-                Text(stringResource(R.string.today))
-            },
-            selected = false,
-            onClick = {}
-        )
-        NavigationBarItem(
-            icon = {
-                Icon(
-                    imageVector = Icons.Default.List,
-                    contentDescription = null
-                )
-            },
-            label = {
-                Text(stringResource(R.string.all))
-            },
-            selected = true,
-            onClick = {}
-        )
-    }
-}
+
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
@@ -478,12 +454,6 @@ fun PreviewLectureListSection() {
             onLectureItemClicked = { },
         )
     }
-}
-
-//@Preview
-@Composable
-fun PreviewBottomNavigation() {
-    BottomNavigation()
 }
 
 //@Preview( showBackground = true)

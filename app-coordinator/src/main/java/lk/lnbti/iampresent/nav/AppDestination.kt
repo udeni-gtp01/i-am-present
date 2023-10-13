@@ -11,6 +11,9 @@ interface AppDestination {
 object LectureListDestination : AppDestination{
     override val route="lecture_list"
 }
+object TodaysLectureListDestination : AppDestination{
+    override val route="lecture_list_today"
+}
 object LectureInfoDestination : AppDestination {
     override val route = "lecture_info"
     const val lectureIdArg = "lecture_id"
@@ -21,5 +24,8 @@ object LectureInfoDestination : AppDestination {
 }
 object NewLectureDestination : AppDestination {
     override val route = "new_lecture"
+}
+object ReportsDestination : AppDestination {
+    override val route = "reports"
 }
 

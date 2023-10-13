@@ -5,10 +5,14 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import lk.lnbti.iampresent.constant.Constant
+import lk.lnbti.iampresent.dao.AttendanceDao
 import lk.lnbti.iampresent.repo.LectureRepo
-import lk.lnbti.iampresent.service.LectureService
+import lk.lnbti.iampresent.dao.LectureDao
+import lk.lnbti.iampresent.repo.AttendanceRepo
 import lk.lnbti.iampresent.ui_state.LectureInfoUiState
 import lk.lnbti.iampresent.ui_state.LectureListUiState
+import lk.lnbti.iampresent.view_model.AttendanceListUiState
+import lk.lnbti.iampresent.view_model.TodaysLectureListUiState
 import okhttp3.OkHttpClient
 import retrofit2.Converter
 import retrofit2.Retrofit
@@ -69,19 +73,39 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideLectureListService(retrofit: Retrofit): LectureService {
-        return retrofit.create(LectureService::class.java)
+    fun provideLectureDao(retrofit: Retrofit): LectureDao {
+        return retrofit.create(LectureDao::class.java)
+    }
+    @Singleton
+    @Provides
+    fun provideAttendanceDao(retrofit: Retrofit): AttendanceDao {
+        return retrofit.create(AttendanceDao::class.java)
+    }
+    @Singleton
+    @Provides
+    fun provideLectureRepo(lectureDao: LectureDao): LectureRepo {
+        return LectureRepo(lectureDao)
     }
 
     @Singleton
     @Provides
-    fun provideLectureListRepo(lectureListService: LectureService): LectureRepo {
-        return LectureRepo(lectureListService)
+    fun provideAttendanceRepo(attendanceDao: AttendanceDao): AttendanceRepo {
+        return AttendanceRepo(attendanceDao)
     }
     @Singleton
     @Provides
     fun provideLectureListUiState(): LectureListUiState {
         return LectureListUiState()
+    }
+    @Singleton
+    @Provides
+    fun provideAttendanceListUiState(): AttendanceListUiState {
+        return AttendanceListUiState()
+    }
+    @Singleton
+    @Provides
+    fun provideTodaysLectureListUiState(): TodaysLectureListUiState {
+        return TodaysLectureListUiState()
     }
     @Singleton
     @Provides

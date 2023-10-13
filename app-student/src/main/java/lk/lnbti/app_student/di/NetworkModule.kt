@@ -8,7 +8,7 @@ import lk.lnbti.app_student.repo.AttendanceRepo
 import lk.lnbti.app_student.service.AttendanceService
 import lk.lnbti.iampresent.constant.Constant
 import lk.lnbti.iampresent.repo.LectureRepo
-import lk.lnbti.iampresent.service.LectureService
+import lk.lnbti.iampresent.dao.LectureService
 import lk.lnbti.iampresent.ui_state.LectureInfoUiState
 import lk.lnbti.iampresent.ui_state.LectureListUiState
 import okhttp3.OkHttpClient

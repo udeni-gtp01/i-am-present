@@ -9,8 +9,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import lk.lnbti.iampresent.data.Lecture
 import lk.lnbti.iampresent.data.LectureStatus
+import lk.lnbti.iampresent.data.Result
 import lk.lnbti.iampresent.data.User
 import lk.lnbti.iampresent.repo.LectureRepo
+import lk.lnbti.iampresent.ui_state.LectureInfoUiState
 import lk.lnbti.iampresent.ui_state.LectureListUiState
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -20,6 +22,8 @@ import javax.inject.Inject
 @HiltViewModel
 class NewLectureViewModel @Inject constructor(
     private val lectureListUiState: LectureListUiState,
+    private val todaysLectureListUiState: TodaysLectureListUiState,
+    private val lectureInfoUiState: LectureInfoUiState,
     private val lectureRepo: LectureRepo,
 ) : ViewModel() {
 
@@ -82,6 +86,13 @@ class NewLectureViewModel @Inject constructor(
 
     private val _isLecturerEmailError: MutableLiveData<Boolean> = MutableLiveData(false)
     val isLecturerEmailError: LiveData<Boolean> = _isLecturerEmailError
+
+    private val _lectureSaveResult = MutableLiveData<Result<Lecture?>>()
+    val lectureSaveResult: LiveData<Result<Lecture?>> = _lectureSaveResult
+
+    private val _savedLectureId = MutableLiveData("0")
+    val savedLectureId: LiveData<String> = _savedLectureId
+
     fun onBatchChange(newBatch: String) {
         _batch.value = newBatch
         checkBatchValidation()
@@ -199,7 +210,8 @@ class NewLectureViewModel @Inject constructor(
                 _isLecturerEmailError.value == false
     }
 
-    fun saveLecture(): String {
+    fun saveLecture() {
+        _lectureSaveResult.value = Result.Loading
         val newLecture: Lecture = Lecture(
             batch = _batch.value.toString(),
             semester = _semester.value.toString().toInt(),
@@ -218,20 +230,35 @@ class NewLectureViewModel @Inject constructor(
             ),
             lectureStatus = LectureStatus(statusName = "")
         )
-        val respose = ""
-        viewModelScope.launch {
-            Log.d("oyasumi", "Subject says: " + newLecture.subject)
 
-            val respose = lectureRepo.saveLecture(lecture = newLecture)
-            findLectureList()
-            Log.d("oyasumi", "Saved lecture says: " + respose)
+        viewModelScope.launch {
+            val result: Result<Lecture?> = lectureRepo.saveLecture(lecture = newLecture)
+            _lectureSaveResult.value = result
+            when (result) {
+                is Result.Success -> {
+                    _savedLectureId.value=result.data?.lectureId.toString()
+                    lectureInfoUiState.loadLecture((result as Result.Success<Lecture>).data)
+                    reloadLectureList()
+                }
+                else -> {reloadLectureList()}
+            }
+
         }
-        return respose
     }
 
-    fun findLectureList() {
+    private fun reloadLectureList() {
         viewModelScope.launch {
-            lectureListUiState.loadLectureList(lectureRepo.findLectureList())
+            val result: Result<List<Lecture>> = lectureRepo.findLectureList()
+            if (result is Result.Success) {
+                lectureListUiState.loadLectureList((result).data)
+            }
+        }
+
+        viewModelScope.launch {
+            val result: Result<List<Lecture>> = lectureRepo.findTodaysLectureList()
+            if (result is Result.Success) {
+                todaysLectureListUiState.loadLectureList((result).data)
+            }
         }
     }
 
@@ -249,5 +276,8 @@ class NewLectureViewModel @Inject constructor(
 
         val selectedTime: Date = selectedTimeFormat.parse(myTime)
         return sqlTimeFormat.format(selectedTime)
+    }
+    fun resetLectureSaveResult(){
+        _lectureSaveResult.value=null
     }
 }

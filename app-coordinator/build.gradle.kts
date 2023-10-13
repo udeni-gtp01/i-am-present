@@ -17,7 +17,7 @@ android {
 
     defaultConfig {
         applicationId = "lk.lnbti.iampresent"
-        minSdk = 28
+        minSdk = 27
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -90,8 +90,11 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.firebase:firebase-crashlytics-ktx")
 
-    // Add the dependencies for any other desired Firebase products
-    // https://firebase.google.com/docs/android/setup#available-libraries
+    //export reports
+    implementation("org.apache.poi:poi:5.2.4")
+    implementation("org.apache.poi:poi-ooxml:5.2.4")
+//permission
+    implementation ("com.google.accompanist:accompanist-permissions:0.32.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
