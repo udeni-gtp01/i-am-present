@@ -98,7 +98,7 @@ fun NavHostController.navigateSingleTopTo(route: String) =
         popUpTo(
             this@navigateSingleTopTo.graph.findStartDestination().id
         ) {
-            saveState = true
+            saveState = false
         }
         // Avoid multiple copies of the same destination when
         // reselecting the same item

@@ -15,7 +15,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import lk.lnbti.app_student.data.Lecture
-import lk.lnbti.iampresent.repo.LectureRepo
+import lk.lnbti.app_student.repo.LectureRepo
 import lk.lnbti.iampresent.ui_state.LectureInfoUiState
 import java.util.Calendar
 import javax.crypto.Cipher

@@ -52,13 +52,31 @@ class LectureRepo @Inject constructor(private val lectureDao: LectureDao) {
         }
     }
 
-    suspend fun findLectureById(lectureId: String): Lecture {
+    suspend fun deleteLecture(lectureId: Int): Result<Lecture?> {
         return withContext(Dispatchers.IO) {
-            return@withContext getLecture(lectureId = lectureId)
+            return@withContext try {
+                val response = lectureDao.deleteLectureById(lectureId)
+                if (response.isSuccessful) {
+                    Result.Success(response.body())
+                } else {
+                    Result.Error("Failed to delete lecture")
+                }
+            } catch (e: IOException) {
+                Result.Error("Network error: ${e.message}")
+            }
+        }
+    }
+    suspend fun findLectureById(lectureId: String): Lecture? {
+        return withContext(Dispatchers.IO) {
+            return@withContext try {
+                getLecture(lectureId = lectureId)
+            }catch (e:Exception){
+                null
+            }
         }
     }
 
-    private suspend fun getLecture(lectureId: String): Lecture {
+    private suspend fun getLecture(lectureId: String): Lecture? {
         val response = lectureDao.findLectureById(lectureId.toInt())
         lateinit var lecture: Lecture
         if (response.isSuccessful) {

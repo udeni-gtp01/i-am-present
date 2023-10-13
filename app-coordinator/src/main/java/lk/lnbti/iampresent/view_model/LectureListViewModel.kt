@@ -24,10 +24,6 @@ class LectureListViewModel @Inject constructor(
 
     val lectureList: LiveData<List<Lecture>> = lectureListUiState.lectureList
 
-    init {
-        findLectureList()
-    }
-
      fun findLectureList() {
         _lectureListResult.value = Result.Loading
         viewModelScope.launch {

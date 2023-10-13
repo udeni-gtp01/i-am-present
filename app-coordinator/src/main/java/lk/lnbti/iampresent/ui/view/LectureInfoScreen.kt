@@ -2,8 +2,6 @@ package lk.lnbti.iampresent.ui.view
 
 import android.graphics.Bitmap
 import android.graphics.Color
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -19,6 +17,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -37,7 +36,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -54,12 +52,7 @@ import lk.lnbti.iampresent.R
 import lk.lnbti.iampresent.data.Lecture
 import lk.lnbti.iampresent.ui.theme.IAmPresentTheme
 import lk.lnbti.iampresent.view_model.LectureInfoViewModel
-import java.security.MessageDigest
-import java.util.Base64
-import javax.crypto.Cipher
-import javax.crypto.spec.SecretKeySpec
 
-@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LectureInfoScreen(
@@ -87,11 +80,13 @@ fun LectureInfoScreen(
             )
         },
 
-        bottomBar = { BottomNavigation(
-            onTodayNavButtonClicked = onTodayNavButtonClicked,
-            onAllNavButtonClicked = onAllNavButtonClicked,
-            onReportsNavButtonClicked = onReportsNavButtonClicked
-        ) }
+        bottomBar = {
+            BottomNavigation(
+                onTodayNavButtonClicked = onTodayNavButtonClicked,
+                onAllNavButtonClicked = onAllNavButtonClicked,
+                onReportsNavButtonClicked = onReportsNavButtonClicked
+            )
+        }
     ) { padding ->
         Column(
             modifier
@@ -106,7 +101,11 @@ fun LectureInfoScreen(
                     onCloseButtonClicked = { lectureId ->
                         lectureInfoViewModel.closeForAttendance(lectureId)
                     },
-                    qrText = qrText
+                    qrText = qrText,
+                    onDeleteButtonClicked = { deleteLectureId ->
+                        lectureInfoViewModel.deleteLecture(deleteLectureId)
+                        onDeleteButtonClicked()
+                    }
                 )
             }
             //SearchBar(Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_main_content)))
@@ -121,6 +120,7 @@ fun LectureInfoContent(
     lecture: Lecture,
     qrText: String?,
     onOpenButtonClicked: (Int) -> Unit,
+    onDeleteButtonClicked: (Int) -> Unit,
     onCloseButtonClicked: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -203,6 +203,16 @@ fun LectureInfoContent(
                 }
             }
         }
+        item {
+            OutlinedButton(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = { onDeleteButtonClicked(lecture.lectureId) }
+            ) {
+                Text(
+                    text = stringResource(R.string.delete_lecture),
+                )
+            }
+        }
     }
 }
 
@@ -265,7 +275,7 @@ fun rememberQrBitmapPainter(
     LaunchedEffect(bitmap) {
         if (bitmap != null) return@LaunchedEffect
 
-        launch(Dispatchers.IO) {
+        launch(Dispatchers.Default) {
             val qrCodeWriter = QRCodeWriter()
 
             val encodeHints = mutableMapOf<EncodeHintType, Any?>()
@@ -325,72 +335,4 @@ fun PreviewLectureInfoContent() {
     IAmPresentTheme {
         //LectureInfoContent(lecture = lecture)
     }
-}
-
-@RequiresApi(Build.VERSION_CODES.O)
-@Preview(showSystemUi = true, showBackground = true)
-@Composable
-fun previewTime() {
-    var dateNow by remember {
-        mutableStateOf("")
-    }
-    var b by remember {
-        mutableStateOf("")
-    }
-    val qrKey = "BYT765#76GHFaunY"
-//    Text(text = dateNow.toString() + "&" + b.toString())
-    val v = encrypt("abc",qrKey)
-    Column {
-        Text(text = v)
-        Text(text = decrypt(v,qrKey))
-    }
-
-}
-
-@RequiresApi(Build.VERSION_CODES.O)
-private fun encrypt(stringToEncrypt: String, k: String): String {
-    var key= SecretKeySpec(k.toByteArray(), "AES")
-    val cipher = Cipher.getInstance("AES")
-    cipher.init(Cipher.ENCRYPT_MODE, key)
-    var t= cipher.doFinal(stringToEncrypt.toByteArray(charset = Charsets.UTF_8))
-    var s=Base64.getEncoder().encodeToString(t)
-    return s
-
-
-//    val plainText = stringToEncrypt.toByteArray(Charsets.UTF_8)
-//    val key = generateKey(qrKey)
-//    val cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING")
-//    cipher.init(Cipher.ENCRYPT_MODE, key)
-//    var r:ByteArray=cipher.iv
-//    var t= cipher.doFinal(plainText)
-//    return t.toString()
-}
-
-@RequiresApi(Build.VERSION_CODES.O)
-private fun decrypt(dataToDecrypt: String, k: String): String {
-    var key= SecretKeySpec(k.toByteArray(), "AES")
-    val cipher = Cipher.getInstance("AES")
-    cipher.init(Cipher.DECRYPT_MODE, key)
-    var s=Base64.getDecoder().decode(dataToDecrypt)
-    return String(cipher.doFinal(s), charset = Charsets.UTF_8)
-
-//    val qrKey = "BYT765#76GHFaunY"
-//    val cipher = Cipher.getInstance("AES/CBC/PKCS5PADDING")
-//    val key = generateKey(qrKey)
-////    cipher.init(Cipher.DECRYPT_MODE, key, IvParameterSpec(r))
-//    cipher.init(Cipher.DECRYPT_MODE, key)
-//    val cipherText = cipher.doFinal(dataToDecrypt?.toByteArray())
-//    val sb = StringBuilder()
-//    for (char in cipherText) {
-//        sb.append(char.toInt().toChar())
-//    }
-//    return sb.toString()
-}
-
-private fun generateKey(key: String): SecretKeySpec {
-    val digest: MessageDigest = MessageDigest.getInstance("SHA-256")
-    val bytes = key.toByteArray()
-    digest.update(bytes, 0, bytes.size)
-    val key = digest.digest()
-    return SecretKeySpec(key, "AES")
 }

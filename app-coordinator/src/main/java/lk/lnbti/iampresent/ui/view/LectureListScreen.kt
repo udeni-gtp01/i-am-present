@@ -63,10 +63,10 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import lk.lnbti.iampresent.R
 import lk.lnbti.iampresent.data.Lecture
+import lk.lnbti.iampresent.data.Result
 import lk.lnbti.iampresent.ui.theme.DefaultColorScheme
 import lk.lnbti.iampresent.ui.theme.IAmPresentTheme
 import lk.lnbti.iampresent.view_model.LectureListViewModel
-import lk.lnbti.iampresent.data.Result
 
 
 typealias OnLectureItemClicked = (String) -> Unit
@@ -83,7 +83,7 @@ fun LectureListScreen(
 ) {
     val lectureList: List<Lecture> by lectureListViewModel.lectureList.observeAsState(emptyList())
     val lectureListResult by lectureListViewModel.lectureListResult.observeAsState(Result.Loading)
-
+    lectureListViewModel.findLectureList()
     Scaffold(
         topBar = {
             TopAppBar(title = R.string.all, description = R.string.all_description)
@@ -91,11 +91,13 @@ fun LectureListScreen(
         floatingActionButton = {
             AddNewLectureButton(onNewLectureClicked = onNewLectureClicked)
         },
-        bottomBar = { BottomNavigation(
-            onTodayNavButtonClicked = onTodayNavButtonClicked,
-            onReportsNavButtonClicked=onReportsNavButtonClicked,
-            onAllNavButtonClicked = onAllNavButtonClicked
-        ) }
+        bottomBar = {
+            BottomNavigation(
+                onTodayNavButtonClicked = onTodayNavButtonClicked,
+                onReportsNavButtonClicked = onReportsNavButtonClicked,
+                onAllNavButtonClicked = onAllNavButtonClicked
+            )
+        }
     ) { padding ->
         Column(
             modifier
@@ -104,11 +106,10 @@ fun LectureListScreen(
             when (lectureListResult) {
                 is Result.Loading -> {
                     // Handle loading state
-                    // You can show a loading indicator or a message here
                     LoadingScreen()
-                    
                 }
-                is Result.Success<*> -> {
+
+                is Result.Success -> {
                     // Handle success state
                     LectureListContent(
                         lectureList = lectureList,
@@ -116,12 +117,13 @@ fun LectureListScreen(
                         modifier = modifier
                     )
                 }
+
                 is Result.Error -> {
                     // Handle error state
                     val errorMessage = (lectureListResult as Result.Error).message
                     ErrorScreen(
                         errorMessage = errorMessage,
-                        onRetry ={lectureListViewModel.findLectureList()})
+                        onRetry = { lectureListViewModel.findLectureList() })
                 }
             }
             Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
@@ -423,14 +425,13 @@ fun LectureListItem(
                 color = DefaultColorScheme.primary
             )
             Text(
-                text =item.location ,
+                text = item.location,
                 style = MaterialTheme.typography.bodyMedium,
                 color = DefaultColorScheme.primary
             )
         }
     }
 }
-
 
 
 @Preview(showBackground = true, showSystemUi = true)

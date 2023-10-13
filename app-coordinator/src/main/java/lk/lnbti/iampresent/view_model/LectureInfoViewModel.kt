@@ -32,22 +32,17 @@ class LectureInfoViewModel @Inject constructor(
 
     private var qrCoroutine: Job? = null
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    private val _qrtext: MutableLiveData<String?> = MutableLiveData(null)
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    val qrText: LiveData<String?> = _qrtext
+    private val _qrText: MutableLiveData<String?> = MutableLiveData(null)
+    val qrText: LiveData<String?> = _qrText
 
     private val qrKey = "BYT765#76GHFaunY"
-
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun setQrText() {
-        qrCoroutine = viewModelScope.launch(Dispatchers.Default) {
+        qrCoroutine = qrCoroutine?:viewModelScope.launch(Dispatchers.Default) {
             withContext(Dispatchers.Main) {
                 lecture.value?.let {
                     while (isActive) {
-                        _qrtext.value = encrypt(generateQRText())
-                        Log.d("oyasumi", "decrypted- ${_qrtext.value?.let { decrypt(it) }}")
+                        _qrText.value = encrypt(generateQRText())
+                        Log.d("oyasumi", "decrypted- ${_qrText.value?.let { decrypt(it) }}")
                         delay(10000)
                     }
                 }
@@ -61,13 +56,11 @@ class LectureInfoViewModel @Inject constructor(
             var timeNow = Calendar.getInstance().timeInMillis.toString()
             qrOriginalText =
                 "${timeNow}@@${it.lectureId.toString()}@@${it.batch}@@${it.subject}@@${it.location}"
-//        dateNow ="$dateNow @ ${a+30000}"
             Log.d("oyasumi", "original- $qrOriginalText")
         }
         return qrOriginalText
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun openForAttendance(lectureId: Int) {
         viewModelScope.launch {
             val lecture: Lecture? = lectureRepo.openLectureForAttendance(lectureId)
@@ -78,19 +71,18 @@ class LectureInfoViewModel @Inject constructor(
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun closeForAttendance(lectureId: Int) {
         viewModelScope.launch {
             val lecture: Lecture? = lectureRepo.closeLectureForAttendance(lectureId)
             lecture?.let {
                 lectureInfoUiState.loadLecture(it)
-                _qrtext.value = null
+                _qrText.value = null
             }
-            qrCoroutine?.cancel()
         }
+        qrCoroutine?.cancel()
+        qrCoroutine=null
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun findLecture(lectureId: String) {
         viewModelScope.launch {
             lectureInfoUiState.loadLecture(lectureRepo.findLectureById(lectureId))
@@ -99,8 +91,12 @@ class LectureInfoViewModel @Inject constructor(
             }
         }
     }
-
-    @RequiresApi(Build.VERSION_CODES.O)
+    fun deleteLecture(lectureId: Int) {
+        Log.d("oyasumi","del lec id: $lectureId")
+        viewModelScope.launch {
+            lectureRepo.deleteLecture(lectureId)
+        }
+    }
     private fun encrypt(stringToEncrypt: String): String {
         val aesKey = SecretKeySpec(qrKey.toByteArray(), "AES")
         val cipher = Cipher.getInstance("AES")
@@ -109,7 +105,6 @@ class LectureInfoViewModel @Inject constructor(
         return java.util.Base64.getEncoder().encodeToString(encryptedText)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun decrypt(dataToDecrypt: String): String {
         val aesKey = SecretKeySpec(qrKey.toByteArray(), "AES")
         val cipher = Cipher.getInstance("AES")

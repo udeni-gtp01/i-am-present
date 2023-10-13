@@ -69,15 +69,15 @@ import lk.lnbti.iampresent.view_model.TodaysLectureListViewModel
 fun TodaysLectureListScreen(
     onLectureItemClicked: (String) -> Unit,
     onNewLectureClicked: () -> Unit,
-    lectureListViewModel: TodaysLectureListViewModel = hiltViewModel(),
+    todayLectureListViewModel: TodaysLectureListViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
     onTodayNavButtonClicked: () -> Unit,
     onAllNavButtonClicked: () -> Unit,
     onReportsNavButtonClicked: () -> Unit
 ) {
-    val lectureList: List<Lecture> by lectureListViewModel.lectureList.observeAsState(emptyList())
-    val lectureListResult by lectureListViewModel.lectureListResult.observeAsState(Result.Loading)
-
+    val lectureList: List<Lecture> by todayLectureListViewModel.lectureList.observeAsState(emptyList())
+    val lectureListResult by todayLectureListViewModel.lectureListResult.observeAsState(Result.Loading)
+    todayLectureListViewModel.findTodaysLectureList()
     Scaffold(
         topBar = {
             TopAppBar(title = R.string.today, description = R.string.today_description)
@@ -117,7 +117,7 @@ fun TodaysLectureListScreen(
                     val errorMessage = (lectureListResult as Result.Error).message
                     ErrorScreen(
                         errorMessage = errorMessage,
-                        onRetry = { lectureListViewModel.findTodaysLectureList() })
+                        onRetry = { todayLectureListViewModel.findTodaysLectureList() })
                 }
             }
             Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))

@@ -1,4 +1,4 @@
-package lk.lnbti.iampresent.dao
+package lk.lnbti.app_student.service
 
 import lk.lnbti.iampresent.constant.Constant
 import lk.lnbti.app_student.data.Lecture

@@ -1,9 +1,9 @@
-package lk.lnbti.iampresent.repo
+package lk.lnbti.app_student.repo
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import lk.lnbti.app_student.data.Lecture
-import lk.lnbti.iampresent.dao.LectureService
+import lk.lnbti.app_student.service.LectureService
 import javax.inject.Inject
 
 class LectureRepo @Inject constructor(private val lectureService: LectureService) {

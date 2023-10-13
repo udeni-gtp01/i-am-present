@@ -4,6 +4,7 @@ import lk.lnbti.iampresent.constant.Constant
 import lk.lnbti.iampresent.data.Lecture
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -21,6 +22,9 @@ interface LectureDao {
 
     @GET(Constant.ENDPOINT_LECTURE_FIND)
     suspend fun findLectureById(@Path(value = "id") id: Int): Response<Lecture>
+
+    @DELETE(Constant.ENDPOINT_LECTURE_DELETE)
+    suspend fun deleteLectureById(@Path(value = "id") id: Int): Response<Lecture>
 
     @PUT(Constant.ENDPOINT_LECTURE_OPEN_FOR_ATTENDANCE)
     suspend fun openLectureForAttendance(@Path(value = "id") id: Int): Response<Lecture>
