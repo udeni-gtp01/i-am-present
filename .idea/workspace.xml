@@ -17,30 +17,29 @@
       <change beforePath="$PROJECT_DIR$/.gradle/8.3/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.3/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app-coordinator/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app-coordinator/google-services.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/MainActivity.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/constant/Constant.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/constant/Constant.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/dao/LectureDao.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/dao/LectureDao.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/nav/AppNavHost.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/nav/AppNavHost.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/repo/LectureRepo.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/repo/LectureRepo.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/view/LectureInfoScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/view/LectureInfoScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/theme/Color.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/theme/Color.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/theme/Theme.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/theme/Theme.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/theme/Type.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/theme/Type.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/view/Components.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/view/Components.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/view/LectureListScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/view/LectureListScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/view/NewLectureScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/view/NewLectureScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/view/ReportsScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/view/ReportsScreen.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/view/TodaysLectureListScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/view/TodaysLectureListScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui_state/LectureInfoUiState.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui_state/LectureInfoUiState.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/view_model/LectureInfoViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/view_model/LectureInfoViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/view_model/LectureListViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/view_model/LectureListViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/view_model/TodaysLectureListViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/view_model/TodaysLectureListViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/res/values/dimens.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/res/values/dimens.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/res/values/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/di/NetworkModule.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/di/NetworkModule.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/repo/LectureRepo.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/repo/LectureRepo.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/service/LectureService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/service/LectureService.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/view_model/LectureInfoViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/view_model/LectureInfoViewModel.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[2b099b450e3f7ece]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -49,9 +48,56 @@
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
+        <task path="$PROJECT_DIR$/app-coordinator">
+          <activation />
+        </task>
+        <task path="$PROJECT_DIR$/app-student">
+          <activation />
+        </task>
         <projects_view>
           <tree_state>
-            <expand />
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="I am present" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="I am present" type="f1a62948:ProjectNode" />
+                <item name="app-coordinator" type="2d1252cf:ModuleNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="I am present" type="f1a62948:ProjectNode" />
+                <item name="app-coordinator" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="I am present" type="f1a62948:ProjectNode" />
+                <item name="app-coordinator" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="other" type="c8890929:TasksNode$1" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="I am present" type="f1a62948:ProjectNode" />
+                <item name="app-student" type="2d1252cf:ModuleNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="I am present" type="f1a62948:ProjectNode" />
+                <item name="app-student" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="I am present" type="f1a62948:ProjectNode" />
+                <item name="app-student" type="2d1252cf:ModuleNode" />
+                <item name="Tasks" type="e4a08cd1:TasksNode" />
+                <item name="other" type="c8890929:TasksNode$1" />
+              </path>
+            </expand>
             <select />
           </tree_state>
         </projects_view>
@@ -62,12 +108,12 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Kotlin Object" />
-        <option value="valueResourceFile" />
         <option value="Kotlin File" />
         <option value="Kotlin Data Class" />
         <option value="Kotlin Interface" />
         <option value="Kotlin Sealed Class" />
         <option value="Kotlin Class" />
+        <option value="valueResourceFile" />
       </list>
     </option>
   </component>
@@ -78,6 +124,19 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="af88babe-afb7-4b6b-8f3e-ced77331bd0f" />
+        <option name="url" value="https://github.com/udeni-gtp01/i-am-present.git" />
+      </UrlAndAccount>
+    </option>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -103,7 +162,7 @@
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.17",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "AndroidSdkUpdater"
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
   }
 }]]></component>
   <component name="PsdUISettings">
@@ -111,7 +170,7 @@
     <option name="BUILD_VARIANTS_TAB" value="Flavors" />
     <option name="LAST_EDITED_SIGNING_CONFIG" value="debug" />
     <option name="LAST_EDITED_BUILD_TYPE" value="release" />
-    <option name="LAST_EDITED_FLAVOR_OR_DIMENSION" value="lite" />
+    <option name="LAST_EDITED_FLAVOR_OR_DIMENSION" value="student" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -132,7 +191,7 @@
       <recent name="lk.lnbti.iampresent.service" />
     </key>
   </component>
-  <component name="RunManager" selected="Android App.app-coordinator">
+  <component name="RunManager" selected="Android App.app">
     <configuration name="app-coordinator" type="AndroidRunConfigurationType" factoryName="Android App">
       <module name="I_am_present.app-coordinator.main" />
       <option name="DEPLOY" value="true" />
@@ -330,7 +389,7 @@
       <method v="2" />
     </configuration>
     <configuration name="LectureListScreenPreview" type="ComposePreviewRunConfiguration" temporary="true">
-      <module name="I_am_present.app-coordinator" />
+      <module name="I_am_present.app" />
       <option name="DEPLOY" value="true" />
       <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
       <option name="DEPLOY_AS_INSTANT" value="false" />
@@ -464,7 +523,7 @@
       </method>
     </configuration>
     <configuration name="PreviewLectureListSection" type="ComposePreviewRunConfiguration" temporary="true">
-      <module name="I_am_present.app-coordinator" />
+      <module name="I_am_present.app" />
       <option name="DEPLOY" value="true" />
       <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
       <option name="DEPLOY_AS_INSTANT" value="false" />

@@ -14,5 +14,5 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "I am present"
-include(":app-coordinator")
+include(":app")
 include(":app-student")
