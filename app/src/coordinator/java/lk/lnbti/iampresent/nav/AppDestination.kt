@@ -3,10 +3,7 @@ package lk.lnbti.iampresent.coordinator.nav
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import lk.lnbti.iampresent.data.Lecture
-
-interface AppDestination {
-    val route: String
-}
+import lk.lnbti.iampresent.nav.AppDestination
 
 object LectureListDestination : AppDestination {
     override val route="lecture_list"

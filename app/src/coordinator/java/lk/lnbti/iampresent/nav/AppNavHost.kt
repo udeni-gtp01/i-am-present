@@ -3,18 +3,20 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import lk.lnbti.iampresent.nav.LectureInfoDestination
-import lk.lnbti.iampresent.nav.LectureListDestination
-import lk.lnbti.iampresent.nav.NewLectureDestination
-import lk.lnbti.iampresent.nav.ReportsDestination
-import lk.lnbti.iampresent.nav.TodaysLectureListDestination
-import lk.lnbti.iampresent.ui.view.LectureInfoScreen
-import lk.lnbti.iampresent.ui.view.LectureListScreen
-import lk.lnbti.iampresent.ui.view.NewLectureScreen
+import lk.lnbti.iampresent.coordinator.nav.LectureInfoDestination
+import lk.lnbti.iampresent.coordinator.nav.LectureListDestination
+import lk.lnbti.iampresent.coordinator.nav.NewLectureDestination
+import lk.lnbti.iampresent.coordinator.nav.ReportsDestination
+import lk.lnbti.iampresent.coordinator.nav.TodaysLectureListDestination
+import lk.lnbti.iampresent.coordinator.ui.view.LectureInfoScreen
+import lk.lnbti.iampresent.coordinator.ui.view.LectureListScreen
+import lk.lnbti.iampresent.coordinator.ui.view.NewLectureScreen
+import lk.lnbti.iampresent.coordinator.ui.view.ReportsScreen
+import lk.lnbti.iampresent.coordinator.ui.view.TodaysLectureListScreen
 
 @Composable
 fun AppNavHost(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = LectureListDestination.route) {
+    NavHost(navController = navController, startDestination = TodaysLectureListDestination.route) {
         composable(route = LectureListDestination.route) {
             LectureListScreen(
                 onLectureItemClicked = { lectureId ->

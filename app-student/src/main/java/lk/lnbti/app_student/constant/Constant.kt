@@ -7,7 +7,6 @@ object Constant {
     const val PERMISSION_CAMERA = android.Manifest.permission.CAMERA
     const val BASE_URL = "http://192.168.8.100:8080/api/public/"
 
-
     const val ENDPOINT_LECTURE_ALL = "lecture/all"
     const val ENDPOINT_LECTURE_SAVE = "lecture/save"
     const val ENDPOINT_LECTURE_FIND = "lecture/{id}"

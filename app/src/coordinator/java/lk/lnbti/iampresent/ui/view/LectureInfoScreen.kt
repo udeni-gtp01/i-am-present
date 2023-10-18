@@ -1,4 +1,4 @@
-package lk.lnbti.iampresent.ui.view
+package lk.lnbti.iampresent.coordinator.ui.view
 
 import android.graphics.Bitmap
 import android.graphics.Color
@@ -51,6 +51,7 @@ import kotlinx.coroutines.launch
 import lk.lnbti.iampresent.R
 import lk.lnbti.iampresent.data.Lecture
 import lk.lnbti.iampresent.ui.theme.IAmPresentTheme
+import lk.lnbti.iampresent.ui.view.BottomNavigation
 import lk.lnbti.iampresent.view_model.LectureInfoViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -108,7 +109,7 @@ fun LectureInfoScreen(
                     }
                 )
             }
-            //SearchBar(Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_main_content)))
+            //lk.lnbti.iampresent.coordinator.ui.view.SearchBar(Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_main_content)))
             //Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
             Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
         }

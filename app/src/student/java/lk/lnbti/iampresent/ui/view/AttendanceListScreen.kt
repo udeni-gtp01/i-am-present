@@ -1,13 +1,12 @@
-package lk.lnbti.iampresent.ui.view
+package lk.lnbti.iampresent.student.ui.view
 
-import ErrorScreen
-import LoadingScreen
+import androidx.annotation.StringRes
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -18,13 +17,15 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -32,10 +33,13 @@ import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -46,90 +50,63 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import lk.lnbti.iampresent.R
-import lk.lnbti.iampresent.data.Lecture
-import lk.lnbti.iampresent.data.Result
+import lk.lnbti.iampresent.data.Attendance
+import lk.lnbti.iampresent.student.view_model.AttendanceListViewModel
 import lk.lnbti.iampresent.ui.theme.DefaultColorScheme
-import lk.lnbti.iampresent.ui.theme.IAmPresentTheme
-import lk.lnbti.iampresent.view_model.LectureListViewModel
 
 
 typealias OnLectureItemClicked = (String) -> Unit
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LectureListScreen(
+fun AttendanceListScreen(
     onLectureItemClicked: OnLectureItemClicked,
     onNewLectureClicked: () -> Unit,
-    lectureListViewModel: LectureListViewModel = hiltViewModel(),
-    onTodayNavButtonClicked: () -> Unit,
-    onReportsNavButtonClicked: () -> Unit,
-    onAllNavButtonClicked: () -> Unit,
-    modifier: Modifier = Modifier,
+    lectureListViewModel: AttendanceListViewModel = hiltViewModel(),
+    modifier: Modifier = Modifier
 ) {
-    val lectureList: List<Lecture> by lectureListViewModel.lectureList.observeAsState(emptyList())
-    val lectureListResult by lectureListViewModel.lectureListResult.observeAsState(Result.Loading)
-    lectureListViewModel.findLectureList()
+    val attendanceList: List<Attendance> by lectureListViewModel.lectureList.observeAsState(emptyList())
+
     Scaffold(
         topBar = {
             TopAppBar(
-                title = R.string.all,
-                description = R.string.all_description,
-                modifier = modifier
+                title = {
+                    Text(
+                        stringResource(id = R.string.app_name)
+                    )
+                },
             )
         },
         floatingActionButton = {
-            AddNewLectureButton(onNewLectureClicked = onNewLectureClicked)
+            AddNewLectureButton(onNewLectureClicked= onNewLectureClicked)
         },
-        bottomBar = {
-            BottomNavigation(
-                onTodayNavButtonClicked = onTodayNavButtonClicked,
-                onReportsNavButtonClicked = onReportsNavButtonClicked,
-                onAllNavButtonClicked = onAllNavButtonClicked
-            )
-        }
+        bottomBar = { BottomNavigation() }
     ) { padding ->
         Column(
             modifier
                 .padding(padding)
         ) {
-            when (lectureListResult) {
-                is Result.Loading -> {
-                    // Handle loading state
-                    LoadingScreen()
-                }
-
-                is Result.Success -> {
-                    // Handle success state
-                    LectureListContent(
-                        lectureList = lectureList,
-                        onLectureItemClicked = onLectureItemClicked,
-                        modifier = modifier
-                    )
-                }
-
-                is Result.Error -> {
-                    // Handle error state
-                    val errorMessage = (lectureListResult as Result.Error).message
-                    ErrorScreen(
-                        errorMessage = errorMessage,
-                        onRetry = { lectureListViewModel.findLectureList() })
-                }
-            }
+            LectureListContent(
+                lectureList = attendanceList,
+                onLectureItemClicked = onLectureItemClicked,
+                modifier = modifier
+            )
+            //SearchBar(Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_main_content)))
+            //Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
             Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
         }
     }
 }
-
 @Composable
 fun SearchBar(
     modifier: Modifier = Modifier
@@ -155,7 +132,6 @@ fun SearchBar(
             .heightIn(min = dimensionResource(id = R.dimen.height_search_bar))
     )
 }
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OrderByBar(modifier: Modifier = Modifier) {
@@ -170,6 +146,18 @@ fun OrderByBar(modifier: Modifier = Modifier) {
         }
 
     ) {
+//        TextField(
+//            readOnly = true,
+//            value = selectedOptionText,
+//            onValueChange = { },
+//            label = { Text("Label") },
+//            trailingIcon = {
+//                ExposedDropdownMenuDefaults.TrailingIcon(
+//                    expanded = expanded
+//                )
+//            },
+//            colors = ExposedDropdownMenuDefaults.textFieldColors()
+//        )
         TextField(
             readOnly = true,
             value = selectedOptionText,
@@ -214,13 +202,15 @@ fun AddNewLectureButton(onNewLectureClicked: () -> Unit) {
         containerColor = DefaultColorScheme.secondary,
         //modifier = Modifier.background(DefaultColorScheme.secondary)
     ) {
-        Icon(Icons.Default.Add, contentDescription = null, tint = DefaultColorScheme.accent)
+        val painter: Painter = painterResource(id = R.drawable.baseline_qr_code_scanner_24)
+
+        Icon(painter, contentDescription = null, tint = DefaultColorScheme.accent)
     }
 }
 
 @Composable
-private fun LectureListContent(
-    lectureList: List<Lecture>,
+fun LectureListContent(
+    lectureList: List<Attendance>,
     onLectureItemClicked: OnLectureItemClicked,
     modifier: Modifier = Modifier
 ) {
@@ -234,7 +224,20 @@ private fun LectureListContent(
     )
     var selectedItem by rememberSaveable { mutableStateOf(criteriaList.first()) }
     Column {
-        filterSection(criteriaList = criteriaList)
+
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_between_list_item)),
+            contentPadding = PaddingValues(horizontal = 16.dp),
+            modifier = modifier
+        ) {
+            items(criteriaList) { item ->
+                val isSelected = selectedItem == item
+                FilterItem(
+                    criteria = item,
+                    isSelected = isSelected,
+                    onClick = { selectedItem = item })
+            }
+        }
         LectureListSection(
             lectureList = lectureList,
             selectedFilter = selectedItem,
@@ -244,10 +247,33 @@ private fun LectureListContent(
     }
 }
 
+@Composable
+fun FilterItem(
+    @StringRes criteria: Int,
+    isSelected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val backgroundColor = if (isSelected) Color.Yellow else Color(0xFFBBAAEE)
+
+    Text(
+        text = stringResource(id = criteria),
+        style = MaterialTheme.typography.bodyMedium,
+        modifier = Modifier
+            .drawBehind {
+                drawRoundRect(
+                    backgroundColor,
+                    cornerRadius = CornerRadius(10.dp.toPx())
+                )
+            }
+            .clickable { onClick() }
+    )
+}
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LectureListSection(
-    lectureList: List<Lecture>,
+    lectureList: List<Attendance>,
     selectedFilter: Int,
     onLectureItemClicked: OnLectureItemClicked,
     modifier: Modifier = Modifier
@@ -259,36 +285,10 @@ fun LectureListSection(
         contentPadding = WindowInsets.navigationBars.asPaddingValues(),
         modifier = modifier
     ) {
-        var grouped: Map<String, List<Lecture>>? = null
+        var grouped: Map<String, List<Attendance>>? = null
         when (selectedFilter) {
             R.string.filter_by_date -> {
-                val sortedLectureList = lectureList.sortedByDescending { it.startDate }
-                grouped = sortedLectureList.groupBy { it.startDate }
-            }
-
-            R.string.filter_by_lecture_status -> {
-                val sortedLectureList = lectureList.sortedBy { it.lectureStatus.statusName }
-                grouped = sortedLectureList.groupBy { it.lectureStatus.statusName }
-            }
-
-            R.string.filter_by_batch -> {
-                val sortedLectureList = lectureList.sortedBy { it.batch }
-                grouped = sortedLectureList.groupBy { it.batch }
-            }
-
-            R.string.filter_by_subject -> {
-                val sortedLectureList = lectureList.sortedBy { it.subject }
-                grouped = sortedLectureList.groupBy { it.subject }
-            }
-
-            R.string.filter_by_lecturer -> {
-                val sortedLectureList = lectureList.sortedBy { it.lecturer.name }
-                grouped = sortedLectureList.groupBy { it.lecturer.name }
-            }
-
-            R.string.filter_by_location -> {
-                val sortedLectureList = lectureList.sortedBy { it.location }
-                grouped = sortedLectureList.groupBy { it.location }
+                grouped = lectureList.groupBy { it.lecture.subject }
             }
         }
 
@@ -312,23 +312,18 @@ fun LectureGroupHeader(header: String) {
         text = header,
         modifier = Modifier
             .fillMaxWidth()
-//            .drawBehind {
-//                drawRoundRect(
-//                    Color(0xFFBBAAEE),
-//                    cornerRadius = CornerRadius(10.dp.toPx())
-//                )
-//            }
-            .background(Color.White)
-            .padding(15.dp),
-
-        color = DefaultColorScheme.primary,
-        fontWeight = FontWeight.Bold,
+            .drawBehind {
+                drawRoundRect(
+                    Color(0xFFBBAAEE),
+                    cornerRadius = CornerRadius(10.dp.toPx())
+                )
+            }
     )
 }
 
 @Composable
 fun LectureListItem(
-    item: Lecture,
+    item: Attendance,
     onLectureItemClicked: OnLectureItemClicked,
 ) {
     Row(
@@ -349,30 +344,26 @@ fun LectureListItem(
             .border(color = DefaultColorScheme.primary, width = 2.dp)
             .padding(horizontal = 7.dp, vertical = 10.dp)
             .fillMaxWidth()
-            .clickable { onLectureItemClicked(item.lectureId.toString()) }
+            .clickable {}
     ) {
         Column(
             modifier = Modifier
                 .padding(16.dp)
         ) {
             Text(
-                text = item.batch,
+                text = item.lecture.batch,
                 style = MaterialTheme.typography.titleLarge,
                 color = DefaultColorScheme.primary
             )
+            item.lecture.subject?.let {
+                Text(
+                    text = it,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = DefaultColorScheme.primary
+                )
+            }
             Text(
-                text = item.subject,
-                style = MaterialTheme.typography.bodyLarge,
-                color = DefaultColorScheme.primary
-            )
-
-            Text(
-                text = "${item.startDate.toString()} @ ${item.startTime.toString()}",
-                style = MaterialTheme.typography.bodyMedium,
-                color = DefaultColorScheme.primary
-            )
-            Text(
-                text = item.location,
+                text =item.lecture.location ,
                 style = MaterialTheme.typography.bodyMedium,
                 color = DefaultColorScheme.primary
             )
@@ -380,45 +371,45 @@ fun LectureListItem(
     }
 }
 
-
-@Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun PreviewLectureListSection() {
-
-    val jsonString =
-        "[{\"lectureid\":1,\"venue\":\"online\",\"startdate\":\"2023-12-12\",\"starttime\":\"08:00:00\",\"enddate\":\"2023-12-12\",\"endtime\":\"12:00:00\",\"semester\":2,\"subject\":\"kotlin\",\"batch\":\"gtp01\",\"organizerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturestatusid\":{\"lecturestatusid\":1,\"statusname\":\"new\"}}]"
-// Create a Gson instance
-    val gson = Gson()
-
-// Define a TypeToken for the list of Lecture objects
-    val lectureListType = object : TypeToken<List<Lecture>>() {}.type
-
-// Parse the JSON string into a list of Lecture objects
-    val lectureList: List<Lecture> = gson.fromJson(jsonString, lectureListType)
-
-    IAmPresentTheme {
-        LectureListContent(
-            lectureList = lectureList,
-            onLectureItemClicked = { },
+public fun BottomNavigation(modifier: Modifier = Modifier) {
+    NavigationBar(
+        containerColor = MaterialTheme.colorScheme.surfaceVariant,
+        modifier = modifier
+    ) {
+        NavigationBarItem(
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.Star,
+                    contentDescription = null
+                )
+            },
+            label = {
+                Text(stringResource(R.string.today))
+            },
+            selected = false,
+            onClick = {}
+        )
+        NavigationBarItem(
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.List,
+                    contentDescription = null
+                )
+            },
+            label = {
+                Text(stringResource(R.string.all))
+            },
+            selected = true,
+            onClick = {}
         )
     }
 }
 
-//@Preview( showBackground = true)
+
+
+//@Preview
 @Composable
-fun PreviewAddNewLectureButton() {
-    AddNewLectureButton({ })
+fun PreviewBottomNavigation() {
+    BottomNavigation()
 }
-//dropdown
-//        TextField(
-//            readOnly = true,
-//            value = selectedOptionText,
-//            onValueChange = { },
-//            label = { Text("Label") },
-//            trailingIcon = {
-//                ExposedDropdownMenuDefaults.TrailingIcon(
-//                    expanded = expanded
-//                )
-//            },
-//            colors = ExposedDropdownMenuDefaults.textFieldColors()
-//        )

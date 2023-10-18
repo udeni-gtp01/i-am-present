@@ -1,10 +1,11 @@
-package lk.lnbti.iampresent.ui.view
+package lk.lnbti.iampresent.coordinator.ui.view
 
 import ErrorScreen
 import LoadingScreen
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.widget.DatePicker
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,9 +15,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -25,8 +29,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -38,6 +46,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import lk.lnbti.iampresent.R
 import lk.lnbti.iampresent.data.Result
+import lk.lnbti.iampresent.ui.theme.CommonColorScheme
+import lk.lnbti.iampresent.ui.view.BottomNavigation
+import lk.lnbti.iampresent.ui.view.TopAppBar
 import lk.lnbti.iampresent.view_model.NewLectureViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -108,6 +119,8 @@ fun NewLectureScreen(
             )
             val lectureSaveResult by newLectureViewModel.lectureSaveResult.observeAsState(null)
             val savedLectureId by newLectureViewModel.savedLectureId.observeAsState("0")
+            val dialogError by newLectureViewModel.dialogError.observeAsState(null)
+            var showErrorDialog by rememberSaveable { mutableStateOf(false) } // State variable to control the dialog
 
             when (lectureSaveResult) {
                 is Result.Loading -> {
@@ -130,6 +143,17 @@ fun NewLectureScreen(
                 }
 
                 else -> {
+                    if(showErrorDialog){
+                        dialogError?.let {
+                            ErrorDialog(
+                                text = it,
+                                onDismiss = {
+                                    showErrorDialog = false
+                                    newLectureViewModel.resetdialogError()
+                                }
+                            )
+                        }
+                    }
                     NewLectureContent(
                         batch = batch,
                         semester = semester,
@@ -163,6 +187,9 @@ fun NewLectureScreen(
                         onLecturerEmailChange = { newLectureViewModel.onLecturerEmailChange(it) },
                         onSaveButtonClicked = {
                             if (newLectureViewModel.isValidationSuccess()) {
+                                if(dialogError!=null){
+                                    showErrorDialog=true
+                                }
                                 newLectureViewModel.saveLecture()
 //                                var savedLectureId: String = newLectureViewModel.saveLecture()
 //                                if (savedLectureId.isNotBlank()) {
@@ -322,6 +349,7 @@ fun NewLectureContent(
             )
         }
         item {
+
             NewOutlinedTextField(
                 value = lecturerEmail,
                 label = {
@@ -336,11 +364,24 @@ fun NewLectureContent(
                 modifier = modifier
             )
         }
+
         item {
+            Spacer(modifier = Modifier.height(16.dp))
             Button(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = onSaveButtonClicked
-            ) {
+            colors = ButtonDefaults.outlinedButtonColors(contentColor = CommonColorScheme.dark_text),
+                onClick = onSaveButtonClicked,
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(
+                            CommonColorScheme.shade_yellow,
+                            CommonColorScheme.main_orange
+                        )
+                    ),
+                    shape = RoundedCornerShape(dimensionResource(R.dimen.round_corner))
+                )
+        ){
                 Text(
                     text = stringResource(R.string.save),
                     fontSize = 16.sp
@@ -500,5 +541,23 @@ fun PreviewNewLectureContent() {
         onSaveButtonClicked = {},
         //modifier = modifier
 
+    )
+}
+@Composable
+fun ErrorDialog(
+    onDismiss: () -> Unit,
+    text:String
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Error") },
+        text = { Text(text) },
+        confirmButton = {
+            Button(
+                onClick = onDismiss
+            ) {
+                Text("OK")
+            }
+        }
     )
 }
