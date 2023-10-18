@@ -107,6 +107,16 @@ dependencies {
     implementation("org.apache.poi:poi-ooxml:5.2.4")
 //permission
     implementation ("com.google.accompanist:accompanist-permissions:0.32.0")
+//QR scan
+    // CameraX core library using the camera2 implementation
+    val camerax_version = "1.3.0-rc01"
+    implementation("androidx.camera:camera-core:${camerax_version}")
+    implementation("androidx.camera:camera-camera2:${camerax_version}")
+    // If you want to additionally use the CameraX Lifecycle library
+    implementation("androidx.camera:camera-lifecycle:${camerax_version}")
+    // If you want to additionally use the CameraX View class
+    implementation("androidx.camera:camera-view:${camerax_version}")
+    implementation("com.google.mlkit:barcode-scanning:17.2.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

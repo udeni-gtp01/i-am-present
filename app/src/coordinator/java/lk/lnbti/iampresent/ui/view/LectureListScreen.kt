@@ -1,4 +1,4 @@
-package lk.lnbti.iampresent.coordinator.ui.view
+package lk.lnbti.iampresent.ui.view
 
 import ErrorScreen
 import LoadingScreen
@@ -55,10 +55,6 @@ import lk.lnbti.iampresent.data.Lecture
 import lk.lnbti.iampresent.data.Result
 import lk.lnbti.iampresent.ui.theme.DefaultColorScheme
 import lk.lnbti.iampresent.ui.theme.IAmPresentTheme
-import lk.lnbti.iampresent.ui.view.AddNewLectureButton
-import lk.lnbti.iampresent.ui.view.BottomNavigation
-import lk.lnbti.iampresent.ui.view.TopAppBar
-import lk.lnbti.iampresent.ui.view.filterSection
 import lk.lnbti.iampresent.view_model.LectureListViewModel
 
 

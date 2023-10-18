@@ -1,5 +1,7 @@
 package lk.lnbti.iampresent.ui.theme
 
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
 object DefaultColorScheme {
@@ -14,24 +16,36 @@ val primary = Color(0xFF48719C) // Deep Purple
     val error = Color(0xFFE57373) // Error Red
 }
 object CommonColorScheme {
-    val dark_blue = Color(0xFF1C2455)
-    val white=Color(0xFFE2E4F0)
+    val dark_blue = Color(0xFF151516)
+    val white=Color(0xFFFFFFFF)
     val dark_text = Color(0xFF101111)
+//    val shade_blue = Color(0xFF00BCD4)
     val shade_blue = Color(0xFF00BCD4)
     val shade_green = Color(0xFF8BC34A)
-    val shade_orange = Color(0xFFFF5722)
-    val shade_yellow = Color(0xFFFFAE22)
+//    val shade_orange = Color(0xFFFF5722)
+    val shade_orange = Color(0xC2F7B767)
+    val shade_yellow = Color(0xFFF3DC62)
     val shade_purple = Color(0xFF7A48D3)
-    val shade_pink = Color(0xFFF04FC2)
+    val status_ongoing = Color(0xFFF85F39)
+    val status_complete = Color(0xFF28A795)
+    val gray = Color(0xF7686668)
+    val transparent_white=Color(0xBAFFF1DF)
+    val dark_gray=Color(0xFF00A9BF)
+    val light_gray=Color(0xFFA4D37B)
+    val main_orange=Color(0xFFF7B766)
+    val main_blue=Color(0xFF85A8A0)
+    val nav_light_blue=Color(0xFF337A92)
+    val nav_blue=Color(0xFF1F5B77)
+    val nav_text=Color(0xFF3BF3DA)
 }
 
 val md_theme_light_primary = Color(0xFF006B5C)
 val md_theme_light_onPrimary = Color(0xFFFFFFFF)
-val md_theme_light_primaryContainer = Color(0xFF77F8DE)
+val md_theme_light_primaryContainer = Color(0xFF482758)
 val md_theme_light_onPrimaryContainer = Color(0xFF00201B)
 val md_theme_light_secondary = Color(0xFF795900)
 val md_theme_light_onSecondary = Color(0xFFFFFFFF)
-val md_theme_light_secondaryContainer = Color(0xFFFFDF9E)
+val md_theme_light_secondaryContainer = Color(0xFFdc2430)
 val md_theme_light_onSecondaryContainer = Color(0xFF261A00)
 val md_theme_light_tertiary = Color(0xFF4C50C2)
 val md_theme_light_onTertiary = Color(0xFFFFFFFF)
@@ -43,7 +57,7 @@ val md_theme_light_onError = Color(0xFFFFFFFF)
 val md_theme_light_onErrorContainer = Color(0xFF410002)
 val md_theme_light_background = Color(0xFFFAFDFA)
 val md_theme_light_onBackground = Color(0xFF191C1B)
-val md_theme_light_surface = Color(0xFFFAFDFA)
+val md_theme_light_surface = Color(0xFF00BFA5)
 val md_theme_light_onSurface = Color(0xFF191C1B)
 val md_theme_light_surfaceVariant = Color(0xFFDAE5E1)
 val md_theme_light_onSurfaceVariant = Color(0xFF3F4946)
@@ -52,7 +66,7 @@ val md_theme_light_inverseOnSurface = Color(0xFFEFF1EF)
 val md_theme_light_inverseSurface = Color(0xFF2D3130)
 val md_theme_light_inversePrimary = Color(0xFF58DBC3)
 val md_theme_light_shadow = Color(0xFF000000)
-val md_theme_light_surfaceTint = Color(0xFF006B5C)
+val md_theme_light_surfaceTint = Color(0xFFAEEA00)
 val md_theme_light_outlineVariant = Color(0xFFBEC9C5)
 val md_theme_light_scrim = Color(0xFF000000)
 
@@ -83,7 +97,7 @@ val md_theme_dark_inverseOnSurface = Color(0xFF191C1B)
 val md_theme_dark_inverseSurface = Color(0xFFE0E3E1)
 val md_theme_dark_inversePrimary = Color(0xFF006B5C)
 val md_theme_dark_shadow = Color(0xFF000000)
-val md_theme_dark_surfaceTint = Color(0xFF58DBC3)
+val md_theme_dark_surfaceTint = Color(0xFF304FFE)
 val md_theme_dark_outlineVariant = Color(0xFF3F4946)
 val md_theme_dark_scrim = Color(0xFF000000)
 

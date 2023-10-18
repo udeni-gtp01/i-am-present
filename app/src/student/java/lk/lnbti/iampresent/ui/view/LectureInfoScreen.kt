@@ -1,4 +1,4 @@
-package lk.lnbti.iampresent.student.ui.view
+package lk.lnbti.iampresent.ui.view
 
 import android.graphics.Bitmap
 import android.graphics.Color

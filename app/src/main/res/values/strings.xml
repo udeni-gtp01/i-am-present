@@ -44,7 +44,7 @@
     <string name="today_description">See today\'s coordination</string>
     <string name="filter_by_start_time">Start time</string>
     <string name="new_title">New</string>
-    <string name="new_title_description">Add new lecture</string>
+    <string name="new_title_description">Create new lecture</string>
     <string name="reports">Reports</string>
     <string name="reports_description">Download reports</string>
     <string name="filter_by_student">Student</string>
@@ -52,4 +52,9 @@
     <string name="select_option">Select an option</string>
     <string name="download_result">Download result</string>
     <string name="delete_lecture">Delete lecture</string>
+    <string name="time">Time</string>
+    <string name="lecturer">Lecturer</string>
+    <string name="ongoing">Ongoing</string>
+    <string name="complete">Complete</string>
+    <string name="something_went_wrong">Oops! something went wrong</string>
 </resources>

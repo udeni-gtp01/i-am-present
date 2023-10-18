@@ -1,4 +1,4 @@
-package lk.lnbti.iampresent.student.ui.view
+package lk.lnbti.iampresent.ui.view
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -62,20 +62,24 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import lk.lnbti.iampresent.R
 import lk.lnbti.iampresent.data.Attendance
-import lk.lnbti.iampresent.student.view_model.AttendanceListViewModel
+import lk.lnbti.iampresent.data.Lecture
 import lk.lnbti.iampresent.ui.theme.DefaultColorScheme
+import lk.lnbti.iampresent.view_model.AttendanceListViewModel
 
 
 typealias OnLectureItemClicked = (String) -> Unit
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AttendanceListScreen(
     onLectureItemClicked: OnLectureItemClicked,
     onNewLectureClicked: () -> Unit,
-    lectureListViewModel: AttendanceListViewModel = hiltViewModel(),
+    attendanceListViewModel: AttendanceListViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
-    val attendanceList: List<Attendance> by lectureListViewModel.lectureList.observeAsState(emptyList())
+    val attendanceList: List<Attendance> by attendanceListViewModel.lectureList.observeAsState(
+        emptyList()
+    )
 
     Scaffold(
         topBar = {
@@ -88,7 +92,7 @@ fun AttendanceListScreen(
             )
         },
         floatingActionButton = {
-            AddNewLectureButton(onNewLectureClicked= onNewLectureClicked)
+            AddNewLectureButton(onNewLectureClicked = onNewLectureClicked)
         },
         bottomBar = { BottomNavigation() }
     ) { padding ->
@@ -106,31 +110,6 @@ fun AttendanceListScreen(
             Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
         }
     }
-}
-@Composable
-fun SearchBar(
-    modifier: Modifier = Modifier
-) {
-    TextField(
-        value = "",
-        onValueChange = {},
-        trailingIcon = {
-            Icon(
-                imageVector = Icons.Default.Search,
-                contentDescription = null
-            )
-        },
-        colors = TextFieldDefaults.colors(
-            unfocusedContainerColor = MaterialTheme.colorScheme.surface,
-            focusedContainerColor = MaterialTheme.colorScheme.surface
-        ),
-        placeholder = {
-            Text(stringResource(R.string.placeholder_search))
-        },
-        modifier = modifier
-            .fillMaxWidth()
-            .heightIn(min = dimensionResource(id = R.dimen.height_search_bar))
-    )
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -194,7 +173,7 @@ fun OrderByBar(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun AddNewLectureButton(onNewLectureClicked: () -> Unit) {
+private fun AddNewLectureButton1(onNewLectureClicked: () -> Unit) {
     FloatingActionButton(
         shape = MaterialTheme.shapes.large.copy(CornerSize(percent = 50)),
         onClick = onNewLectureClicked,
@@ -224,20 +203,7 @@ fun LectureListContent(
     )
     var selectedItem by rememberSaveable { mutableStateOf(criteriaList.first()) }
     Column {
-
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_between_list_item)),
-            contentPadding = PaddingValues(horizontal = 16.dp),
-            modifier = modifier
-        ) {
-            items(criteriaList) { item ->
-                val isSelected = selectedItem == item
-                FilterItem(
-                    criteria = item,
-                    isSelected = isSelected,
-                    onClick = { selectedItem = item })
-            }
-        }
+        filterSection(criteriaList = criteriaList)
         LectureListSection(
             lectureList = lectureList,
             selectedFilter = selectedItem,
@@ -246,30 +212,6 @@ fun LectureListContent(
         )
     }
 }
-
-@Composable
-fun FilterItem(
-    @StringRes criteria: Int,
-    isSelected: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    val backgroundColor = if (isSelected) Color.Yellow else Color(0xFFBBAAEE)
-
-    Text(
-        text = stringResource(id = criteria),
-        style = MaterialTheme.typography.bodyMedium,
-        modifier = Modifier
-            .drawBehind {
-                drawRoundRect(
-                    backgroundColor,
-                    cornerRadius = CornerRadius(10.dp.toPx())
-                )
-            }
-            .clickable { onClick() }
-    )
-}
-
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LectureListSection(
@@ -363,7 +305,7 @@ fun LectureListItem(
                 )
             }
             Text(
-                text =item.lecture.location ,
+                text = item.lecture.location,
                 style = MaterialTheme.typography.bodyMedium,
                 color = DefaultColorScheme.primary
             )
@@ -405,7 +347,6 @@ public fun BottomNavigation(modifier: Modifier = Modifier) {
         )
     }
 }
-
 
 
 //@Preview

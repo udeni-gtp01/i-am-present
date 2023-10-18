@@ -1,4 +1,4 @@
-package lk.lnbti.iampresent.coordinator.ui.view
+package lk.lnbti.iampresent.ui.view
 
 import ErrorScreen
 import LoadingScreen
@@ -47,8 +47,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import lk.lnbti.iampresent.R
 import lk.lnbti.iampresent.data.Result
 import lk.lnbti.iampresent.ui.theme.CommonColorScheme
-import lk.lnbti.iampresent.ui.view.BottomNavigation
-import lk.lnbti.iampresent.ui.view.TopAppBar
 import lk.lnbti.iampresent.view_model.NewLectureViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar

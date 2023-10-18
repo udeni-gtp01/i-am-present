@@ -1,5 +1,7 @@
-package lk.lnbti.iampresent.student.ui.view
+package lk.lnbti.iampresent.ui.view
 
+import ErrorScreen
+import LoadingScreen
 import android.util.Log
 import android.view.ViewGroup
 import androidx.camera.core.CameraSelector
@@ -43,18 +45,21 @@ import com.google.accompanist.permissions.shouldShowRationale
 import com.google.common.util.concurrent.ListenableFuture
 import lk.lnbti.iampresent.R
 import lk.lnbti.iampresent.constant.Constant
-import lk.lnbti.iampresent.student.view_model.NewAttendanceViewModel
+import lk.lnbti.iampresent.data.Result
+import lk.lnbti.iampresent.view_model.NewAttendanceViewModel
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
 fun NewLectureScreen(
-    newLectureViewModel: NewAttendanceViewModel = hiltViewModel(),
+    newAttendanceViewModel: NewAttendanceViewModel = hiltViewModel(),
     onYesButtonClicked: () -> Unit,
+    onRetryButtonClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val qrData: String? by newLectureViewModel.qrData.observeAsState(null)
+    val qrData: String? by newAttendanceViewModel.qrData.observeAsState(null)
+    val saveAttendanceResult by newAttendanceViewModel.saveAttendanceResult.observeAsState(null)
 
     Scaffold(
         topBar = {
@@ -79,41 +84,65 @@ fun NewLectureScreen(
                 verticalArrangement = Arrangement.Bottom,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Spacer(modifier = Modifier.height(10.dp))
-                val cameraPermissionState =
-                    rememberPermissionState(permission = Constant.PERMISSION_CAMERA)
-
-                when {
-                    cameraPermissionState.status.isGranted -> {
-                        // Camera permission is granted, show the camera preview
-                        CameraPreview(
-                            qrData = qrData,
-                            isValidQr = { qrData -> newLectureViewModel.isValidQr(qrData) },
-                            onQrScanned = { newLectureViewModel.onQrDataChange() },
-                            onYesButtonClicked = {
-                                onYesButtonClicked()
-                                newLectureViewModel.saveAttendance()
-                            }
-                        )
+                when (saveAttendanceResult) {
+                    is Result.Loading -> {
+                        // Handle loading state
+                        LoadingScreen()
                     }
 
-                    cameraPermissionState.status.shouldShowRationale -> {
-                        // Permission is denied, but a rationale should be shown
-                        Text("Please grant camera permission in app settings.")
+                    is Result.Success<*> -> {
+                        // Handle success state
+                        newAttendanceViewModel.resetSaveAttendanceResult()
+                        onYesButtonClicked()
+                    }
+
+                    is Result.Error -> {
+                        // Handle error state
+                        val errorMessage = (saveAttendanceResult as Result.Error).message
+                        ErrorScreen(
+                            errorMessage = errorMessage,
+                            onRetry = {
+                                newAttendanceViewModel.resetSaveAttendanceResult()
+                                onRetryButtonClicked()})
                     }
 
                     else -> {
-                        // Permission is denied, show the permission request button
-                        Button(
-                            onClick = {
-                                cameraPermissionState.launchPermissionRequest()
+                        Spacer(modifier = Modifier.height(10.dp))
+                        val cameraPermissionState =
+                            rememberPermissionState(permission = Constant.PERMISSION_CAMERA)
+
+                        when {
+                            cameraPermissionState.status.isGranted -> {
+                                // Camera permission is granted, show the camera preview
+                                CameraPreview(
+                                    qrData = qrData,
+                                    isValidQr = { qrData -> newAttendanceViewModel.isValidQr(qrData) },
+                                    onQrScanned = { newAttendanceViewModel.onQrDataChange() },
+                                    onYesButtonClicked = {
+                                        newAttendanceViewModel.saveAttendance()
+                                    }
+                                )
                             }
-                        ) {
-                            Text(text = "Request Camera Permission")
+
+                            cameraPermissionState.status.shouldShowRationale -> {
+                                // Permission is denied, but a rationale should be shown
+                                Text("Please grant camera permission in app settings.")
+                            }
+
+                            else -> {
+                                // Permission is denied, show the permission request button
+                                Button(
+                                    onClick = {
+                                        cameraPermissionState.launchPermissionRequest()
+                                    }
+                                ) {
+                                    Text(text = "Request Camera Permission")
+                                }
+                            }
                         }
+                        Spacer(modifier = Modifier.height(10.dp))
                     }
                 }
-                Spacer(modifier = Modifier.height(10.dp))
             }
         }
     }

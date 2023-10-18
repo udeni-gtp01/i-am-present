@@ -1,4 +1,4 @@
-package lk.lnbti.iampresent.coordinator.ui.view
+package lk.lnbti.iampresent.ui.view
 
 import ErrorScreen
 import LoadingScreen
@@ -48,8 +48,6 @@ import lk.lnbti.iampresent.data.Lecture
 import lk.lnbti.iampresent.data.Result
 import lk.lnbti.iampresent.ui.theme.CommonColorScheme
 import lk.lnbti.iampresent.ui.theme.IAmPresentTheme
-import lk.lnbti.iampresent.ui.view.AddNewLectureButton
-import lk.lnbti.iampresent.ui.view.TopAppBar
 import lk.lnbti.iampresent.view_model.TodaysLectureListViewModel
 
 
@@ -80,7 +78,7 @@ fun TodaysLectureListScreen(
             AddNewLectureButton(onNewLectureClicked = onNewLectureClicked)
         },
         bottomBar = {
-            lk.lnbti.iampresent.ui.view.BottomNavigation(
+            BottomNavigation(
                 onTodayNavButtonClicked = onTodayNavButtonClicked,
                 onAllNavButtonClicked = onAllNavButtonClicked,
                 onReportsNavButtonClicked = onReportsNavButtonClicked
@@ -137,7 +135,7 @@ private fun LectureListContent(
     Column(
         //modifier = modifier.background(CommonColorScheme.dark_blue)
     ) {
-        lk.lnbti.iampresent.ui.view.filterSection(criteriaList = criteriaList)
+        filterSection(criteriaList = criteriaList)
         Column(
             modifier
                 .background(
@@ -212,12 +210,12 @@ private fun TodaysLectureListSection(
 
         grouped?.forEach { (initial, lectureList) ->
             stickyHeader {
-                lk.lnbti.iampresent.ui.view.ListGroupHeader(initial)
+                ListGroupHeader(initial)
             }
             items(lectureList) {
-                lk.lnbti.iampresent.ui.view.ListItemContent(
+                ListItemContent(
                     content = {
-                        lk.lnbti.iampresent.coordinator.ui.view.LectureListItemToday(
+                        LectureListItemToday(
                             item = it,
                             onLectureItemClicked = onLectureItemClicked
                         )

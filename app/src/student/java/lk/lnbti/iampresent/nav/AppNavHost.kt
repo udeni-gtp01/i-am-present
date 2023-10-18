@@ -1,13 +1,13 @@
-package lk.lnbti.iampresent.student.nav
+package lk.lnbti.iampresent.nav
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import lk.lnbti.iampresent.student.ui.view.AttendanceListScreen
-import lk.lnbti.iampresent.student.ui.view.LectureInfoScreen
-import lk.lnbti.iampresent.student.ui.view.NewLectureScreen
+import lk.lnbti.iampresent.ui.view.AttendanceListScreen
+import lk.lnbti.iampresent.ui.view.LectureInfoScreen
+import lk.lnbti.iampresent.ui.view.NewLectureScreen
 
 @Composable
 fun AppNavHost(navController: NavHostController) {
@@ -17,12 +17,13 @@ fun AppNavHost(navController: NavHostController) {
                 onLectureItemClicked = { lectureId ->
                     navController.navigateToLectureInfo(lectureId)
                 },
-                onNewLectureClicked = { navController.navigateSingleTopTo( NewAttendanceDestination.route) }
+                onNewLectureClicked = { navController.navigateSingleTopTo(NewAttendanceDestination.route) }
             )
         }
         composable(route = NewAttendanceDestination.route) {
             NewLectureScreen(
-                onYesButtonClicked={navController.navigateSingleTopTo(AttendanceListDestination.route)}
+                onYesButtonClicked={navController.navigateSingleTopTo(AttendanceListDestination.route)},
+                onRetryButtonClicked = {navController.navigateSingleTopTo(NewAttendanceDestination.route)}
             )
         }
         composable(

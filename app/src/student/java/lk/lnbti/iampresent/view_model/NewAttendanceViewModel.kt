@@ -1,7 +1,6 @@
-package lk.lnbti.iampresent.student.view_model
+package lk.lnbti.iampresent.view_model
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,6 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import lk.lnbti.iampresent.data.Attendance
 import lk.lnbti.iampresent.data.Lecture
+import lk.lnbti.iampresent.data.Result
 import lk.lnbti.iampresent.data.User
 import lk.lnbti.iampresent.repo.AttendanceRepo
 import lk.lnbti.iampresent.ui_state.LectureListUiState
@@ -30,6 +30,9 @@ class NewAttendanceViewModel @Inject constructor(
 
     private val _qrData: MutableLiveData<String> = MutableLiveData(null)
     val qrData: LiveData<String> = _qrData
+
+    private val _saveAttendanceResult = MutableLiveData<Result<Attendance?>>()
+    val saveAttendanceResult: LiveData<Result<Attendance?>> = _saveAttendanceResult
 
     var time: String = ""
     var lectureId = ""
@@ -61,6 +64,7 @@ class NewAttendanceViewModel @Inject constructor(
     }
 
     fun saveAttendance() {
+        _saveAttendanceResult.value = Result.Loading
         val newAttendance: Attendance = Attendance(
             lecture = Lecture(
                 lectureId = lectureId.toInt(),
@@ -68,25 +72,34 @@ class NewAttendanceViewModel @Inject constructor(
                 subject = subject,
                 batch = batch,
 
-            ),
+                ),
             ispresent = 1,
             student = User(
                 name = "admin",
             ),
         )
         val respose = ""
-        viewModelScope.launch{
-              val respose = attendanceRepo.saveAttendance(attendance = newAttendance)
-            Log.d("oyasumi", "Saved attendance says: " + respose)
-            findLectureList()
+        viewModelScope.launch {
+            val result: Result<Attendance?> =
+                attendanceRepo.saveAttendance(attendance = newAttendance)
+            _saveAttendanceResult.value = result
+            when (result) {
+                is Result.Success -> {
+                    findLectureList()
+                }
+
+                else -> {}
+            }
         }
 
     }
+
     fun findLectureList() {
         viewModelScope.launch {
             //lectureListUiState.loadLectureList(attendanceRepo.getAttendanceList())
         }
     }
+
     private fun convertDateToSqlFormat(myDate: String): String {
         val selectedDateFormat = SimpleDateFormat("MMMM d, yyyy", Locale.getDefault())
         val sqlDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -120,5 +133,8 @@ class NewAttendanceViewModel @Inject constructor(
         subject = allText[3]
         location = allText[4]
 
+    }
+    fun resetSaveAttendanceResult(){
+        _saveAttendanceResult.value=null
     }
 }

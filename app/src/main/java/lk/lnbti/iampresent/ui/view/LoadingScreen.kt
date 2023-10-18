@@ -32,11 +32,20 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
+import lk.lnbti.iampresent.ui.theme.CommonColorScheme
 
 @Composable
 fun LoadingScreen() {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.background(
+            brush = Brush.verticalGradient(
+                colors = listOf(
+                    CommonColorScheme.main_orange,
+                    CommonColorScheme.main_blue
+                )
+            )
+        )
+            .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

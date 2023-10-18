@@ -1,4 +1,4 @@
-package lk.lnbti.iampresent.coordinator.ui.view
+package lk.lnbti.iampresent.ui.view
 
 import android.graphics.Bitmap
 import android.graphics.Color
@@ -51,7 +51,6 @@ import kotlinx.coroutines.launch
 import lk.lnbti.iampresent.R
 import lk.lnbti.iampresent.data.Lecture
 import lk.lnbti.iampresent.ui.theme.IAmPresentTheme
-import lk.lnbti.iampresent.ui.view.BottomNavigation
 import lk.lnbti.iampresent.view_model.LectureInfoViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)

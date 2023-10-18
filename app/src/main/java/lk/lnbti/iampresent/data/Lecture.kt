@@ -23,15 +23,15 @@ data class LectureStatus(
 data class Lecture(
     @SerializedName("lectureid") val lectureId: Int=0,
     @SerializedName("venue") val location: String,
-    @SerializedName("startdate") val startDate: String,
-    @SerializedName("starttime") val startTime: String,
-    @SerializedName("enddate") val endDate: String,
-    @SerializedName("endtime") val endTime: String,
-    @SerializedName("semester") val semester: Int,
+    @SerializedName("startdate") val startDate: String="",
+    @SerializedName("starttime") val startTime: String="",
+    @SerializedName("enddate") val endDate: String="",
+    @SerializedName("endtime") val endTime: String="",
+    @SerializedName("semester") val semester: Int=0,
     @SerializedName("subject") val subject: String,
     @SerializedName("batch") val batch: String,
-    @SerializedName("organizerid") val organizer: User,
-    @SerializedName("lecturerid") val lecturer: User,
-    @SerializedName("lecturestatusid") val lectureStatus: LectureStatus
+    @SerializedName("organizerid") val organizer: User=User(),
+    @SerializedName("lecturerid") val lecturer: User=User(),
+    @SerializedName("lecturestatusid") val lectureStatus: LectureStatus=LectureStatus()
 ) : Parcelable
 

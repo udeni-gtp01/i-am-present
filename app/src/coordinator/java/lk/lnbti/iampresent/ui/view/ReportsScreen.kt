@@ -1,4 +1,4 @@
-package lk.lnbti.iampresent.coordinator.ui.view
+package lk.lnbti.iampresent.ui.view
 
 import ErrorScreen
 import LoadingScreen
@@ -57,8 +57,6 @@ import lk.lnbti.iampresent.constant.Constant
 import lk.lnbti.iampresent.data.Attendance
 import lk.lnbti.iampresent.data.Result
 import lk.lnbti.iampresent.ui.theme.DefaultColorScheme
-import lk.lnbti.iampresent.ui.view.BottomNavigation
-import lk.lnbti.iampresent.ui.view.TopAppBar
 import lk.lnbti.iampresent.view_model.ReportsViewModel
 import org.apache.poi.ss.usermodel.Workbook
 import org.apache.poi.ss.usermodel.WorkbookFactory

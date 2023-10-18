@@ -10,6 +10,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="09752cd7-2185-4973-ab93-8732b59a454f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/nav/AppDestination.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/view/TodaysLectureListScreen.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/view_model/AttendanceListViewModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/location.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/time.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/student/java/lk/lnbti/iampresent/nav/AppDestination.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/student/java/lk/lnbti/iampresent/nav/AppNavHost.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/student/java/lk/lnbti/iampresent/ui/view/AttendanceListScreen.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/student/java/lk/lnbti/iampresent/ui/view/BarcodeAnalyser.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/student/java/lk/lnbti/iampresent/ui/view/LectureInfoScreen.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/student/java/lk/lnbti/iampresent/ui/view/NewLectureScreen.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/student/java/lk/lnbti/iampresent/view_model/AttendanceInfoViewModel.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/student/java/lk/lnbti/iampresent/view_model/NewAttendanceViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.3/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.3/checksums/checksums.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.3/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.3/checksums/md5-checksums.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.3/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.3/checksums/sha1-checksums.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.3/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.3/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.3/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.3/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.3/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.3/fileHashes/fileHashes.bin" afterDir="false" />
@@ -18,28 +34,38 @@
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/assetWizardSettings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/assetWizardSettings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-coordinator/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-coordinator/google-services.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/MainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/constant/Constant.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/constant/Constant.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/theme/Color.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/theme/Color.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/theme/Theme.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/theme/Theme.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/theme/Type.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/theme/Type.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/view/Components.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/view/Components.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/view/LectureListScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/view/LectureListScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/view/NewLectureScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/view/NewLectureScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/view/ReportsScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/view/ReportsScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/view/TodaysLectureListScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/java/lk/lnbti/iampresent/ui/view/TodaysLectureListScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/res/values/dimens.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/res/values/dimens.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-coordinator/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app-coordinator/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/constant/Constant.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/constant/Constant.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/MainActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/constant/Constant.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/constant/Constant.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/dao/AttendenceDao.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/dao/AttendenceDao.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/data/Lecture.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/data/Lecture.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/nav/AppDestination.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/nav/AppDestination.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/nav/AppNavHost.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/nav/AppNavHost.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/repo/AttendanceRepo.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/repo/AttendanceRepo.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/ui/theme/Color.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/ui/theme/Color.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/ui/view/Components.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/ui/view/Components.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/ui/view/ErrorScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/ui/view/ErrorScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/ui/view/LectureInfoScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/view/LectureInfoScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/ui/view/LectureListScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/view/LectureListScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/ui/view/LoadingScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/ui/view/LoadingScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/ui/view/NewLectureScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/view/NewLectureScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/ui/view/ReportsScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/view/ReportsScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/ui/view/TodaysLectureListScreen.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/view_model/NewLectureViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/view_model/NewLectureViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/view_model/ReportsViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/view_model/ReportsViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/dimens.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/dimens.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[2b099b450e3f7ece]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -112,10 +138,13 @@
         <option value="Kotlin Data Class" />
         <option value="Kotlin Interface" />
         <option value="Kotlin Sealed Class" />
-        <option value="Kotlin Class" />
         <option value="valueResourceFile" />
+        <option value="Kotlin Class" />
       </list>
     </option>
+  </component>
+  <component name="GenerateSignedApkSettings">
+    <option name="BUILD_TARGET_KEY" value="apk" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -125,11 +154,11 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;
   }
-}]]></component>
+}</component>
   <component name="GithubPullRequestsUISettings">
     <option name="selectedUrlAndAccountId">
       <UrlAndAccount>
@@ -151,6 +180,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ApkExportedModule": "I_am_present.app-student",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
@@ -158,11 +188,11 @@
     "android-custom-viewC:/Users/ukuis/.gradle/caches/modules-2/files-2.1/androidx.compose.ui/ui-android/1.5.0/d096c6e1ab398990ce7c05e3003f79320b4235c/ui-android-1.5.0-sources.jar!/androidMain/androidx/compose/ui/platform/ComposeView.android.kt_SELECTED": "AbstractComposeView",
     "cidr.known.project.marker": "true",
     "com.google.services.firebase.aqiPopupShown": "true",
-    "last_opened_file_path": "D:/AndroidStudioProjects/semester end/i-am-present/app-coordinator/src/main/java/lk/lnbti/iampresent/dao",
-    "project.structure.last.edited": "Modules",
+    "last_opened_file_path": "D:/AndroidStudioProjects/semester end/i-am-present/app/src/student/java/lk/lnbti/iampresent/student/ui/view",
+    "project.structure.last.edited": "Build Variants",
     "project.structure.proportion": "0.17",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle"
+    "settings.editor.selected.configurable": "preferences.keymap"
   }
 }]]></component>
   <component name="PsdUISettings">
@@ -174,14 +204,18 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\AndroidStudioProjects\semester end\i-am-present\app-coordinator\src\main\java\lk\lnbti\iampresent\dao" />
-      <recent name="D:\AndroidStudioProjects\semester end\i-am-present\app-coordinator\src\main\java\lk\lnbti\iampresent\data" />
-      <recent name="D:\AndroidStudioProjects\semester end\i-am-present\app-student\src\main\res\values" />
-      <recent name="D:\AndroidStudioProjects\semester end\i-am-present\app-student\src\main\java\lk\lnbti\app_student" />
-      <recent name="D:\AndroidStudioProjects\semester end\i-am-present\app-student\src\main\java\lk\lnbti\app_student\ui\theme" />
+      <recent name="D:\AndroidStudioProjects\semester end\i-am-present\app\src\student\java\lk\lnbti\iampresent\student\ui\view" />
+      <recent name="D:\AndroidStudioProjects\semester end\i-am-present\app\src\student\java\lk\lnbti\iampresent\student" />
+      <recent name="D:\AndroidStudioProjects\semester end\i-am-present\app\src\student\java\lk\lnbti\iampresent\student\nav" />
+      <recent name="D:\AndroidStudioProjects\semester end\i-am-present\app\src\coordinator\java\lk\lnbti\iampresent\coordinator\ui\view" />
+      <recent name="D:\AndroidStudioProjects\semester end\i-am-present\app\src\main\java\lk\lnbti\iampresent" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\AndroidStudioProjects\semester end\i-am-present\app-coordinator" />
+      <recent name="D:\AndroidStudioProjects\semester end\i-am-present\app\src\main\java\lk\lnbti\iampresent\view_model" />
+      <recent name="D:\AndroidStudioProjects\semester end\i-am-present\app\src\student\java\lk\lnbti\iampresent" />
+      <recent name="D:\AndroidStudioProjects\semester end\i-am-present\app\src\student\java\lk\lnbti\iampresent\nav" />
+      <recent name="D:\AndroidStudioProjects\semester end\i-am-present\app\src\coordinator\java\lk\lnbti\iampresent\ui\view" />
+      <recent name="D:\AndroidStudioProjects\semester end\i-am-present\app\src\coordinator\java\lk\lnbti\iampresent" />
     </key>
     <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
       <recent name="lk.lnbti.iampresent.repo" />
@@ -191,140 +225,8 @@
       <recent name="lk.lnbti.iampresent.service" />
     </key>
   </component>
-  <component name="RunManager" selected="Android App.app">
-    <configuration name="app-coordinator" type="AndroidRunConfigurationType" factoryName="Android App">
-      <module name="I_am_present.app-coordinator.main" />
-      <option name="DEPLOY" value="true" />
-      <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
-      <option name="DEPLOY_AS_INSTANT" value="false" />
-      <option name="ARTIFACT_NAME" value="" />
-      <option name="PM_INSTALL_OPTIONS" value="" />
-      <option name="ALL_USERS" value="false" />
-      <option name="ALWAYS_INSTALL_WITH_PM" value="false" />
-      <option name="CLEAR_APP_STORAGE" value="false" />
-      <option name="ACTIVITY_EXTRA_FLAGS" value="" />
-      <option name="MODE" value="default_activity" />
-      <option name="CLEAR_LOGCAT" value="false" />
-      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
-      <option name="INSPECTION_WITHOUT_ACTIVITY_RESTART" value="false" />
-      <option name="TARGET_SELECTION_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
-      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
-      <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
-      <option name="DEBUGGER_TYPE" value="Auto" />
-      <Auto>
-        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
-        <option name="SHOW_STATIC_VARS" value="true" />
-        <option name="WORKING_DIR" value="" />
-        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
-        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
-        <option name="ATTACH_ON_WAIT_FOR_DEBUGGER" value="false" />
-        <option name="DEBUG_SANDBOX_SDK" value="false" />
-      </Auto>
-      <Hybrid>
-        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
-        <option name="SHOW_STATIC_VARS" value="true" />
-        <option name="WORKING_DIR" value="" />
-        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
-        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
-        <option name="ATTACH_ON_WAIT_FOR_DEBUGGER" value="false" />
-        <option name="DEBUG_SANDBOX_SDK" value="false" />
-      </Hybrid>
-      <Java>
-        <option name="ATTACH_ON_WAIT_FOR_DEBUGGER" value="false" />
-        <option name="DEBUG_SANDBOX_SDK" value="false" />
-      </Java>
-      <Native>
-        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
-        <option name="SHOW_STATIC_VARS" value="true" />
-        <option name="WORKING_DIR" value="" />
-        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
-        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
-        <option name="ATTACH_ON_WAIT_FOR_DEBUGGER" value="false" />
-        <option name="DEBUG_SANDBOX_SDK" value="false" />
-      </Native>
-      <Profilers>
-        <option name="ADVANCED_PROFILING_ENABLED" value="false" />
-        <option name="STARTUP_PROFILING_ENABLED" value="false" />
-        <option name="STARTUP_CPU_PROFILING_ENABLED" value="false" />
-        <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Java/Kotlin Method Sample (legacy)" />
-        <option name="STARTUP_NATIVE_MEMORY_PROFILING_ENABLED" value="false" />
-        <option name="NATIVE_MEMORY_SAMPLE_RATE_BYTES" value="2048" />
-      </Profilers>
-      <option name="DEEP_LINK" value="" />
-      <option name="ACTIVITY_CLASS" value="" />
-      <option name="SEARCH_ACTIVITY_IN_GLOBAL_SCOPE" value="false" />
-      <option name="SKIP_ACTIVITY_VALIDATION" value="false" />
-      <method v="2">
-        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="app-student" type="AndroidRunConfigurationType" factoryName="Android App">
-      <module name="I_am_present.app-student.main" />
-      <option name="DEPLOY" value="true" />
-      <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
-      <option name="DEPLOY_AS_INSTANT" value="false" />
-      <option name="ARTIFACT_NAME" value="" />
-      <option name="PM_INSTALL_OPTIONS" value="" />
-      <option name="ALL_USERS" value="false" />
-      <option name="ALWAYS_INSTALL_WITH_PM" value="false" />
-      <option name="CLEAR_APP_STORAGE" value="false" />
-      <option name="ACTIVITY_EXTRA_FLAGS" value="" />
-      <option name="MODE" value="default_activity" />
-      <option name="CLEAR_LOGCAT" value="false" />
-      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
-      <option name="INSPECTION_WITHOUT_ACTIVITY_RESTART" value="false" />
-      <option name="TARGET_SELECTION_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
-      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
-      <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
-      <option name="DEBUGGER_TYPE" value="Auto" />
-      <Auto>
-        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
-        <option name="SHOW_STATIC_VARS" value="true" />
-        <option name="WORKING_DIR" value="" />
-        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
-        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
-        <option name="ATTACH_ON_WAIT_FOR_DEBUGGER" value="false" />
-        <option name="DEBUG_SANDBOX_SDK" value="false" />
-      </Auto>
-      <Hybrid>
-        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
-        <option name="SHOW_STATIC_VARS" value="true" />
-        <option name="WORKING_DIR" value="" />
-        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
-        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
-        <option name="ATTACH_ON_WAIT_FOR_DEBUGGER" value="false" />
-        <option name="DEBUG_SANDBOX_SDK" value="false" />
-      </Hybrid>
-      <Java>
-        <option name="ATTACH_ON_WAIT_FOR_DEBUGGER" value="false" />
-        <option name="DEBUG_SANDBOX_SDK" value="false" />
-      </Java>
-      <Native>
-        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
-        <option name="SHOW_STATIC_VARS" value="true" />
-        <option name="WORKING_DIR" value="" />
-        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
-        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
-        <option name="ATTACH_ON_WAIT_FOR_DEBUGGER" value="false" />
-        <option name="DEBUG_SANDBOX_SDK" value="false" />
-      </Native>
-      <Profilers>
-        <option name="ADVANCED_PROFILING_ENABLED" value="false" />
-        <option name="STARTUP_PROFILING_ENABLED" value="false" />
-        <option name="STARTUP_CPU_PROFILING_ENABLED" value="false" />
-        <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Java/Kotlin Method Sample (legacy)" />
-        <option name="STARTUP_NATIVE_MEMORY_PROFILING_ENABLED" value="false" />
-        <option name="NATIVE_MEMORY_SAMPLE_RATE_BYTES" value="2048" />
-      </Profilers>
-      <option name="DEEP_LINK" value="" />
-      <option name="ACTIVITY_CLASS" value="" />
-      <option name="SEARCH_ACTIVITY_IN_GLOBAL_SCOPE" value="false" />
-      <option name="SKIP_ACTIVITY_VALIDATION" value="false" />
-      <method v="2">
-        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App">
+  <component name="RunManager" selected="Android App.iam">
+    <configuration name="iam" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
       <module name="I_am_present.app.main" />
       <option name="DEPLOY" value="true" />
       <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
@@ -337,9 +239,9 @@
       <option name="ACTIVITY_EXTRA_FLAGS" value="" />
       <option name="MODE" value="default_activity" />
       <option name="CLEAR_LOGCAT" value="false" />
-      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
       <option name="INSPECTION_WITHOUT_ACTIVITY_RESTART" value="false" />
-      <option name="TARGET_SELECTION_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
+      <option name="TARGET_SELECTION_MODE" value="SHOW_DIALOG" />
       <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
       <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
       <option name="DEBUGGER_TYPE" value="Auto" />
@@ -386,7 +288,9 @@
       <option name="ACTIVITY_CLASS" value="" />
       <option name="SEARCH_ACTIVITY_IN_GLOBAL_SCOPE" value="false" />
       <option name="SKIP_ACTIVITY_VALIDATION" value="false" />
-      <method v="2" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
     </configuration>
     <configuration name="LectureListScreenPreview" type="ComposePreviewRunConfiguration" temporary="true">
       <module name="I_am_present.app" />
@@ -589,6 +493,12 @@
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Android App.iam" />
+      <item itemvalue="Compose Preview.LectureListScreenPreview" />
+      <item itemvalue="Compose Preview.PreviewFilterSection" />
+      <item itemvalue="Compose Preview.PreviewLectureListSection" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Compose Preview.PreviewFilterSection" />
@@ -607,5 +517,16 @@
       <updated>1693666272090</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>

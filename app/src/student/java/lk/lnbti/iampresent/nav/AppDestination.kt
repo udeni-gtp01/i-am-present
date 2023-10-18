@@ -1,4 +1,4 @@
-package lk.lnbti.iampresent.student.nav
+package lk.lnbti.iampresent.nav
 
 import androidx.navigation.NavType
 import androidx.navigation.navArgument

@@ -5,7 +5,8 @@ package lk.lnbti.iampresent.constant
  */
 object Constant {
     const val PERMISSION_WRITE_EXTERNAL_STORAGE = android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-    const val BASE_URL = "http://192.168.8.104:8080/api/public/"
+    const val PERMISSION_CAMERA = android.Manifest.permission.CAMERA
+    const val BASE_URL = "http://192.168.8.100:8080/api/public/"
 
     const val ENDPOINT_LECTURE_ALL = "lecture/all"
     const val ENDPOINT_LECTURE_ALL_TODAY = "lecture/today"

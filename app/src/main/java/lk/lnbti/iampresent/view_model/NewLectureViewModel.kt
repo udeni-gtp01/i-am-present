@@ -15,6 +15,7 @@ import lk.lnbti.iampresent.repo.LectureRepo
 import lk.lnbti.iampresent.ui_state.LectureInfoUiState
 import lk.lnbti.iampresent.ui_state.LectureListUiState
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import javax.inject.Inject
@@ -93,6 +94,9 @@ class NewLectureViewModel @Inject constructor(
     private val _savedLectureId = MutableLiveData("0")
     val savedLectureId: LiveData<String> = _savedLectureId
 
+     val _dialogError: MutableLiveData<String?> = MutableLiveData(null)
+    val dialogError: LiveData<String?> = _dialogError
+
     fun onBatchChange(newBatch: String) {
         _batch.value = newBatch
         checkBatchValidation()
@@ -136,6 +140,23 @@ class NewLectureViewModel @Inject constructor(
 
     private fun checkStartDateValidation() {
         _isStartDateError.value = _startDate.value.isNullOrBlank()
+        if (!isStartDateError.value!!) {
+            // Parse the start date to compare it with today's date
+            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val selectedStartDate = dateFormat.parse(convertDateToSqlFormat(_startDate.value.toString()))
+
+            if (selectedStartDate != null) {
+                // Get today's date
+                val currentDate = Calendar.getInstance().time
+
+                // Check if the selected start date is before today
+                val result=selectedStartDate.before(currentDate)
+                _isStartDateError.value = result
+                if(result) {
+                    _dialogError.value = "Start date cannot be in past."
+                }
+            }
+        }
     }
 
     fun onStartTimeChange(newStartTime: String) {
@@ -145,6 +166,29 @@ class NewLectureViewModel @Inject constructor(
 
     private fun checkStartTimeValidation() {
         _isStartTimeError.value = _startTime.value.isNullOrBlank()
+        if (!isStartTimeError.value!!) {
+            // Parse the start time to compare it with the current time
+            val timeFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+            val selectedStartTime = timeFormat.parse(convertTimeToSqlFormat(_startTime.value.toString()))
+
+            if (selectedStartTime != null) {
+                // Get the current time
+                val currentTime = Calendar.getInstance()
+                val currentHour = currentTime.get(Calendar.HOUR_OF_DAY)
+                val currentMinute = currentTime.get(Calendar.MINUTE)
+
+                // Parse the selected start time
+                val selectedHour = selectedStartTime.hours
+                val selectedMinute = selectedStartTime.minutes
+
+                // Check if the selected start time is before the current time
+                val result=selectedHour < currentHour || (selectedHour == currentHour && selectedMinute <= currentMinute)
+                _isStartTimeError.value = result
+                if(result) {
+                    _dialogError.value = "Start time cannot be in past."
+                }
+            }
+        }
     }
 
     fun onEndDateChange(newEndDate: String) {
@@ -154,6 +198,18 @@ class NewLectureViewModel @Inject constructor(
 
     private fun checkEndDateValidation() {
         _isEndDateError.value = _endDate.value.isNullOrBlank()
+        if (!isEndDateError.value!!){
+            if (isStartDateError.value==false && isEndDateError.value==false) {
+                val startDateCal = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(convertDateToSqlFormat(_startDate.value.toString()))
+                val endDateCal = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(convertDateToSqlFormat(_endDate.value.toString()))
+
+                if (startDateCal != null && endDateCal != null) {
+                    if (endDateCal.before(startDateCal)) {
+                        _dialogError.value = "End date cannot be before the start date."
+                    }
+                }
+            }
+        }
     }
 
     fun onEndTimeChange(newEndTime: String) {
@@ -163,6 +219,20 @@ class NewLectureViewModel @Inject constructor(
 
     private fun checkEndTimeValidation() {
         _isEndTimeError.value = _endTime.value.isNullOrBlank()
+        if (!isEndTimeError.value!!){
+            if (isStartDateError.value==false && isEndDateError.value==false && isStartTimeError.value==false && isEndTimeError.value==false) {
+                val startDateCal = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(convertDateToSqlFormat(_startDate.value.toString()))
+                val endDateCal = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(convertDateToSqlFormat(_endDate.value.toString()))
+                val startTimeCal = SimpleDateFormat("HH:mm:ss", Locale.getDefault()).parse(convertTimeToSqlFormat(_startTime.value.toString()))
+                val endTimeCal = SimpleDateFormat("HH:mm:ss", Locale.getDefault()).parse(convertTimeToSqlFormat(_endTime.value.toString()))
+
+                if (startDateCal != null && endDateCal != null && startTimeCal != null && endTimeCal != null) {
+                    if (endDateCal == Date() && endTimeCal.before(startTimeCal)) {
+                        _dialogError.value = "End time cannot be before the start time."
+                    }
+                }
+            }
+        }
     }
 
     fun onLecturerNameChange(newLecturerName: String) {
@@ -181,6 +251,18 @@ class NewLectureViewModel @Inject constructor(
 
     private fun checkLecturerEmailValidation() {
         _isLecturerEmailError.value = _lecturerEmail.value.isNullOrBlank()
+        if (!isLecturerEmailError.value!!) {
+            val emailPattern = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$".toRegex()
+            val result=lecturerEmail.value?.let { emailPattern.matches(it) }
+            _isLecturerEmailError.value=result
+            result?.let {
+                if (!result) {
+                    _dialogError.value = "Please enter valid email."
+
+                }
+            }
+
+        }
     }
 
     fun checkAllValidation() {
@@ -279,5 +361,8 @@ class NewLectureViewModel @Inject constructor(
     }
     fun resetLectureSaveResult(){
         _lectureSaveResult.value=null
+    }
+    fun resetdialogError(){
+        _dialogError.value=null
     }
 }

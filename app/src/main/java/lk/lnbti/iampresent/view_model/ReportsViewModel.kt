@@ -1,7 +1,6 @@
 package lk.lnbti.iampresent.view_model
 
 import android.os.Environment
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import lk.lnbti.iampresent.R
 import lk.lnbti.iampresent.data.Attendance
 import lk.lnbti.iampresent.data.Result
 import lk.lnbti.iampresent.repo.AttendanceRepo
@@ -17,6 +15,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
 import javax.inject.Inject
+
 @HiltViewModel
 class ReportsViewModel @Inject constructor(
     private val attendanceRepo: AttendanceRepo,
@@ -66,6 +65,7 @@ class ReportsViewModel @Inject constructor(
             }
         }
     }
+
     fun OutputStream.writeCsv(data: List<Attendance>) {
         val writer = bufferedWriter()
         writer.write(""""Batch", "Semester", "Subject", "Date", "Time", "Student email"""")
@@ -75,13 +75,5 @@ class ReportsViewModel @Inject constructor(
             writer.newLine()
         }
         writer.flush()
-    }
-}
-class AttendanceListUiState {
-    private val _attendanceList: MutableLiveData<List<Attendance>> = MutableLiveData(emptyList())
-    val attendanceList: LiveData<List<Attendance>> = _attendanceList
-
-    fun loadAttendanceList(attendanceList: List<Attendance>) {
-        _attendanceList.value = attendanceList
     }
 }

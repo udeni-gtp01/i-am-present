@@ -12,5 +12,5 @@ interface AttendanceDao {
     suspend fun findAttendanceList(): Response<List<Attendance>>
 
     @POST(Constant.ENDPOINT_ATTENDANCE_SAVE)
-    suspend fun saveAttendance(@Body attendance: Attendance): Response<Attendance?>?
+    suspend fun saveAttendance(@Body attendance: Attendance): Response<Attendance?>
 }
