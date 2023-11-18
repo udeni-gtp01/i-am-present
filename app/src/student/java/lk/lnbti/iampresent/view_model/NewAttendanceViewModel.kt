@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import lk.lnbti.iampresent.constant.Constant
 import lk.lnbti.iampresent.data.Attendance
 import lk.lnbti.iampresent.data.Lecture
 import lk.lnbti.iampresent.data.Result
@@ -39,9 +40,11 @@ class NewAttendanceViewModel @Inject constructor(
     var batch: String = ""
     var subject: String = ""
     var location: String = ""
+    var lectureEndDate: String = ""
+    var lectureEndTime: String = ""
+    var checkInDate1: String = ""
+    var checkInTime1: String = ""
     var timeDuration: Long = 30000
-
-    private val qrKey = "BYT765#76GHFaunY"
 
     fun isValidQr(scannedQrData: String): Boolean {
         formatDecryptedData(decrypt(scannedQrData))
@@ -65,33 +68,61 @@ class NewAttendanceViewModel @Inject constructor(
 
     fun saveAttendance() {
         _saveAttendanceResult.value = Result.Loading
-        val newAttendance: Attendance = Attendance(
-            lecture = Lecture(
-                lectureId = lectureId.toInt(),
-                location = location,
-                subject = subject,
-                batch = batch,
+        //check if lecture has been ended
+        val sqlDateFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd");
+        val sqlTimeFormat: SimpleDateFormat = SimpleDateFormat("HH:mm:ss");
 
+        val endDate: Date = sqlDateFormat.parse(lectureEndDate);
+        val endTime: Date = sqlTimeFormat.parse(lectureEndTime);
+        val cutoff: Date = Date(
+            endDate.getYear(),
+            endDate.getMonth(),
+            endDate.getDate(),
+            endTime.getHours(),
+            endDate.getMinutes()
+        );
+        checkInDate1 = getCheckInDate()
+        checkInTime1 = getCheckInTime()
+
+        val checkinDate: Date = sqlDateFormat.parse(checkInDate1);
+        val checkinTime: Date = sqlTimeFormat.parse(checkInTime1);
+        val checkin: Date = Date(
+            checkinDate.getYear(),
+            checkinDate.getMonth(),
+            checkinDate.getDate(),
+            checkinTime.getHours(),
+            checkinTime.getMinutes()
+        );
+
+        if (checkin.before(cutoff)) {
+            val newAttendance: Attendance = Attendance(
+                lecture = Lecture(
+                    lectureId = lectureId.toLong(),
+                    location = location,
+                    subject = subject,
+                    batch = batch,
+
+                    ),
+                ispresent = 1,
+                student = User(
+                    name = "admin",
                 ),
-            ispresent = 1,
-            student = User(
-                name = "admin",
-            ),
-        )
-        val respose = ""
-        viewModelScope.launch {
-            val result: Result<Attendance?> =
-                attendanceRepo.saveAttendance(attendance = newAttendance)
-            _saveAttendanceResult.value = result
-            when (result) {
-                is Result.Success -> {
+                checkintime = checkInTime1,
+                checkindate = checkInDate1
+            )
+            val respose = ""
+            viewModelScope.launch {
+                val result: Result<Attendance?> =
+                    attendanceRepo.saveAttendance(attendance = newAttendance)
+                _saveAttendanceResult.value = result
+                if (result is Result.Success) {
                     findLectureList()
                 }
 
-                else -> {}
             }
+        }else{
+            _saveAttendanceResult.value = Result.Error("Lecture has already ended")
         }
-
     }
 
     fun findLectureList() {
@@ -108,17 +139,21 @@ class NewAttendanceViewModel @Inject constructor(
         return sqlDateFormat.format(selectedDate)
     }
 
-    private fun convertTimeToSqlFormat(myTime: String): String {
-        val selectedTimeFormat = SimpleDateFormat("h:mm a", Locale.getDefault())
+    private fun getCheckInTime(): String {
         val sqlTimeFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+        val timeNow = Calendar.getInstance().timeInMillis
+        return sqlTimeFormat.format(timeNow)
+    }
 
-        val selectedTime: Date = selectedTimeFormat.parse(myTime)
-        return sqlTimeFormat.format(selectedTime)
+    private fun getCheckInDate(): String {
+        val sqlTimeFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val timeNow = Calendar.getInstance().timeInMillis
+        return sqlTimeFormat.format(timeNow)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun decrypt(dataToDecrypt: String): String {
-        val aesKey = SecretKeySpec(qrKey.toByteArray(), "AES")
+        val aesKey = SecretKeySpec(Constant.qrKey.toByteArray(), "AES")
         val cipher = Cipher.getInstance("AES")
         cipher.init(Cipher.DECRYPT_MODE, aesKey)
         var decryptedText = java.util.Base64.getDecoder().decode(dataToDecrypt)
@@ -132,9 +167,11 @@ class NewAttendanceViewModel @Inject constructor(
         batch = allText[2]
         subject = allText[3]
         location = allText[4]
-
+        lectureEndDate = allText[5]
+        lectureEndTime = allText[6]
     }
-    fun resetSaveAttendanceResult(){
-        _saveAttendanceResult.value=null
+
+    fun resetSaveAttendanceResult() {
+        _saveAttendanceResult.value = null
     }
 }

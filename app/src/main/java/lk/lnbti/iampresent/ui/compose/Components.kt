@@ -46,7 +46,6 @@ import androidx.compose.ui.unit.dp
 import lk.lnbti.iampresent.R
 import lk.lnbti.iampresent.data.Lecture
 import lk.lnbti.iampresent.ui.theme.CommonColorScheme
-import lk.lnbti.iampresent.ui.theme.DefaultColorScheme
 import lk.lnbti.iampresent.ui.theme.Typography
 
 /**
@@ -317,7 +316,7 @@ fun AddNewLectureButton(onNewLectureClicked: () -> Unit) {
                 ),
             contentAlignment = Alignment.Center
         ) {
-            Icon(Icons.Default.Add, contentDescription = null, tint = DefaultColorScheme.accent)
+            Icon(Icons.Default.Add, contentDescription = null, tint = CommonColorScheme.white)
 
         }
     }

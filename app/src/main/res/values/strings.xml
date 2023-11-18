@@ -31,6 +31,7 @@
     <string name="semester">Semester</string>
     <string name="subject">Subject</string>
     <string name="location">Location</string>
+    <string name="loading">Loading</string>
     <string name="starts_at">Starts at</string>
     <string name="ends_at">Ends at</string>
     <string name="lecturer_name">Lecturer</string>
@@ -50,11 +51,19 @@
     <string name="filter_by_student">Student</string>
     <string name="available_results">Available results</string>
     <string name="select_option">Select an option</string>
-    <string name="download_result">Download result</string>
+    <string name="export_result">Export result</string>
     <string name="delete_lecture">Delete lecture</string>
+    <string name="invalid_date">Invalid date</string>
+    <string name="invalid_time">Invalid time</string>
     <string name="time">Time</string>
     <string name="lecturer">Lecturer</string>
     <string name="ongoing">Ongoing</string>
     <string name="complete">Complete</string>
     <string name="something_went_wrong">Oops! something went wrong</string>
+    <string name="lecture_details">Lecture details</string>
+    <string name="lecture_details_description">Decide what to do</string>
+    <string name="my_attendance">My attendance</string>
+    <string name="all_attended_description">See all lectures I attended</string>
+    <string name="join_lecture">Join lecture</string>
+    <string name="join_lecture_description">Scan QR code to join</string>
 </resources>

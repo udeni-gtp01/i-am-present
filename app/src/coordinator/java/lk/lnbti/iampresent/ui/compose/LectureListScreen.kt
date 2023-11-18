@@ -1,9 +1,7 @@
-package lk.lnbti.iampresent.ui.view
+package lk.lnbti.iampresent.ui.compose
 
-import ErrorScreen
 import LoadingScreen
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -25,14 +23,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import lk.lnbti.iampresent.R
 import lk.lnbti.iampresent.data.Lecture
 import lk.lnbti.iampresent.data.Result
-import lk.lnbti.iampresent.ui.theme.CommonColorScheme
 import lk.lnbti.iampresent.view_model.LectureListViewModel
 
 @Composable
@@ -61,10 +57,13 @@ fun LectureListScreen(
             AddNewLectureButton(onNewLectureClicked = onNewLectureClicked)
         },
         bottomBar = {
-            BottomNavigation(
+            CoordinatorBottomNavigation(
                 onTodayNavButtonClicked = onTodayNavButtonClicked,
                 onReportsNavButtonClicked = onReportsNavButtonClicked,
-                onAllNavButtonClicked = onAllNavButtonClicked
+                onAllNavButtonClicked = onAllNavButtonClicked,
+                isTodayNavItemSelected = false,
+                isReportsNavItemSelected = false,
+                isAllNavItemSelected = true
             )
         }
     ) { padding ->
@@ -164,7 +163,7 @@ private fun groupBySection(
                     criteria = it,
                     isSelected = isSelected,
                     onClick = { selectedItem = it },
-                    modifier = Modifier.weight(1f)
+//                    modifier = Modifier.weight(1f)
                 )
             }
         }
@@ -179,16 +178,7 @@ private fun LectureListSection(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        CommonColorScheme.main_orange,
-                        CommonColorScheme.main_blue
-                    )
-                )
-            )
-            .fillMaxSize()
+        modifier.fillMaxSize()
     ) {
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_between_list_item)),

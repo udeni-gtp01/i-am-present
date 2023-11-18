@@ -2,7 +2,7 @@
 <resources>
     <dimen name="padding_list_group_header">10dp</dimen>
     <dimen name="padding_main_content">16dp</dimen>
-    <dimen name="padding_between_list_item">10dp</dimen>
+    <dimen name="padding_between_list_item">15dp</dimen>
     <dimen name="padding_inside_tab">10dp</dimen>
     <dimen name="height_default_spacer">20dp</dimen>
     <dimen name="height_search_bar">50dp</dimen>
@@ -10,4 +10,6 @@
     <dimen name="padding_between_label_header">5dp</dimen>
     <dimen name="padding_between_label">10dp</dimen>
     <dimen name="round_corner">20dp</dimen>
+    <dimen name="dp_12">12dp</dimen>
+    <dimen name="dp_18">18dp</dimen>
 </resources>

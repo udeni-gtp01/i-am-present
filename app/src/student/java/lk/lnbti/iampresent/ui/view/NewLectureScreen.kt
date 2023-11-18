@@ -64,11 +64,9 @@ fun NewLectureScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = {
-                    Text(
-                        stringResource(id = R.string.app_name)
-                    )
-                },
+                title = R.string.join_lecture,
+                description = R.string.join_lecture_description,
+                modifier = modifier
             )
         },
 

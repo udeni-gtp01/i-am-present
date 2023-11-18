@@ -17,7 +17,7 @@ android {
 
     defaultConfig {
         applicationId = "lk.lnbti.iampresent"
-        minSdk = 27
+        minSdk = 29
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -105,6 +105,9 @@ dependencies {
     //export reports
     implementation("org.apache.poi:poi:5.2.4")
     implementation("org.apache.poi:poi-ooxml:5.2.4")
+    implementation("com.opencsv:opencsv:5.8")
+    implementation("androidx.documentfile:documentfile:1.0.1")
+
 //permission
     implementation ("com.google.accompanist:accompanist-permissions:0.32.0")
 //QR scan

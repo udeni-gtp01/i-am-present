@@ -68,7 +68,7 @@ class AttendanceInfoViewModel @Inject constructor(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun openForAttendance(lectureId: Int) {
+    fun openForAttendance(lectureId: Long) {
         viewModelScope.launch {
             val lecture: Lecture? = lectureRepo.openLectureForAttendance(lectureId)
             lecture?.let {

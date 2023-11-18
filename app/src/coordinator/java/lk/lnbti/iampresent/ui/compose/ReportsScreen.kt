@@ -1,6 +1,5 @@
-package lk.lnbti.iampresent.ui.view
+package lk.lnbti.iampresent.ui.compose
 
-import ErrorScreen
 import LoadingScreen
 import android.content.*
 import android.net.Uri
@@ -50,7 +49,7 @@ import com.opencsv.CSVWriter
 import lk.lnbti.iampresent.R
 import lk.lnbti.iampresent.data.Attendance
 import lk.lnbti.iampresent.data.Result
-import lk.lnbti.iampresent.ui.theme.DefaultColorScheme
+import lk.lnbti.iampresent.ui.theme.ReportColorScheme
 import lk.lnbti.iampresent.view_model.ReportsViewModel
 import java.io.File
 import java.io.FileOutputStream
@@ -78,10 +77,13 @@ fun ReportsScreen(
             )
         },
         bottomBar = {
-            BottomNavigation(
+            CoordinatorBottomNavigation(
                 onTodayNavButtonClicked = onTodayNavButtonClicked,
                 onAllNavButtonClicked = onAllNavButtonClicked,
-                onReportsNavButtonClicked = onReportsNavButtonClicked
+                onReportsNavButtonClicked = onReportsNavButtonClicked,
+                isTodayNavItemSelected = false,
+                isReportsNavItemSelected = true,
+                isAllNavItemSelected = false
             )
         }
     ) { padding ->
@@ -99,11 +101,6 @@ fun ReportsScreen(
                     // Handle success state
                     FilterSection(
                         attendanceList = attendanceList,
-                        onDownloadButtonClicked = { pickedUri: Uri, attendanceResult: List<Attendance> ->
-                            reportsViewModel.saveFileToPickedDirectory(
-                                pickedUri, attendanceResult
-                            )
-                        },
                         modifier = modifier
                     )
                 }
@@ -121,37 +118,10 @@ fun ReportsScreen(
     }
 }
 
-@Composable
-fun ReportSearchBar(
-    modifier: Modifier = Modifier
-) {
-    TextField(
-        value = "",
-        onValueChange = {},
-        trailingIcon = {
-            Icon(
-                imageVector = Icons.Default.Search,
-                contentDescription = null
-            )
-        },
-        colors = TextFieldDefaults.colors(
-            unfocusedContainerColor = MaterialTheme.colorScheme.surface,
-            focusedContainerColor = MaterialTheme.colorScheme.surface
-        ),
-        placeholder = {
-            Text(stringResource(R.string.placeholder_search))
-        },
-        modifier = modifier
-            .fillMaxWidth()
-            .heightIn(min = dimensionResource(id = R.dimen.height_search_bar))
-    )
-}
 
-@RequiresApi(Build.VERSION_CODES.Q)
 @Composable
 private fun FilterSection(
     attendanceList: List<Attendance>,
-    onDownloadButtonClicked: (Uri, List<Attendance>) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val criteriaList = listOf(
@@ -169,7 +139,7 @@ private fun FilterSection(
             horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_between_list_item)),
             contentPadding = PaddingValues(horizontal = 16.dp),
             modifier = modifier
-                .background(DefaultColorScheme.accent)
+                .background(ReportColorScheme.accent)
                 .padding(vertical = 16.dp)
         ) {
             items(criteriaList) { item ->
@@ -178,15 +148,14 @@ private fun FilterSection(
                     criteria = item,
                     isSelected = isSelected,
                     onClick = { selectedItem = item },
-                    modifier = Modifier.weight(1f)
                 )
             }
         }
+
         Column(modifier = modifier.fillMaxWidth()) {
             OptionDropdown(
                 attendanceList = attendanceList,
                 selectedFilter = selectedItem,
-                onDownloadButtonClicked = onDownloadButtonClicked,
                 modifier = modifier
             )
         }
@@ -199,9 +168,8 @@ fun ReportFilterItem(
     @StringRes criteria: Int,
     isSelected: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
 ) {
-    val backgroundColor = if (isSelected) DefaultColorScheme.secondary else Color.White
+    val backgroundColor = if (isSelected) ReportColorScheme.secondary else Color.White
 
     Text(
         text = stringResource(id = criteria),
@@ -216,18 +184,16 @@ fun ReportFilterItem(
             .defaultMinSize(minWidth = 50.dp),
         textAlign = TextAlign.Center,
         fontWeight = FontWeight.Bold,
-        color = if (isSelected) DefaultColorScheme.accent else DefaultColorScheme.primary,
+        color = if (isSelected) ReportColorScheme.accent else ReportColorScheme.primary,
     )
 }
 
 
-@RequiresApi(Build.VERSION_CODES.Q)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OptionDropdown(
     attendanceList: List<Attendance>,
     selectedFilter: Int,
-    onDownloadButtonClicked: (Uri, List<Attendance>) -> Unit,
     modifier: Modifier,
 ) {
     var grouped: Map<String, List<Attendance>>? = null
@@ -292,6 +258,7 @@ fun OptionDropdown(
     var expanded by remember {
         mutableStateOf(false)
     }
+    Spacer(modifier = Modifier.height(30.dp))
 
     ExposedDropdownMenuBox(
         expanded = expanded,
@@ -337,7 +304,6 @@ fun OptionDropdown(
             ResultViewer(
                 fileName=fileName,
                 itemResults[listItems.indexOf(selectedItem)],
-                onDownloadButtonClicked = onDownloadButtonClicked
             )
         }
     }
@@ -347,7 +313,6 @@ fun OptionDropdown(
 fun ResultViewer(
     fileName:String,
     attendanceList: List<Attendance>,
-    onDownloadButtonClicked: (Uri, attendanceResult: List<Attendance>) -> Unit
 ) {
     val context = LocalContext.current
     val onShareDataOpen = remember {
@@ -358,10 +323,10 @@ fun ResultViewer(
         val uri = saveFileAndGetUri(context,fileName, attendanceList = attendanceList)
         val intent = Intent(Intent.ACTION_SEND)
         intent.type = "text/csv"
-        intent.putExtra(Intent.EXTRA_SUBJECT, "My Export Data")
+        intent.putExtra(Intent.EXTRA_SUBJECT, stringResource(id = R.string.export_result))
         intent.putExtra(Intent.EXTRA_STREAM, uri)
 
-        val chooser = Intent.createChooser(intent, "Share With")
+        val chooser = Intent.createChooser(intent, stringResource(id = R.string.export_result))
         ContextCompat.startActivity(
             context,
             chooser,
@@ -369,11 +334,12 @@ fun ResultViewer(
         )
         onShareDataOpen.value = false
     }
+    Spacer(modifier = Modifier.height(30.dp))
 
     Text(text = "Results: ${attendanceList.size} available.")
     Spacer(modifier = Modifier.height(30.dp))
     Button(onClick = { onShareDataOpen.value = true }) {
-        Text(text = stringResource(id = R.string.share_result))
+        Text(text = stringResource(id = R.string.export_result))
     }
 }
 

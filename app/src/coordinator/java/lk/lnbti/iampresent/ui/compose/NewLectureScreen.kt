@@ -1,6 +1,5 @@
-package lk.lnbti.iampresent.ui.view
+package lk.lnbti.iampresent.ui.compose
 
-import ErrorScreen
 import LoadingScreen
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
@@ -22,6 +21,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -29,9 +29,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -40,7 +37,6 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -72,10 +68,13 @@ fun NewLectureScreen(
             )
         },
         bottomBar = {
-            BottomNavigation(
+            CoordinatorBottomNavigation(
                 onTodayNavButtonClicked = onTodayNavButtonClicked,
                 onAllNavButtonClicked = onAllNavButtonClicked,
-                onReportsNavButtonClicked = onReportsNavButtonClicked
+                onReportsNavButtonClicked = onReportsNavButtonClicked,
+                isTodayNavItemSelected = false,
+                isReportsNavItemSelected = false,
+                isAllNavItemSelected = false
             )
         }
     ) { padding ->
@@ -117,8 +116,6 @@ fun NewLectureScreen(
             )
             val lectureSaveResult by newLectureViewModel.lectureSaveResult.observeAsState(null)
             val savedLectureId by newLectureViewModel.savedLectureId.observeAsState("0")
-            val dialogError by newLectureViewModel.dialogError.observeAsState(null)
-            var showErrorDialog by rememberSaveable { mutableStateOf(false) } // State variable to control the dialog
 
             when (lectureSaveResult) {
                 is Result.Loading -> {
@@ -141,17 +138,6 @@ fun NewLectureScreen(
                 }
 
                 else -> {
-                    if(showErrorDialog){
-                        dialogError?.let {
-                            ErrorDialog(
-                                text = it,
-                                onDismiss = {
-                                    showErrorDialog = false
-                                    newLectureViewModel.resetdialogError()
-                                }
-                            )
-                        }
-                    }
                     NewLectureContent(
                         batch = batch,
                         semester = semester,
@@ -185,18 +171,7 @@ fun NewLectureScreen(
                         onLecturerEmailChange = { newLectureViewModel.onLecturerEmailChange(it) },
                         onSaveButtonClicked = {
                             if (newLectureViewModel.isValidationSuccess()) {
-//                                if(dialogError!=null || dialogError!=""){
-                                    showErrorDialog=false
-//                                }
                                 newLectureViewModel.saveLecture()
-//                                var savedLectureId: String = newLectureViewModel.saveLecture()
-//                                if (savedLectureId.isNotBlank()) {
-//                                    onSaveButtonClicked(savedLectureId)
-//                                }
-                            }else{
-//                                if(dialogError!=null || dialogError!=""){
-                                    showErrorDialog=true
-//                                }
                             }
                         },
                         modifier = modifier
@@ -311,6 +286,7 @@ fun NewLectureContent(
             NewDateField(
                 value = startDate,
                 label = stringResource(id = R.string.start_date),
+                isDateError = isStartdateError,
                 onValueChange = onStartDateChange
             )
         }
@@ -318,6 +294,7 @@ fun NewLectureContent(
             NewTimeField(
                 value = startTime,
                 label = stringResource(id = R.string.start_time),
+                isTimeError=isStartTimeError,
                 onValueChange = onStartTimeChange
             )
         }
@@ -325,6 +302,7 @@ fun NewLectureContent(
             NewDateField(
                 value = endDate,
                 label = stringResource(id = R.string.end_date),
+                isDateError = isEndDateError,
                 onValueChange = onEndDateChange
             )
         }
@@ -332,6 +310,7 @@ fun NewLectureContent(
             NewTimeField(
                 value = endTime,
                 label = stringResource(id = R.string.end_time),
+                isTimeError=isEndTimeError,
                 onValueChange = onEndTimeChange
             )
         }
@@ -424,6 +403,7 @@ fun NewOutlinedTextField(
 fun NewDateField(
     value: String,
     label: String,
+    isDateError:Boolean,
     onValueChange: (String) -> Unit,
 ) {
     val context = LocalContext.current
@@ -458,7 +438,12 @@ fun NewDateField(
         ) {
             Text(text = label)
         }
-        Text(text = value)
+        if(isDateError){
+            Text(text = stringResource(id = R.string.invalid_date),
+                color = MaterialTheme.colorScheme.error)
+        }else {
+            Text(text = value)
+        }
     }
     Spacer(Modifier.height(dimensionResource(id = R.dimen.padding_between_field)))
 }
@@ -467,6 +452,7 @@ fun NewDateField(
 fun NewTimeField(
     value: String,
     label: String,
+    isTimeError:Boolean,
     onValueChange: (String) -> Unit,
 ) {
     val context = LocalContext.current
@@ -500,51 +486,17 @@ fun NewTimeField(
         ) {
             Text(text = label)
         }
-        Text(text = value)
+        if(isTimeError){
+            Text(text = stringResource(id = R.string.invalid_time),
+                color = MaterialTheme.colorScheme.error)
+        }else {
+            Text(text = value)
+        }
 
     }
     Spacer(Modifier.height(dimensionResource(id = R.dimen.padding_between_field)))
 }
 
-@Preview(showSystemUi = true, showBackground = true)
-@Composable
-fun PreviewNewLectureContent() {
-    NewLectureContent(
-        batch = "batch",
-        semester = "semester",
-        subject = "subject",
-        location = "location",
-        startDate = "startDate",
-        startTime = "startTime",
-        endDate = "endDate",
-        endTime = "endTime",
-        lecturerName = "lecturerName",
-        lecturerEmail = "lecturerEmail",
-        isBatchError = false,
-        isSemesterError = false,
-        isSubjectError = false,
-        isLocationError = false,
-        isStartdateError = false,
-        isStartTimeError = false,
-        isEndDateError = false,
-        isEndTimeError = false,
-        isLecturerNameError = false,
-        isLecturerEmailError = false,
-        onBatchChange = { },
-        onSemesterChange = { },
-        onSubjectChange = { },
-        onLocationChange = {},
-        onStartDateChange = { },
-        onStartTimeChange = { },
-        onEndDateChange = { },
-        onEndTimeChange = { },
-        onLecturerNameChange = { },
-        onLecturerEmailChange = { },
-        onSaveButtonClicked = {},
-        //modifier = modifier
-
-    )
-}
 @Composable
 fun ErrorDialog(
     onDismiss: () -> Unit,

@@ -84,11 +84,9 @@ fun AttendanceListScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = {
-                    Text(
-                        stringResource(id = R.string.app_name)
-                    )
-                },
+                title = R.string.my_attendance,
+                description = R.string.all_attended_description,
+                modifier = modifier
             )
         },
         floatingActionButton = {
@@ -236,13 +234,18 @@ fun LectureListSection(
 
         grouped?.forEach { (initial, lectureList) ->
             stickyHeader {
-                LectureGroupHeader(initial.toString())
+                ListGroupHeader(initial.toString())
             }
             items(lectureList) {
-                LectureListItem(
-                    item = it,
-                    onLectureItemClicked = onLectureItemClicked
+                ListItemContent(
+                    content = {
+                        LectureListItem(
+                            item = it,
+                            onLectureItemClicked = onLectureItemClicked
+                        )
+                    }
                 )
+
             }
         }
     }

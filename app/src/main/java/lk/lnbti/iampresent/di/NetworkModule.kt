@@ -11,9 +11,9 @@ import lk.lnbti.iampresent.dao.AttendanceDao
 import lk.lnbti.iampresent.dao.LectureDao
 import lk.lnbti.iampresent.repo.AttendanceRepo
 import lk.lnbti.iampresent.repo.LectureRepo
-import lk.lnbti.iampresent.ui_state.LectureInfoUiState
-import lk.lnbti.iampresent.ui_state.LectureListUiState
 import lk.lnbti.iampresent.view_model.AttendanceListUiState
+import lk.lnbti.iampresent.view_model.LectureInfoUiState
+import lk.lnbti.iampresent.view_model.LectureListUiState
 import lk.lnbti.iampresent.view_model.TodaysLectureListUiState
 import okhttp3.OkHttpClient
 import retrofit2.Converter

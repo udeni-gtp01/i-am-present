@@ -97,7 +97,7 @@ fun LectureInfoScreen(
 fun LectureInfoContent(
     lecture: Lecture,
     qrText: String,
-    onOpenButtonClicked: (Int) -> Unit,
+    onOpenButtonClicked: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
     /*   LazyColumn(contentPadding = PaddingValues(16.dp)) {
