@@ -7,14 +7,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -23,8 +21,8 @@ import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -39,21 +37,20 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import lk.lnbti.iampresent.R
+import lk.lnbti.iampresent.data.Lecture
 import lk.lnbti.iampresent.ui.theme.CommonColorScheme
 import lk.lnbti.iampresent.ui.theme.DefaultColorScheme
 import lk.lnbti.iampresent.ui.theme.IAmPresentTheme
@@ -71,7 +68,7 @@ fun TopAppBar(@StringRes title: Int, @StringRes description: Int, modifier: Modi
             Column(
                 modifier = modifier
                     .fillMaxWidth()
-                   // .background(CommonColorScheme.dark_blue)
+                // .background(CommonColorScheme.dark_blue)
             ) {
                 Text(
                     stringResource(id = title),
@@ -87,35 +84,100 @@ fun TopAppBar(@StringRes title: Int, @StringRes description: Int, modifier: Modi
             .padding(top = 20.dp, bottom = 10.dp)
     )
 }
+
 @Composable
-fun filterSection(
-    criteriaList: List<Int> = listOf<Int>(),
-    modifier: Modifier = Modifier
+fun LectureListItem(
+    item: Lecture,
+    onLectureItemClicked: (String) -> Unit,
 ) {
-    var selectedItem by rememberSaveable { mutableIntStateOf(criteriaList.first()) }
-    Column {
-        LazyRow(
-            horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_between_list_item)),
-            contentPadding = PaddingValues(horizontal = 16.dp),
-            modifier = modifier
-                //.background(CommonColorScheme.dark_blue)
-                .padding(vertical = 16.dp)
+    Row(
+        modifier = Modifier
+            .padding(16.dp)
+            .clickable { onLectureItemClicked(item.lectureId.toString()) }
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth()
         ) {
-            items(items = criteriaList) {
-                val isSelected = selectedItem == it
-                FilterItem(
-                    criteria = it,
-                    isSelected = isSelected,
-                    onClick = { selectedItem = it },
-                    modifier = Modifier.weight(1f)
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    text = item.batch,
+                    style = MaterialTheme.typography.titleLarge,
                 )
+                if (item.lectureStatus.lectureStatusId == 2) {
+                    Card(
+                        elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
+                        colors = CardDefaults.cardColors(containerColor = CommonColorScheme.status_ongoing),
+                        shape = RoundedCornerShape(dimensionResource(R.dimen.round_corner)),
+                    ) {
+                        Text(
+                            text = "${stringResource(id = R.string.ongoing)}",
+                            style = MaterialTheme.typography.bodyLarge,
+                            modifier = Modifier.padding(7.dp)
+                        )
+                    }
+                } else if (item.lectureStatus.lectureStatusId == 3) {
+                    Card(
+                        elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
+                        colors = CardDefaults.cardColors(containerColor = CommonColorScheme.status_complete),
+                        shape = RoundedCornerShape(dimensionResource(R.dimen.round_corner)),
+                        modifier = Modifier
+                    ) {
+                        Text(
+                            text = "${stringResource(id = R.string.complete)}",
+                            style = MaterialTheme.typography.bodyLarge,
+                            modifier = Modifier.padding(7.dp)
+                        )
+                    }
+                }
+            }
+            Text(
+                text = "${stringResource(R.string.subject)}: ${item.subject}",
+                style = MaterialTheme.typography.bodyLarge,
+            )
+            Text(
+                text = "${stringResource(id = R.string.lecturer)}: ${item.lecturer.name}",
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(top = 6.dp, bottom = 6.dp)
+            )
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Row {
+                    val timePainter: Painter = painterResource(id = R.drawable.time)
+                    Icon(
+                        painter = timePainter,
+                        contentDescription = null,
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Text(
+                        text = "${item.startTime} - ${item.endTime}",
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(start = 10.dp)
+                    )
+                }
+                Row {
+                    val locationPainter: Painter = painterResource(id = R.drawable.location)
+                    Icon(
+                        painter = locationPainter,
+                        contentDescription = null,
+                        modifier = Modifier.size(20.dp)
+                    )
+                    Text(
+                        text = "${item.location}",
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-private fun FilterItem(
+fun FilterItem(
     @StringRes criteria: Int,
     isSelected: Boolean,
     onClick: () -> Unit,
@@ -184,13 +246,17 @@ fun ListGroupHeader(header: String) {
 fun ListItemContent(
     content: @Composable() (ColumnScope.() -> Unit)
 ) {
-    ElevatedCard(
+    Card(
         content = content,
-//        elevation=CardDefaults.cardElevation(defaultElevation = 10.dp),
-        colors=CardDefaults.cardColors(containerColor =CommonColorScheme.transparent_white ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = CommonColorScheme.transparent_white,
+            contentColor = Color.Black
+        ),
         shape = RoundedCornerShape(dimensionResource(R.dimen.round_corner)),
         modifier = Modifier
             .fillMaxWidth()
+            .padding(dimensionResource(R.dimen.padding_between_label))
     )
 }
 
@@ -218,9 +284,10 @@ fun AddNewLectureButton(onNewLectureClicked: () -> Unit) {
         ) {
             Icon(Icons.Default.Add, contentDescription = null, tint = DefaultColorScheme.accent)
 
-    }
+        }
     }
 }
+
 @Composable
 fun BottomNavigation(
     modifier: Modifier = Modifier,
@@ -364,37 +431,5 @@ fun PreviewTopAppBar() {
 
             }
         }
-    }
-}
-
-//@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun PreviewFilterSection() {
-    val criteriaList = listOf(
-        R.string.filter_by_start_time,
-        R.string.filter_by_lecture_status,
-        R.string.filter_by_location,
-        R.string.filter_by_lecturer,
-        R.string.filter_by_batch,
-        R.string.filter_by_subject,
-    )
-    IAmPresentTheme {
-        filterSection(criteriaList = criteriaList)
-    }
-}
-
-//@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun PreviewListItemContent() {
-    val criteriaList = listOf(
-        R.string.filter_by_start_time,
-        R.string.filter_by_lecture_status,
-        R.string.filter_by_location,
-        R.string.filter_by_lecturer,
-        R.string.filter_by_batch,
-        R.string.filter_by_subject,
-    )
-    IAmPresentTheme {
-        filterSection(criteriaList = criteriaList)
     }
 }

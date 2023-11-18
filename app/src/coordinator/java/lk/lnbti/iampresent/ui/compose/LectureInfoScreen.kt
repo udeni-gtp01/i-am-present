@@ -50,6 +50,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import lk.lnbti.iampresent.R
 import lk.lnbti.iampresent.data.Lecture
+import lk.lnbti.iampresent.ui.theme.CommonColorScheme
 import lk.lnbti.iampresent.ui.theme.IAmPresentTheme
 import lk.lnbti.iampresent.view_model.LectureInfoViewModel
 
@@ -72,11 +73,9 @@ fun LectureInfoScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = {
-                    Text(
-                        stringResource(id = R.string.app_name)
-                    )
-                },
+                title = R.string.lecture_details,
+                description = R.string.lecture_details_description,
+                modifier = modifier
             )
         },
 
@@ -119,9 +118,9 @@ fun LectureInfoScreen(
 fun LectureInfoContent(
     lecture: Lecture,
     qrText: String?,
-    onOpenButtonClicked: (Int) -> Unit,
-    onDeleteButtonClicked: (Int) -> Unit,
-    onCloseButtonClicked: (Int) -> Unit,
+    onOpenButtonClicked: (Long) -> Unit,
+    onDeleteButtonClicked: (Long) -> Unit,
+    onCloseButtonClicked: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(contentPadding = PaddingValues(16.dp)) {
@@ -224,7 +223,8 @@ fun labelHeader(
     Text(
         text = stringResource(id = text),
         style = MaterialTheme.typography.labelMedium,
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth(),
+        color = CommonColorScheme.gray,
     )
     Spacer(Modifier.height(dimensionResource(id = R.dimen.padding_between_label_header)))
 }
@@ -255,7 +255,7 @@ fun ShowQR(qrString: String) {
             contentScale = ContentScale.FillBounds,
             modifier = Modifier.size(135.dp),
         )
-        Text(text = qrString)
+//        Text(text = qrString)
     }
 }
 

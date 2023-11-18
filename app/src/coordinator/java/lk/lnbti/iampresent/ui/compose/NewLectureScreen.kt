@@ -185,13 +185,17 @@ fun NewLectureScreen(
                         onLecturerEmailChange = { newLectureViewModel.onLecturerEmailChange(it) },
                         onSaveButtonClicked = {
                             if (newLectureViewModel.isValidationSuccess()) {
-                                if(dialogError!=null){
-                                    showErrorDialog=true
-                                }
+//                                if(dialogError!=null || dialogError!=""){
+                                    showErrorDialog=false
+//                                }
                                 newLectureViewModel.saveLecture()
 //                                var savedLectureId: String = newLectureViewModel.saveLecture()
 //                                if (savedLectureId.isNotBlank()) {
 //                                    onSaveButtonClicked(savedLectureId)
+//                                }
+                            }else{
+//                                if(dialogError!=null || dialogError!=""){
+                                    showErrorDialog=true
 //                                }
                             }
                         },

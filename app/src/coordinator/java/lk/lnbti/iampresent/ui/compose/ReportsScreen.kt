@@ -2,22 +2,18 @@ package lk.lnbti.iampresent.ui.view
 
 import ErrorScreen
 import LoadingScreen
-import android.util.Log
+import android.content.*
+import android.net.Uri
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
@@ -33,7 +29,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -42,27 +37,27 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.isGranted
-import com.google.accompanist.permissions.rememberPermissionState
-import com.google.accompanist.permissions.shouldShowRationale
+import com.opencsv.CSVWriter
 import lk.lnbti.iampresent.R
-import lk.lnbti.iampresent.constant.Constant
 import lk.lnbti.iampresent.data.Attendance
 import lk.lnbti.iampresent.data.Result
 import lk.lnbti.iampresent.ui.theme.DefaultColorScheme
 import lk.lnbti.iampresent.view_model.ReportsViewModel
-import org.apache.poi.ss.usermodel.Workbook
-import org.apache.poi.ss.usermodel.WorkbookFactory
+import java.io.File
 import java.io.FileOutputStream
+import java.io.IOException
 
 
+@RequiresApi(Build.VERSION_CODES.Q)
 @Composable
 fun ReportsScreen(
     reportsViewModel: ReportsViewModel = hiltViewModel(),
@@ -104,12 +99,12 @@ fun ReportsScreen(
                     // Handle success state
                     FilterSection(
                         attendanceList = attendanceList,
-                        onDownloadButtonClicked = { attendanceResult ->
-                            reportsViewModel.generateExcelReport(
-                                attendanceResult
+                        onDownloadButtonClicked = { pickedUri: Uri, attendanceResult: List<Attendance> ->
+                            reportsViewModel.saveFileToPickedDirectory(
+                                pickedUri, attendanceResult
                             )
                         },
-                                modifier = modifier
+                        modifier = modifier
                     )
                 }
 
@@ -152,10 +147,11 @@ fun ReportSearchBar(
     )
 }
 
+@RequiresApi(Build.VERSION_CODES.Q)
 @Composable
 private fun FilterSection(
     attendanceList: List<Attendance>,
-    onDownloadButtonClicked: (List<Attendance>) -> Unit,
+    onDownloadButtonClicked: (Uri, List<Attendance>) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val criteriaList = listOf(
@@ -178,7 +174,7 @@ private fun FilterSection(
         ) {
             items(criteriaList) { item ->
                 val isSelected = selectedItem == item
-                FilterItem(
+                ReportFilterItem(
                     criteria = item,
                     isSelected = isSelected,
                     onClick = { selectedItem = item },
@@ -199,7 +195,7 @@ private fun FilterSection(
 }
 
 @Composable
-private fun FilterItem(
+fun ReportFilterItem(
     @StringRes criteria: Int,
     isSelected: Boolean,
     onClick: () -> Unit,
@@ -225,12 +221,13 @@ private fun FilterItem(
 }
 
 
+@RequiresApi(Build.VERSION_CODES.Q)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OptionDropdown(
     attendanceList: List<Attendance>,
     selectedFilter: Int,
-    onDownloadButtonClicked: (List<Attendance>) -> Unit,
+    onDownloadButtonClicked: (Uri, List<Attendance>) -> Unit,
     modifier: Modifier,
 ) {
     var grouped: Map<String, List<Attendance>>? = null
@@ -336,7 +333,9 @@ fun OptionDropdown(
     }
     Column {
         if (itemResults.isNotEmpty() && listItems.indexOf(selectedItem) > -1) {
+            var fileName="Attendance_report_${stringResource(id = selectedFilter)}_${selectedItem}.csv"
             ResultViewer(
+                fileName=fileName,
                 itemResults[listItems.indexOf(selectedItem)],
                 onDownloadButtonClicked = onDownloadButtonClicked
             )
@@ -345,78 +344,91 @@ fun OptionDropdown(
 }
 
 @Composable
-fun p(selectionOption: String) {
-
-}
-
-@OptIn(ExperimentalPermissionsApi::class)
-@Composable
 fun ResultViewer(
+    fileName:String,
     attendanceList: List<Attendance>,
-    onDownloadButtonClicked: (attendanceResult: List<Attendance>) -> Unit
+    onDownloadButtonClicked: (Uri, attendanceResult: List<Attendance>) -> Unit
 ) {
-    val filePermissionState =
-        rememberPermissionState(permission = Constant.PERMISSION_WRITE_EXTERNAL_STORAGE)
-
-    when {
-        filePermissionState.status.isGranted -> {
-            Text(text = "Results: ${attendanceList.size} available.")
-            Log.d("oyasumi", "Results: ${attendanceList.size} available.")
-            Button(onClick = {
-                onDownloadButtonClicked(attendanceList)
-            }) {
-                Text(text = stringResource(id = R.string.download_result))
-            }
-        }
-
-        filePermissionState.status.shouldShowRationale -> {
-            // Permission is denied, but a rationale should be shown
-            Text("Please grant file storage permission in app settings.")
-        }
-
-        else -> {
-            // Permission is denied, show the permission request button
-            Button(
-                onClick = {
-                    filePermissionState.launchPermissionRequest()
-                }
-            ) {
-                Text(text = "Request file storage access permission")
-            }
-        }
+    val context = LocalContext.current
+    val onShareDataOpen = remember {
+        mutableStateOf(false)
     }
 
+    if (onShareDataOpen.value) {
+        val uri = saveFileAndGetUri(context,fileName, attendanceList = attendanceList)
+        val intent = Intent(Intent.ACTION_SEND)
+        intent.type = "text/csv"
+        intent.putExtra(Intent.EXTRA_SUBJECT, "My Export Data")
+        intent.putExtra(Intent.EXTRA_STREAM, uri)
 
+        val chooser = Intent.createChooser(intent, "Share With")
+        ContextCompat.startActivity(
+            context,
+            chooser,
+            null
+        )
+        onShareDataOpen.value = false
+    }
 
-
+    Text(text = "Results: ${attendanceList.size} available.")
+    Spacer(modifier = Modifier.height(30.dp))
+    Button(onClick = { onShareDataOpen.value = true }) {
+        Text(text = stringResource(id = R.string.share_result))
+    }
 }
 
-@Composable
-fun generateExcelReport(data: List<Attendance>) {
-    LaunchedEffect(true) {
-        // Create a new Excel Workbook using Apache POI
-        val workbook: Workbook = WorkbookFactory.create(true)
-
-        // Create a sheet and populate it with data
-        val sheet = workbook.createSheet("Data Sheet")
-
-        // Iterate through data and populate the Excel sheet
-        var rowNumber = 0
-        for (dataItem in data) {
-            val row = sheet.createRow(rowNumber)
-            // Add data to rows and cells
-
-            // Example:
-            row.createCell(0).setCellValue(dataItem.lecture.batch)
-            row.createCell(1).setCellValue(dataItem.lecture.startDate)
-            // Add more cells as needed
-            rowNumber++
+// Function to save data to a file and return its content URI
+private fun saveFileAndGetUri(
+    context: Context,
+    fileName:String,
+    attendanceList: List<Attendance>
+): Uri {
+    try {
+        var data1 = mutableListOf(
+            arrayOf(
+                "Batch",
+                "Semester",
+                "Subject",
+                "Lecture Date",
+                "Start Time",
+                "End Time",
+                "Student email",
+                "Arrival time"
+            ),
+        )
+// Convert lectureList into a list of arrays
+        attendanceList.map { attendanceItem ->
+            data1.add(
+                arrayOf(
+                    attendanceItem.lecture.batch,
+                    attendanceItem.lecture.semester.toString(),
+                    attendanceItem.lecture.subject,
+                    attendanceItem.lecture.startDate,
+                    attendanceItem.lecture.startTime,
+                    attendanceItem.lecture.endTime,
+                    attendanceItem.student.email ?: "",
+                    attendanceItem.checkintime
+                )
+            )
         }
 
-        // Save the workbook to a file
-        val fileOutputStream = FileOutputStream("your-excel-report.xlsx")
-        workbook.write(fileOutputStream)
-        fileOutputStream.close()
+        val fos: FileOutputStream = context.openFileOutput(fileName, Context.MODE_PRIVATE)
+        val writer = fos.bufferedWriter()
+        val writer1 = CSVWriter(writer)
+        writer1.writeAll(data1)
+        writer1.flush()
+        writer1.close()
+        fos.flush()
+        fos.close()
+    } catch (e: IOException) {
+        e.printStackTrace()
     }
+
+    val file = File(context.filesDir, fileName)
+    return FileProvider.getUriForFile(
+        context,
+        context.applicationContext.packageName + ".provider",
+        file
+    )
 }
 
