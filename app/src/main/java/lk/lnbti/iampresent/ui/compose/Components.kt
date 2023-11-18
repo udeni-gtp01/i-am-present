@@ -1,4 +1,4 @@
-package lk.lnbti.iampresent.ui.view
+package lk.lnbti.iampresent.ui.compose
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CornerSize
@@ -19,7 +18,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -30,10 +28,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -47,28 +42,35 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import lk.lnbti.iampresent.R
 import lk.lnbti.iampresent.data.Lecture
 import lk.lnbti.iampresent.ui.theme.CommonColorScheme
 import lk.lnbti.iampresent.ui.theme.DefaultColorScheme
-import lk.lnbti.iampresent.ui.theme.IAmPresentTheme
 import lk.lnbti.iampresent.ui.theme.Typography
 
+/**
+ * Composable function for creating a customized Top App Bar with a title and description.
+ *
+ * @param title The resource ID for the title text.
+ * @param description The resource ID for the description text.
+ * @param modifier Modifier for customizing the appearance of the Top App Bar.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopAppBar(@StringRes title: Int, @StringRes description: Int, modifier: Modifier = Modifier) {
+fun TopAppBar(
+    @StringRes title: Int,
+    @StringRes description: Int,
+    modifier: Modifier = Modifier
+) {
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = Color.Transparent
-//            titleContentColor = CommonColorScheme.white
         ),
         title = {
             Column(
                 modifier = modifier
                     .fillMaxWidth()
-                // .background(CommonColorScheme.dark_blue)
             ) {
                 Text(
                     stringResource(id = title),
@@ -85,103 +87,121 @@ fun TopAppBar(@StringRes title: Int, @StringRes description: Int, modifier: Modi
     )
 }
 
+/**
+ * Composable function for displaying a single item in the list of lectures.
+ *
+ * @param item The lecture item to display.
+ * @param onLectureItemClicked Callback function for handling clicks on lecture items.
+ */
 @Composable
 fun LectureListItem(
     item: Lecture,
     onLectureItemClicked: (String) -> Unit,
 ) {
-    Row(
+    Column(
         modifier = Modifier
+            .fillMaxWidth()
             .padding(16.dp)
             .clickable { onLectureItemClicked(item.lectureId.toString()) }
     ) {
-        Column(
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text(
-                    text = item.batch,
-                    style = MaterialTheme.typography.titleLarge,
-                )
-                if (item.lectureStatus.lectureStatusId == 2) {
-                    Card(
-                        elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
-                        colors = CardDefaults.cardColors(containerColor = CommonColorScheme.status_ongoing),
-                        shape = RoundedCornerShape(dimensionResource(R.dimen.round_corner)),
-                    ) {
-                        Text(
-                            text = "${stringResource(id = R.string.ongoing)}",
-                            style = MaterialTheme.typography.bodyLarge,
-                            modifier = Modifier.padding(7.dp)
-                        )
-                    }
-                } else if (item.lectureStatus.lectureStatusId == 3) {
-                    Card(
-                        elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
-                        colors = CardDefaults.cardColors(containerColor = CommonColorScheme.status_complete),
-                        shape = RoundedCornerShape(dimensionResource(R.dimen.round_corner)),
-                        modifier = Modifier
-                    ) {
-                        Text(
-                            text = "${stringResource(id = R.string.complete)}",
-                            style = MaterialTheme.typography.bodyLarge,
-                            modifier = Modifier.padding(7.dp)
-                        )
-                    }
+            Text(
+                text = item.batch,
+                style = MaterialTheme.typography.titleLarge,
+                color = CommonColorScheme.dark_text
+            )
+            if (item.lectureStatus.lectureStatusId == 2) {
+                Card(
+                    elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
+                    colors = CardDefaults.cardColors(containerColor = CommonColorScheme.status_ongoing),
+                    shape = RoundedCornerShape(dimensionResource(R.dimen.round_corner)),
+                ) {
+                    Text(
+                        text = "${stringResource(id = R.string.ongoing)}",
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier.padding(7.dp),
+                        color = CommonColorScheme.dark_text
+                    )
+                }
+            } else if (item.lectureStatus.lectureStatusId == 3) {
+                Card(
+                    elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
+                    colors = CardDefaults.cardColors(containerColor = CommonColorScheme.status_complete),
+                    shape = RoundedCornerShape(dimensionResource(R.dimen.round_corner)),
+                    modifier = Modifier
+                ) {
+                    Text(
+                        text = "${stringResource(id = R.string.complete)}",
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier.padding(7.dp),
+                        color = CommonColorScheme.dark_text
+                    )
                 }
             }
-            Text(
-                text = "${stringResource(R.string.subject)}: ${item.subject}",
-                style = MaterialTheme.typography.bodyLarge,
-            )
-            Text(
-                text = "${stringResource(id = R.string.lecturer)}: ${item.lecturer.name}",
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(top = 6.dp, bottom = 6.dp)
-            )
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Row {
-                    val timePainter: Painter = painterResource(id = R.drawable.time)
-                    Icon(
-                        painter = timePainter,
-                        contentDescription = null,
-                        modifier = Modifier.size(20.dp)
-                    )
-                    Text(
-                        text = "${item.startTime} - ${item.endTime}",
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(start = 10.dp)
-                    )
-                }
-                Row {
-                    val locationPainter: Painter = painterResource(id = R.drawable.location)
-                    Icon(
-                        painter = locationPainter,
-                        contentDescription = null,
-                        modifier = Modifier.size(20.dp)
-                    )
-                    Text(
-                        text = "${item.location}",
-                        style = MaterialTheme.typography.bodyMedium,
-                    )
-                }
+        }
+        Text(
+            text = "${stringResource(R.string.subject)}: ${item.subject}",
+            style = MaterialTheme.typography.bodyLarge,
+            color = CommonColorScheme.dark_text
+        )
+        Text(
+            text = "${stringResource(id = R.string.lecturer)}: ${item.lecturer.name}",
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier.padding(top = 6.dp, bottom = 6.dp),
+            color = CommonColorScheme.dark_text
+        )
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                val timePainter: Painter = painterResource(id = R.drawable.time)
+                Icon(
+                    painter = timePainter,
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp),
+                    tint = CommonColorScheme.dark_text
+                )
+                Text(
+                    text = "${item.startTime} - ${item.endTime}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(start = 10.dp),
+                    color = CommonColorScheme.dark_text
+                )
+            }
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                val locationPainter: Painter = painterResource(id = R.drawable.location)
+                Icon(
+                    painter = locationPainter,
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp),
+                    tint = CommonColorScheme.dark_text
+                )
+                Text(
+                    text = "${item.location}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = CommonColorScheme.dark_text
+                )
             }
         }
     }
 }
 
+/**
+ * Composable function for displaying a filter item with optional background color when selected.
+ *
+ * @param criteria The resource ID for the filter criteria text.
+ * @param isSelected Boolean indicating whether the filter item is selected.
+ * @param onClick Callback function for handling clicks on the filter item.
+ */
 @Composable
 fun FilterItem(
     @StringRes criteria: Int,
     isSelected: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
 ) {
     Text(
         text = stringResource(id = criteria),
@@ -205,61 +225,77 @@ fun FilterItem(
             Modifier
                 .background(
                     color = Color.Transparent,
-//                    shape = RoundedCornerShape(dimensionResource(R.dimen.round_corner))
                 )
                 .clickable { onClick() }
                 .padding(10.dp)
-//                .defaultMinSize(minWidth = 50.dp)
         },
         textAlign = TextAlign.Center,
         fontWeight = if (isSelected) {
             FontWeight.Bold
         } else {
             FontWeight.Normal
+        },
+        color = if (isSelected) {
+            CommonColorScheme.dark_text
+        } else {
+            MaterialTheme.colorScheme.inverseSurface
         }
     )
 }
 
+/**
+ * Composable function for displaying a header for a group of items in the list.
+ *
+ * @param header The text to be displayed as the header.
+ */
 @Composable
 fun ListGroupHeader(header: String) {
     Text(
         text = header,
         modifier = Modifier
             .fillMaxWidth()
-//            .background(
-//                brush = Brush.verticalGradient(
-//                    colors = listOf(
-//                        CommonColorScheme.gray,
-//                        CommonColorScheme.dark_blue
-//
-//                    ),
-//                ),
-//                shape = RoundedCornerShape(dimensionResource(R.dimen.round_corner))
-//            )
+            .background(
+                color = MaterialTheme.colorScheme.background
+            )
             .padding(10.dp),
-//        color = CommonColorScheme.nav_blue,
         fontWeight = FontWeight.Bold,
     )
 }
 
+/**
+ * Composable function for wrapping content in a styled list item.
+ *
+ * @param content The content to be displayed inside the list item.
+ */
 @Composable
 fun ListItemContent(
     content: @Composable() (ColumnScope.() -> Unit)
 ) {
-    Card(
-        content = content,
-        elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = CommonColorScheme.transparent_white,
-            contentColor = Color.Black
-        ),
-        shape = RoundedCornerShape(dimensionResource(R.dimen.round_corner)),
+    Box(
         modifier = Modifier
             .fillMaxWidth()
             .padding(dimensionResource(R.dimen.padding_between_label))
-    )
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(
+                        CommonColorScheme.main_orange,
+                        CommonColorScheme.main_blue
+                    )
+                ),
+                shape = RoundedCornerShape(dimensionResource(R.dimen.round_corner))
+            )
+    ) {
+        Column(
+            content = content
+        )
+    }
 }
 
+/**
+ * Composable function for displaying a FloatingActionButton with an "Add" icon.
+ *
+ * @param onNewLectureClicked Callback function for handling clicks on the "Add" button.
+ */
 @Composable
 fun AddNewLectureButton(onNewLectureClicked: () -> Unit) {
     FloatingActionButton(
@@ -280,7 +316,6 @@ fun AddNewLectureButton(onNewLectureClicked: () -> Unit) {
                     )
                 ),
             contentAlignment = Alignment.Center
-
         ) {
             Icon(Icons.Default.Add, contentDescription = null, tint = DefaultColorScheme.accent)
 
@@ -288,26 +323,22 @@ fun AddNewLectureButton(onNewLectureClicked: () -> Unit) {
     }
 }
 
+/**
+ * Composable function for creating a custom Bottom Navigation Bar with three navigation buttons.
+ *
+ * @param onTodayNavButtonClicked Callback function for handling clicks on the "Today" navigation button.
+ * @param onReportsNavButtonClicked Callback function for handling clicks on the "Reports" navigation button.
+ * @param onAllNavButtonClicked Callback function for handling clicks on the "All" navigation button.
+ */
 @Composable
 fun BottomNavigation(
-    modifier: Modifier = Modifier,
     onTodayNavButtonClicked: () -> Unit,
     onReportsNavButtonClicked: () -> Unit,
     onAllNavButtonClicked: () -> Unit,
 ) {
     NavigationBar(
         containerColor = CommonColorScheme.nav_blue,
-        // .padding(16.dp)
-//        modifier = Modifier
-//            .background(brush = Brush.verticalGradient(
-//                colors = listOf(
-//                    MaterialTheme.colorScheme.primaryContainer,
-//                    CommonColorScheme.dark_blue,
-//                )
-//            )
-//            ),
         contentColor = Color.White
-
     ) {
         NavigationBarItem(
             icon = {
@@ -330,7 +361,6 @@ fun BottomNavigation(
                     ),
             selected = true,
             onClick = onTodayNavButtonClicked,
-//                modifier = modifier.background(color = CommonColorScheme.gray, RoundedCornerShape(10.dp))
         )
         NavigationBarItem(
             icon = {
@@ -351,9 +381,7 @@ fun BottomNavigation(
                     unselectedTextColor = Color.White,
                     indicatorColor = CommonColorScheme.nav_light_blue,
                     unselectedIconColor = Color.White,
-
-                    )
-//                modifier = modifier.background(color = CommonColorScheme.gray, RoundedCornerShape(10.dp))
+                )
         )
         NavigationBarItem(
             icon = {
@@ -372,64 +400,9 @@ fun BottomNavigation(
                     unselectedTextColor = Color.White,
                     indicatorColor = CommonColorScheme.nav_light_blue,
                     unselectedIconColor = Color.White,
-
-                    ),
+                ),
             selected = false,
             onClick = onAllNavButtonClicked
         )
-
-    }
-}
-
-@Composable
-fun SearchBar(
-    modifier: Modifier = Modifier
-) {
-    TextField(
-        value = "",
-        onValueChange = {},
-        trailingIcon = {
-            Icon(
-                imageVector = Icons.Default.Search,
-                contentDescription = null
-            )
-        },
-        colors = TextFieldDefaults.colors(
-            unfocusedContainerColor = MaterialTheme.colorScheme.surface,
-            focusedContainerColor = MaterialTheme.colorScheme.surface
-        ),
-        placeholder = {
-            Text(stringResource(R.string.placeholder_search))
-        },
-        modifier = modifier
-            .fillMaxWidth()
-            .heightIn(min = dimensionResource(id = R.dimen.height_search_bar))
-    )
-}
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun PreviewTopAppBar() {
-    IAmPresentTheme {
-        Scaffold(
-            modifier = Modifier.background(CommonColorScheme.dark_blue),
-            topBar = {
-                TopAppBar(
-                    title = R.string.all,
-                    description = R.string.all_description
-                )
-            },
-            bottomBar = {
-                BottomNavigation(
-                    onTodayNavButtonClicked = {},
-                    onAllNavButtonClicked = {},
-                    onReportsNavButtonClicked = {}
-                )
-            }
-        ) {
-            Column(Modifier.padding(it)) {
-
-            }
-        }
     }
 }
