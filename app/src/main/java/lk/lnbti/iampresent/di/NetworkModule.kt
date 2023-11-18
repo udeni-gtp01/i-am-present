@@ -1,14 +1,16 @@
 package lk.lnbti.iampresent.di
 
+import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import lk.lnbti.iampresent.constant.Constant
 import lk.lnbti.iampresent.dao.AttendanceDao
-import lk.lnbti.iampresent.repo.LectureRepo
 import lk.lnbti.iampresent.dao.LectureDao
 import lk.lnbti.iampresent.repo.AttendanceRepo
+import lk.lnbti.iampresent.repo.LectureRepo
 import lk.lnbti.iampresent.ui_state.LectureInfoUiState
 import lk.lnbti.iampresent.ui_state.LectureListUiState
 import lk.lnbti.iampresent.view_model.AttendanceListUiState
@@ -26,6 +28,10 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
+    @Provides
+    fun provideContext(@ApplicationContext context: Context): Context {
+        return context
+    }
 
     /**
      * Provides an instance of OkHttpClient.
@@ -71,42 +77,72 @@ object NetworkModule {
         return GsonConverterFactory.create()
     }
 
+    /**
+     * Provides an instance of LectureDao.
+     */
     @Singleton
     @Provides
     fun provideLectureDao(retrofit: Retrofit): LectureDao {
         return retrofit.create(LectureDao::class.java)
     }
+
+    /**
+     * Provides an instance of AttendanceDao.
+     */
     @Singleton
     @Provides
     fun provideAttendanceDao(retrofit: Retrofit): AttendanceDao {
         return retrofit.create(AttendanceDao::class.java)
     }
+
+    /**
+     * Provides an instance of LectureRepo.
+     */
     @Singleton
     @Provides
     fun provideLectureRepo(lectureDao: LectureDao): LectureRepo {
         return LectureRepo(lectureDao)
     }
 
+    /**
+     * Provides an instance of AttendanceRepo.
+     */
     @Singleton
     @Provides
     fun provideAttendanceRepo(attendanceDao: AttendanceDao): AttendanceRepo {
         return AttendanceRepo(attendanceDao)
     }
+
+    /**
+     * Provides an instance of LectureListUiState.
+     */
     @Singleton
     @Provides
     fun provideLectureListUiState(): LectureListUiState {
         return LectureListUiState()
     }
+
+    /**
+     * Provides an instance of AttendanceListUiState.
+     */
     @Singleton
     @Provides
     fun provideAttendanceListUiState(): AttendanceListUiState {
         return AttendanceListUiState()
     }
+
+    /**
+     * Provides an instance of TodaysLectureListUiState.
+     */
     @Singleton
     @Provides
     fun provideTodaysLectureListUiState(): TodaysLectureListUiState {
         return TodaysLectureListUiState()
     }
+
+    /**
+     * Provides an instance of LectureInfoUiState.
+     */
     @Singleton
     @Provides
     fun provideLectureInfoUiState(): LectureInfoUiState {
