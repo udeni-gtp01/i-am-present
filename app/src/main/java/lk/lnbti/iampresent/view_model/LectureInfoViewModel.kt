@@ -14,7 +14,9 @@ import kotlinx.coroutines.withContext
 import lk.lnbti.iampresent.constant.Constant
 import lk.lnbti.iampresent.data.Lecture
 import lk.lnbti.iampresent.repo.LectureRepo
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Locale
 import javax.crypto.Cipher
 import javax.crypto.spec.SecretKeySpec
 import javax.inject.Inject
@@ -84,85 +86,96 @@ class LectureInfoViewModel @Inject constructor(
      * @param lectureId The ID of the lecture to open for attendance.
      */
     fun openForAttendance(lectureId: Long) {
-        viewModelScope.launch {
-            val lecture: Lecture? = lectureRepo.openLectureForAttendance(lectureId)
-            lecture?.let {
-                lectureInfoUiState.loadLecture(it)
-                setQrText()
+        lecture.value?.startTime?.let {
+            val currentLecture=lecture.value
+            currentLecture?.let {
+                val dateTimeFormat =
+                    SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                val currentDateTime = Calendar.getInstance().time
+                val startDateTime = dateTimeFormat.parse("${currentLecture.startDate} ${currentLecture.startTime}")
+                if (startDateTime.before(currentDateTime)) {
+                    viewModelScope.launch {
+                        val lecture: Lecture? = lectureRepo.openLectureForAttendance(lectureId)
+                        lecture?.let {
+                            lectureInfoUiState.loadLecture(it)
+                            setQrText()
+                        }
+                    }
+                }
             }
         }
-    }
+}
 
-    /**
-     * Closes the lecture for attendance and cancels the QR code update coroutine.
-     *
-     * @param lectureId The ID of the lecture to close for attendance.
-     */
-    fun closeForAttendance(lectureId: Long) {
-        viewModelScope.launch {
-            val lecture: Lecture? = lectureRepo.closeLectureForAttendance(lectureId)
-            lecture?.let {
-                lectureInfoUiState.loadLecture(it)
-                _qrText.value = null
-            }
-        }
-        qrCoroutine?.cancel()
-        qrCoroutine = null
-    }
-
-    /**
-     * Finds and loads the lecture information based on the provided lecture ID.
-     * If the lecture status is 'In Progress,' sets up the QR code text updates.
-     *
-     * @param lectureId The ID of the lecture to find.
-     */
-    fun findLecture(lectureId: String) {
-        viewModelScope.launch {
-            lectureInfoUiState.loadLecture(lectureRepo.findLectureById(lectureId))
-            if (lecture.value?.lectureStatus?.lectureStatusId == 2) {
-                setQrText()
-            }
+/**
+ * Closes the lecture for attendance and cancels the QR code update coroutine.
+ *
+ * @param lectureId The ID of the lecture to close for attendance.
+ */
+fun closeForAttendance(lectureId: Long) {
+    viewModelScope.launch {
+        val lecture: Lecture? = lectureRepo.closeLectureForAttendance(lectureId)
+        lecture?.let {
+            lectureInfoUiState.loadLecture(it)
+            _qrText.value = null
         }
     }
+    qrCoroutine?.cancel()
+    qrCoroutine = null
+}
 
-    /**
-     * Deletes the lecture with the specified ID.
-     *
-     * @param lectureId The ID of the lecture to delete.
-     */
-    fun deleteLecture(lectureId: Long) {
-        viewModelScope.launch {
-            lectureRepo.deleteLecture(lectureId)
+/**
+ * Finds and loads the lecture information based on the provided lecture ID.
+ * If the lecture status is 'In Progress,' sets up the QR code text updates.
+ *
+ * @param lectureId The ID of the lecture to find.
+ */
+fun findLecture(lectureId: String) {
+    viewModelScope.launch {
+        lectureInfoUiState.loadLecture(lectureRepo.findLectureById(lectureId))
+        if (lecture.value?.lectureStatus?.lectureStatusId == 2) {
+            setQrText()
         }
     }
+}
 
-    /**
-     * Encrypts the provided string using AES encryption.
-     *
-     * @param stringToEncrypt The string to encrypt.
-     * @return The encrypted string.
-     */
-    private fun encrypt(stringToEncrypt: String): String {
-        val aesKey = SecretKeySpec(Constant.qrKey.toByteArray(), "AES")
-        val cipher = Cipher.getInstance("AES")
-        cipher.init(Cipher.ENCRYPT_MODE, aesKey)
-        val encryptedText = cipher.doFinal(stringToEncrypt.toByteArray(charset = Charsets.UTF_8))
-        return java.util.Base64.getEncoder().encodeToString(encryptedText)
+/**
+ * Deletes the lecture with the specified ID.
+ *
+ * @param lectureId The ID of the lecture to delete.
+ */
+fun deleteLecture(lectureId: Long) {
+    viewModelScope.launch {
+        lectureRepo.deleteLecture(lectureId)
     }
+}
 
-    /**
-     * Decrypts the provided data using AES decryption.
-     *
-     * @param dataToDecrypt The data to decrypt.
-     * @return The decrypted string.
-     */
-    private fun decrypt(dataToDecrypt: String): String {
-        val aesKey = SecretKeySpec(Constant.qrKey.toByteArray(), "AES")
-        val cipher = Cipher.getInstance("AES")
-        cipher.init(Cipher.DECRYPT_MODE, aesKey)
-        val decryptedText = java.util.Base64.getDecoder().decode(dataToDecrypt)
-        return String(cipher.doFinal(decryptedText), charset = Charsets.UTF_8)
-    }
+/**
+ * Encrypts the provided string using AES encryption.
+ *
+ * @param stringToEncrypt The string to encrypt.
+ * @return The encrypted string.
+ */
+private fun encrypt(stringToEncrypt: String): String {
+    val aesKey = SecretKeySpec(Constant.qrKey.toByteArray(), "AES")
+    val cipher = Cipher.getInstance("AES")
+    cipher.init(Cipher.ENCRYPT_MODE, aesKey)
+    val encryptedText = cipher.doFinal(stringToEncrypt.toByteArray(charset = Charsets.UTF_8))
+    return java.util.Base64.getEncoder().encodeToString(encryptedText)
+}
+
+/**
+ * Decrypts the provided data using AES decryption.
+ *
+ * @param dataToDecrypt The data to decrypt.
+ * @return The decrypted string.
+ */
+private fun decrypt(dataToDecrypt: String): String {
+    val aesKey = SecretKeySpec(Constant.qrKey.toByteArray(), "AES")
+    val cipher = Cipher.getInstance("AES")
+    cipher.init(Cipher.DECRYPT_MODE, aesKey)
+    val decryptedText = java.util.Base64.getDecoder().decode(dataToDecrypt)
+    return String(cipher.doFinal(decryptedText), charset = Charsets.UTF_8)
+}
 }
 
 /**

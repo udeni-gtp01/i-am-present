@@ -44,6 +44,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import lk.lnbti.iampresent.R
+import lk.lnbti.iampresent.data.Attendance
 import lk.lnbti.iampresent.data.Lecture
 import lk.lnbti.iampresent.ui.theme.CommonColorScheme
 import lk.lnbti.iampresent.ui.theme.Typography
@@ -188,6 +189,8 @@ fun LectureListItem(
         }
     }
 }
+
+
 
 /**
  * Composable function for displaying a filter item with optional background color when selected.

@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import lk.lnbti.iampresent.data.Lecture
 import lk.lnbti.iampresent.repo.LectureRepo
-import lk.lnbti.iampresent.ui_state.LectureInfoUiState
+import lk.lnbti.iampresent.view_model.LectureInfoUiState
 import java.util.Calendar
 import javax.crypto.Cipher
 import javax.crypto.spec.SecretKeySpec

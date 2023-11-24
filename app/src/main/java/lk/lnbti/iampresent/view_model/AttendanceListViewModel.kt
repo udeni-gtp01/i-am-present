@@ -28,25 +28,71 @@ class AttendanceListViewModel @Inject constructor(
     /**
      * LiveData representing the list of lectures to be observed by the UI.
      */
-    val lectureList: LiveData<List<Attendance>> = attendanceListUiState.attendanceList
+    private val attendanceList: LiveData<List<Attendance>> = attendanceListUiState.attendanceList
+
+    // LiveData to hold the grouped attendance list based on specific criteria.
+    private val _groupedAttendanceList = MutableLiveData<Map<String, List<Attendance>>>()
+    val groupedAttendanceList: LiveData<Map<String, List<Attendance>>> = _groupedAttendanceList
 
     /**
      * Initializes the ViewModel by loading the initial lecture list.
      */
     init {
-        findLectureList()
+        findAttendanceList()
     }
 
     /**
      * Asynchronously retrieves the lecture list from the repository and updates the UI state.
      */
-    private fun findLectureList() {
+    private fun findAttendanceList() {
         viewModelScope.launch {
             val result = attendanceRepo.getAttendanceList()
             if (result is Result.Success) {
                 attendanceListUiState.loadAttendanceList(result.data)
+                groupAttendanceListByDate()
             }
         }
+    }
+
+    /**
+     * Group the attendance list by lecture date.
+     */
+    fun groupAttendanceListByDate() {
+        _groupedAttendanceList.value =
+            attendanceList.value?.sortedByDescending { it.lecture.startDate }?.groupBy { it.lecture.startDate }
+    }
+
+    /**
+     * Group the attendance list by lecture status.
+     */
+    fun groupAttendanceListByLectureStatus() {
+        _groupedAttendanceList.value =
+            attendanceList.value?.sortedByDescending { it.lecture.lectureStatus.statusName }
+                ?.groupBy { it.lecture.lectureStatus.statusName }
+    }
+
+    /**
+     * Group the attendance list by subject.
+     */
+    fun groupAttendanceListBySubject() {
+        _groupedAttendanceList.value =
+            attendanceList.value?.sortedByDescending { it.lecture.subject }?.groupBy { it.lecture.subject }
+    }
+
+    /**
+     * Group the attendance list by lecturer.
+     */
+    fun groupAttendanceListByLecturer() {
+        _groupedAttendanceList.value =
+            attendanceList.value?.sortedByDescending { it.lecture.lecturer.name }?.groupBy { it.lecture.lecturer.name }
+    }
+
+    /**
+     * Group the attendance list by lecture location.
+     */
+    fun groupAttendanceListByLectureLocation() {
+        _groupedAttendanceList.value =
+            attendanceList.value?.sortedByDescending { it.lecture.location }?.groupBy { it.lecture.location }
     }
 }
 

@@ -14,7 +14,6 @@ import lk.lnbti.iampresent.data.Lecture
 import lk.lnbti.iampresent.data.Result
 import lk.lnbti.iampresent.data.User
 import lk.lnbti.iampresent.repo.AttendanceRepo
-import lk.lnbti.iampresent.ui_state.LectureListUiState
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -26,7 +25,6 @@ import javax.inject.Inject
 @HiltViewModel
 class NewAttendanceViewModel @Inject constructor(
     private val attendanceRepo: AttendanceRepo,
-    private val lectureListUiState: LectureListUiState
 ) : ViewModel() {
 
     private val _qrData: MutableLiveData<String> = MutableLiveData(null)
@@ -101,12 +99,11 @@ class NewAttendanceViewModel @Inject constructor(
                     location = location,
                     subject = subject,
                     batch = batch,
-
-                    ),
-                ispresent = 1,
-                student = User(
-                    name = "admin",
+                    lecturer = User(email = ""),
+                    organizer = User(email = "")
                 ),
+                ispresent = 1,
+                student = User(email = ""),
                 checkintime = checkInTime1,
                 checkindate = checkInDate1
             )
@@ -120,7 +117,7 @@ class NewAttendanceViewModel @Inject constructor(
                 }
 
             }
-        }else{
+        } else {
             _saveAttendanceResult.value = Result.Error("Lecture has already ended")
         }
     }

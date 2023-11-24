@@ -52,6 +52,7 @@ class LectureListViewModel @Inject constructor(
             when (result) {
                 is Result.Success -> {
                     lectureListUiState.loadLectureList(result.data)
+                    groupLectureListByStartDate()
                 }
 
                 else -> {

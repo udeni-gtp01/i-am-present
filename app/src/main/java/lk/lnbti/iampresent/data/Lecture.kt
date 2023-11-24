@@ -55,5 +55,5 @@ data class Lecture(
     @SerializedName("batch") val batch: String,
     @SerializedName("organizerid") val organizer: User,
     @SerializedName("lecturerid") val lecturer: User,
-    @SerializedName("lecturestatusid") val lectureStatus: LectureStatus = LectureStatus()
+    @SerializedName("lecturestatusid") var lectureStatus: LectureStatus = LectureStatus()
 ) : Parcelable

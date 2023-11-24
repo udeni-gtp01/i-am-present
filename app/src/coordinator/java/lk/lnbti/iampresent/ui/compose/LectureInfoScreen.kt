@@ -107,8 +107,6 @@ fun LectureInfoScreen(
                     }
                 )
             }
-            //lk.lnbti.iampresent.coordinator.ui.view.SearchBar(Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_main_content)))
-            //Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
             Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
         }
     }
@@ -197,7 +195,6 @@ fun LectureInfoContent(
                 ) {
                     Text(
                         text = stringResource(R.string.close_for_attendance),
-                        //fontSize = 16.sp
                     )
                 }
             }
@@ -255,7 +252,6 @@ fun ShowQR(qrString: String) {
             contentScale = ContentScale.FillBounds,
             modifier = Modifier.size(135.dp),
         )
-//        Text(text = qrString)
     }
 }
 
@@ -307,7 +303,6 @@ fun rememberQrBitmapPainter(
                     newBitmap.setPixel(x, y, pixelColor)
                 }
             }
-
             bitmap = newBitmap
         }
     }
@@ -317,22 +312,5 @@ fun rememberQrBitmapPainter(
             Bitmap.Config.ARGB_8888,
         ).apply { eraseColor(Color.TRANSPARENT) }
         BitmapPainter(currentBitmap.asImageBitmap())
-    }
-}
-
-//@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun PreviewLectureInfoContent() {
-    val jsonString: String =
-        "{\"lectureid\":1,\"venue\":\"online\",\"startdate\":\"2023-12-12\",\"starttime\":\"08:00:00\",\"enddate\":\"2023-12-12\",\"endtime\":\"12:00:00\",\"semester\":2,\"subject\":\"kotlin\",\"batch\":\"gtp01\",\"lecturerid\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1},\"lecturestatusid\":{\"lecturestatusid\":1,\"statusname\":\"new\"},\"organizer\":{\"userid\":1,\"name\":\"admin\",\"email\":\"admin@lnbti.edu.lk\",\"token\":null,\"roleid\":{\"roleid\":1,\"name\":\"admin\"},\"isuseravailable\":1}}"
-    val gson = Gson()
-
-// Define a TypeToken for the list of Lecture objects
-    val lectureType = object : TypeToken<Lecture>() {}.type
-
-// Parse the JSON string into a list of Lecture objects
-    val lecture: Lecture = gson.fromJson(jsonString, lectureType)
-    IAmPresentTheme {
-        //LectureInfoContent(lecture = lecture)
     }
 }

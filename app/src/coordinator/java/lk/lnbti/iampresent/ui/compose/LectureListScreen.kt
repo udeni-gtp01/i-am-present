@@ -163,7 +163,6 @@ private fun groupBySection(
                     criteria = it,
                     isSelected = isSelected,
                     onClick = { selectedItem = it },
-//                    modifier = Modifier.weight(1f)
                 )
             }
         }

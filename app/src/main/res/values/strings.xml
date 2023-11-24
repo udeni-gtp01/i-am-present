@@ -58,7 +58,7 @@
     <string name="time">Time</string>
     <string name="lecturer">Lecturer</string>
     <string name="ongoing">Ongoing</string>
-    <string name="complete">Complete</string>
+    <string name="complete">Completed</string>
     <string name="something_went_wrong">Oops! something went wrong</string>
     <string name="lecture_details">Lecture details</string>
     <string name="lecture_details_description">Decide what to do</string>
