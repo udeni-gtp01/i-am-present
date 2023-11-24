@@ -1,8 +1,5 @@
 package lk.lnbti.app_student.view_model
 
-import android.os.Build
-import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -14,9 +11,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import lk.lnbti.iampresent.constant.Constant
 import lk.lnbti.iampresent.data.Lecture
 import lk.lnbti.iampresent.repo.LectureRepo
-import lk.lnbti.iampresent.view_model.LectureInfoUiState
 import java.util.Calendar
 import javax.crypto.Cipher
 import javax.crypto.spec.SecretKeySpec
@@ -25,29 +22,42 @@ import javax.inject.Inject
 @HiltViewModel
 class AttendanceInfoViewModel @Inject constructor(
     private val lectureRepo: LectureRepo,
-    private val lectureInfoUiState: LectureInfoUiState
+    private val attendanceInfoUiState: AttendanceInfoUiState
 ) : ViewModel() {
 
-    val lecture: LiveData<Lecture> = lectureInfoUiState.lecture
+    val lecture: LiveData<Lecture> = attendanceInfoUiState.lecture
 
     private var qrCoroutine: Job? = null
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private val _qrtext: MutableLiveData<String?> = MutableLiveData(null)
-
-    @RequiresApi(Build.VERSION_CODES.O)
     val qrText: LiveData<String?> = _qrtext
 
-    private val qrKey = "BYT765#76GHFaunY"
+    /**
+     * Finds and loads the lecture information based on the provided lecture ID.
+     * If the lecture status is 'Ongoing' sets up the QR code text updates.
+     *
+     * @param lectureId The ID of the lecture to find.
+     */
+    fun findLecture(lectureId: String) {
+        viewModelScope.launch {
+            attendanceInfoUiState.loadLecture(lectureRepo.findLectureById(lectureId))
+            if (lecture.value?.lectureStatus?.lectureStatusId == 2) {
+                setQrText()
+            }else{
+                _qrtext.value=null
+            }
+        }
+    }
 
-    @RequiresApi(Build.VERSION_CODES.O)
+    /**
+     * Sets up the coroutine to update the QR code text periodically.
+     */
     private fun setQrText() {
-        qrCoroutine = viewModelScope.launch(Dispatchers.Default) {
+        qrCoroutine = qrCoroutine ?: viewModelScope.launch(Dispatchers.Default) {
             withContext(Dispatchers.Main) {
                 lecture.value?.let {
                     while (isActive) {
                         _qrtext.value = encrypt(generateQRText())
-                        Log.d("oyasumi", "decrypted- ${_qrtext.value?.let { decrypt(it) }}")
                         delay(10000)
                     }
                 }
@@ -55,55 +65,63 @@ class AttendanceInfoViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Generates the text for the QR code based on the current lecture information.
+     *
+     * @return The generated QR code text.
+     */
     private fun generateQRText(): String {
         var qrOriginalText = ""
         lecture.value?.let {
-            var timeNow = Calendar.getInstance().timeInMillis.toString()
+            val timeNow = Calendar.getInstance().timeInMillis.toString()
             qrOriginalText =
-                "${timeNow}@@${it.lectureId.toString()}@@${it.batch}@@${it.subject}@@${it.location}"
-//        dateNow ="$dateNow @ ${a+30000}"
-            Log.d("oyasumi", "original- $qrOriginalText")
+                "${timeNow}@@${it.lectureId}@@${it.batch}@@${it.subject}@@${it.location}@@${it.endDate}@@${it.endTime}"
         }
         return qrOriginalText
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun openForAttendance(lectureId: Long) {
-        viewModelScope.launch {
-            val lecture: Lecture? = lectureRepo.openLectureForAttendance(lectureId)
-            lecture?.let {
-                lectureInfoUiState.loadLecture(it)
-                setQrText()
-            }
-        }
-    }
-
-
-//    @RequiresApi(Build.VERSION_CODES.O)
-//    fun findLecture(lectureId: String) {
-//        viewModelScope.launch {
-//            lectureInfoUiState.loadLecture(lectureRepo.findLectureById(lectureId))
-//            if (lecture.value?.lectureStatus?.lectureStatusId == 2) {
-//                setQrText()
-//            }
-//        }
-//    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
+    /**
+     * Encrypts the provided string using AES encryption.
+     *
+     * @param stringToEncrypt The string to encrypt.
+     * @return The encrypted string.
+     */
     private fun encrypt(stringToEncrypt: String): String {
-        val aesKey = SecretKeySpec(qrKey.toByteArray(), "AES")
+        val aesKey = SecretKeySpec(Constant.qrKey.toByteArray(), "AES")
         val cipher = Cipher.getInstance("AES")
         cipher.init(Cipher.ENCRYPT_MODE, aesKey)
         val encryptedText = cipher.doFinal(stringToEncrypt.toByteArray(charset = Charsets.UTF_8))
         return java.util.Base64.getEncoder().encodeToString(encryptedText)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
+    /**
+     * Decrypts the provided data using AES decryption.
+     *
+     * @param dataToDecrypt The data to decrypt.
+     * @return The decrypted string.
+     */
     private fun decrypt(dataToDecrypt: String): String {
-        val aesKey = SecretKeySpec(qrKey.toByteArray(), "AES")
+        val aesKey = SecretKeySpec(Constant.qrKey.toByteArray(), "AES")
         val cipher = Cipher.getInstance("AES")
         cipher.init(Cipher.DECRYPT_MODE, aesKey)
-        var decryptedText = java.util.Base64.getDecoder().decode(dataToDecrypt)
+        val decryptedText = java.util.Base64.getDecoder().decode(dataToDecrypt)
         return String(cipher.doFinal(decryptedText), charset = Charsets.UTF_8)
+    }
+}
+
+class AttendanceInfoUiState {
+    /**
+     * MutableLiveData object for holding the current lecture information.
+     */
+    private val _lecture: MutableLiveData<Lecture> = MutableLiveData(null)
+    val lecture: LiveData<Lecture> = _lecture
+
+    /**
+     * Loads the provided lecture into the UI state.
+     *
+     * @param lecture The lecture to load into the UI state.
+     */
+    fun loadLecture(lecture: Lecture?) {
+        _lecture.value = lecture
     }
 }

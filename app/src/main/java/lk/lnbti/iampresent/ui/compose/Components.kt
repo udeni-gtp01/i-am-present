@@ -1,6 +1,8 @@
 package lk.lnbti.iampresent.ui.compose
 
+import android.graphics.Bitmap
 import androidx.annotation.StringRes
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -9,6 +11,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -32,19 +35,34 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.EncodeHintType
+import com.google.zxing.WriterException
+import com.google.zxing.qrcode.QRCodeWriter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import lk.lnbti.iampresent.R
-import lk.lnbti.iampresent.data.Attendance
 import lk.lnbti.iampresent.data.Lecture
 import lk.lnbti.iampresent.ui.theme.CommonColorScheme
 import lk.lnbti.iampresent.ui.theme.Typography
@@ -189,7 +207,6 @@ fun LectureListItem(
         }
     }
 }
-
 
 
 /**
@@ -406,5 +423,82 @@ fun BottomNavigation(
             selected = false,
             onClick = onAllNavButtonClicked
         )
+    }
+}
+
+@Composable
+fun ShowQR(qrString: String) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            painter = rememberQrBitmapPainter(qrString),
+            contentDescription = "Scan me",
+            contentScale = ContentScale.FillBounds,
+            modifier = Modifier.size(135.dp),
+        )
+    }
+}
+
+@Composable
+fun rememberQrBitmapPainter(
+    content: String,
+    size: Dp = 150.dp,
+    padding: Dp = 0.dp
+): BitmapPainter {
+    val density = LocalDensity.current
+    val sizePx = with(density) { size.roundToPx() }
+    val paddingPx = with(density) { padding.roundToPx() }
+
+    var bitmap by remember(content) {
+        mutableStateOf<Bitmap?>(null)
+    }
+    LaunchedEffect(bitmap) {
+        if (bitmap != null) return@LaunchedEffect
+
+        launch(Dispatchers.Default) {
+            val qrCodeWriter = QRCodeWriter()
+
+            val encodeHints = mutableMapOf<EncodeHintType, Any?>()
+                .apply {
+                    this[EncodeHintType.MARGIN] = paddingPx
+                }
+
+            val bitmapMatrix = try {
+                qrCodeWriter.encode(
+                    content, BarcodeFormat.QR_CODE,
+                    sizePx, sizePx, encodeHints
+                )
+            } catch (ex: WriterException) {
+                null
+            }
+            val matrixWidth = bitmapMatrix?.width ?: sizePx
+            val matrixHeight = bitmapMatrix?.height ?: sizePx
+
+            val newBitmap = Bitmap.createBitmap(
+                bitmapMatrix?.width ?: sizePx,
+                bitmapMatrix?.height ?: sizePx,
+                Bitmap.Config.ARGB_8888,
+            )
+
+            for (x in 0 until matrixWidth) {
+                for (y in 0 until matrixHeight) {
+                    val shouldColorPixel = bitmapMatrix?.get(x, y) ?: false
+                    val pixelColor =
+                        if (shouldColorPixel) android.graphics.Color.BLACK else android.graphics.Color.WHITE
+                    newBitmap.setPixel(x, y, pixelColor)
+                }
+            }
+            bitmap = newBitmap
+        }
+    }
+    return remember(bitmap) {
+        val currentBitmap = bitmap ?: Bitmap.createBitmap(
+            sizePx, sizePx,
+            Bitmap.Config.ARGB_8888,
+        ).apply { eraseColor(android.graphics.Color.TRANSPARENT) }
+        BitmapPainter(currentBitmap.asImageBitmap())
     }
 }

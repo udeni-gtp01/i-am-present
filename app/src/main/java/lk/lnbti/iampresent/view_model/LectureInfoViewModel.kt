@@ -125,7 +125,7 @@ fun closeForAttendance(lectureId: Long) {
 
 /**
  * Finds and loads the lecture information based on the provided lecture ID.
- * If the lecture status is 'In Progress,' sets up the QR code text updates.
+ * If the lecture status is 'Ongoing' sets up the QR code text updates.
  *
  * @param lectureId The ID of the lecture to find.
  */
@@ -161,20 +161,6 @@ private fun encrypt(stringToEncrypt: String): String {
     cipher.init(Cipher.ENCRYPT_MODE, aesKey)
     val encryptedText = cipher.doFinal(stringToEncrypt.toByteArray(charset = Charsets.UTF_8))
     return java.util.Base64.getEncoder().encodeToString(encryptedText)
-}
-
-/**
- * Decrypts the provided data using AES decryption.
- *
- * @param dataToDecrypt The data to decrypt.
- * @return The decrypted string.
- */
-private fun decrypt(dataToDecrypt: String): String {
-    val aesKey = SecretKeySpec(Constant.qrKey.toByteArray(), "AES")
-    val cipher = Cipher.getInstance("AES")
-    cipher.init(Cipher.DECRYPT_MODE, aesKey)
-    val decryptedText = java.util.Base64.getDecoder().decode(dataToDecrypt)
-    return String(cipher.doFinal(decryptedText), charset = Charsets.UTF_8)
 }
 }
 

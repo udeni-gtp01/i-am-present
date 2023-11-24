@@ -5,8 +5,8 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import lk.lnbti.iampresent.ui.compose.AttendanceInfoScreen
 import lk.lnbti.iampresent.ui.compose.AttendanceListScreen
-import lk.lnbti.iampresent.ui.compose.LectureAttendScreen
 import lk.lnbti.iampresent.ui.compose.NewLectureScreen
 
 @Composable
@@ -36,19 +36,8 @@ fun AppNavHost(navController: NavHostController) {
         ) { navBackStackEntry ->
             val lectureId =
                 navBackStackEntry.arguments?.getString(AttendLectureInfoDestination.attendLectureIdArg)
-            LectureAttendScreen(
+            AttendanceInfoScreen(
                 lectureId = lectureId,
-                onCancelButtonClicked = {
-                    navController.navigateSingleTopTo(
-                        AttendanceListDestination.route
-                    )
-                },
-                onDeleteButtonClicked = {
-                    navController.navigateSingleTopTo(
-                        AttendanceListDestination.route
-                    )
-                },
-                onEditButtonClicked = {}
             )
         }
     }

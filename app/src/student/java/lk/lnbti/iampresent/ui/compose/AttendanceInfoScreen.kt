@@ -1,66 +1,40 @@
 package lk.lnbti.iampresent.ui.compose
 
-import android.graphics.Bitmap
-import android.graphics.Color
 import androidx.annotation.StringRes
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.painter.BitmapPainter
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import com.google.zxing.BarcodeFormat
-import com.google.zxing.EncodeHintType
-import com.google.zxing.WriterException
-import com.google.zxing.qrcode.QRCodeWriter
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import lk.lnbti.app_student.view_model.AttendanceInfoViewModel
 import lk.lnbti.iampresent.R
 import lk.lnbti.iampresent.data.Lecture
-import lk.lnbti.iampresent.ui.theme.IAmPresentTheme
+import lk.lnbti.iampresent.ui.theme.CommonColorScheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AttendanceInfoScreen(
     lectureId: String?,
     attendanceInfoViewModel: AttendanceInfoViewModel = hiltViewModel(),
-    onCancelButtonClicked: () -> Unit,
-    onDeleteButtonClicked: () -> Unit,
-    onEditButtonClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-     attendanceInfoViewModel.findLecture(lectureId!!)
+    attendanceInfoViewModel.findLecture(lectureId!!)
     val lecture: Lecture? by attendanceInfoViewModel.lecture.observeAsState(null)
     val qrText: String? by attendanceInfoViewModel.qrText.observeAsState(null)
     Scaffold(
@@ -71,7 +45,7 @@ fun AttendanceInfoScreen(
                 modifier = modifier
             )
         },
-    ){ padding ->
+    ) { padding ->
         Column(
             modifier
                 .padding(padding)
@@ -79,11 +53,9 @@ fun AttendanceInfoScreen(
             lecture?.let {
                 AttendingLectureInfoSection(
                     lecture = it,
-                    qrText = attendanceInfoViewModel.qrText.toString()
+                    qrText = qrText
                 )
             }
-            //SearchBar(Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_main_content)))
-            //Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
             Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
         }
     }
@@ -95,92 +67,51 @@ fun AttendingLectureInfoSection(
     qrText: String?,
     modifier: Modifier = Modifier
 ) {
-    LazyColumn(contentPadding = PaddingValues(dimensionResource(id = R.dimen.height_default_spacer))) {
+    LazyColumn(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        contentPadding = PaddingValues(dimensionResource(id = R.dimen.height_default_spacer))
+    ) {
         item {
-            labelHeader(text = R.string.batch)
-            labelBody(text = lecture.batch)
-        }
-        item {
-            labelHeader(text = R.string.semester)
-            labelBody(text = lecture.semester.toString())
-        }
-        item {
-            labelHeader(text = R.string.subject)
-            labelBody(text = lecture.subject)
-        }
-        item {
-            labelHeader(text = R.string.location)
-            labelBody(text = lecture.location)
-        }
-        item {
-            labelHeader(text = R.string.starts_at)
-            labelBody(text = "${lecture.startDate} @ ${lecture.startTime}")
-        }
-        item {
-            labelHeader(text = R.string.ends_at)
-            labelBody(text = "${lecture.endDate} @ ${lecture.endTime}")
-        }
-        item {
-            labelHeader(text = R.string.lecturer_name)
-            labelBody(text = lecture.lecturer.name)
-        }
-        item {
-            labelHeader(text = R.string.lecturer_email)
-            lecture.lecturer.email?.let { labelBody(text = it) }
-        }
-        item {
-            labelHeader(text = R.string.current_status)
-            labelBody(text = lecture.lectureStatus.statusName)
-        }
-        if (lecture.lectureStatus.lectureStatusId != 2) {
-            item {
-                Button(
-                    modifier = Modifier.fillMaxWidth(),
-                    onClick = {
-                        CoroutineScope(Dispatchers.Default).launch {
-                            onOpenButtonClicked(lecture.lectureId)
-                        }
-                    }
-                ) {
-                    Text(
-                        text = stringResource(R.string.open_for_attendance),
-                        //fontSize = 16.sp
-                    )
-                }
+            Column {
+                labelHeader(text = R.string.batch)
+                labelBody(text = lecture.batch)
+                labelHeader(text = R.string.semester)
+                labelBody(text = lecture.semester.toString())
+                labelHeader(text = R.string.subject)
+                labelBody(text = lecture.subject)
+                labelHeader(text = R.string.current_status)
+                labelBody(text = lecture.lectureStatus.statusName)
+                Divider()
             }
         }
-        if (lecture.lectureStatus.lectureStatusId == 2) {
-            item {
-                qrText?.let {
+        item {
+            Column {
+                labelHeader(text = R.string.lecturer_name)
+                labelBody(text = lecture.lecturer.name)
+                labelHeader(text = R.string.lecturer_email)
+                lecture.lecturer.email?.let { labelBody(text = it) }
+                Divider()
+            }
+        }
+        item {
+                Column {
+                    labelHeader(text = R.string.starts_at)
+                    labelBody(text = "${lecture.startDate} @ ${lecture.startTime}")
+                    labelHeader(text = R.string.ends_at)
+                    labelBody(text = "${lecture.endDate} @ ${lecture.endTime}")
+                    labelHeader(text = R.string.location)
+                    labelBody(text = lecture.location)
+                }
+        }
+
+        item {
+            qrText?.let {
+                Column {
+                    Divider()
                     Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
                     ShowQR(qrText)
                     Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
                 }
-            }
-
-            item {
-                Button(
-                    modifier = Modifier.fillMaxWidth(),
-                    onClick = {
-                        CoroutineScope(Dispatchers.Default).launch {
-                            onCloseButtonClicked(lecture.lectureId)
-                        }
-                    }
-                ) {
-                    Text(
-                        text = stringResource(R.string.close_for_attendance),
-                    )
-                }
-            }
-        }
-        item {
-            OutlinedButton(
-                modifier = Modifier.fillMaxWidth(),
-                onClick = { onDeleteButtonClicked(lecture.lectureId) }
-            ) {
-                Text(
-                    text = stringResource(R.string.delete_lecture),
-                )
             }
         }
     }
@@ -193,9 +124,11 @@ fun labelHeader(
 ) {
     Text(
         text = stringResource(id = text),
-        style = MaterialTheme.typography.labelMedium,
+        style = MaterialTheme.typography.bodyMedium,
         modifier = modifier.fillMaxWidth(),
         color = CommonColorScheme.gray,
+        textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+        fontWeight = FontWeight.Bold
     )
     Spacer(Modifier.height(dimensionResource(id = R.dimen.padding_between_label_header)))
 }
@@ -207,8 +140,9 @@ fun labelBody(
 ) {
     Text(
         text = text,
-        style = MaterialTheme.typography.labelLarge,
-        modifier = modifier.fillMaxWidth()
+        style = MaterialTheme.typography.bodyLarge,
+        modifier = modifier.fillMaxWidth(),
+        textAlign = androidx.compose.ui.text.style.TextAlign.Center
     )
     Spacer(Modifier.height(dimensionResource(id = R.dimen.padding_between_label)))
 }

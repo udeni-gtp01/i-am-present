@@ -93,7 +93,7 @@ fun LectureInfoScreen(
         ) {
             lecture?.let {
                 LectureInfoContent(
-                    lecture = lecture!!,
+                    lecture = it,
                     onOpenButtonClicked = { lectureId ->
                         lectureInfoViewModel.openForAttendance(lectureId)
                     },
@@ -121,7 +121,7 @@ fun LectureInfoContent(
     onCloseButtonClicked: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LazyColumn(contentPadding = PaddingValues(16.dp)) {
+    LazyColumn(contentPadding = PaddingValues(dimensionResource(id = R.dimen.height_default_spacer))) {
         item {
             labelHeader(text = R.string.batch)
             labelBody(text = lecture.batch)
@@ -237,80 +237,4 @@ fun labelBody(
         modifier = modifier.fillMaxWidth()
     )
     Spacer(Modifier.height(dimensionResource(id = R.dimen.padding_between_label)))
-}
-
-@Composable
-fun ShowQR(qrString: String) {
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Image(
-            painter = rememberQrBitmapPainter(qrString),
-            contentDescription = "Scan me",
-            contentScale = ContentScale.FillBounds,
-            modifier = Modifier.size(135.dp),
-        )
-    }
-}
-
-@Composable
-fun rememberQrBitmapPainter(
-    content: String,
-    size: Dp = 150.dp,
-    padding: Dp = 0.dp
-): BitmapPainter {
-    val density = LocalDensity.current
-    val sizePx = with(density) { size.roundToPx() }
-    val paddingPx = with(density) { padding.roundToPx() }
-
-    var bitmap by remember(content) {
-        mutableStateOf<Bitmap?>(null)
-    }
-    LaunchedEffect(bitmap) {
-        if (bitmap != null) return@LaunchedEffect
-
-        launch(Dispatchers.Default) {
-            val qrCodeWriter = QRCodeWriter()
-
-            val encodeHints = mutableMapOf<EncodeHintType, Any?>()
-                .apply {
-                    this[EncodeHintType.MARGIN] = paddingPx
-                }
-
-            val bitmapMatrix = try {
-                qrCodeWriter.encode(
-                    content, BarcodeFormat.QR_CODE,
-                    sizePx, sizePx, encodeHints
-                )
-            } catch (ex: WriterException) {
-                null
-            }
-            val matrixWidth = bitmapMatrix?.width ?: sizePx
-            val matrixHeight = bitmapMatrix?.height ?: sizePx
-
-            val newBitmap = Bitmap.createBitmap(
-                bitmapMatrix?.width ?: sizePx,
-                bitmapMatrix?.height ?: sizePx,
-                Bitmap.Config.ARGB_8888,
-            )
-
-            for (x in 0 until matrixWidth) {
-                for (y in 0 until matrixHeight) {
-                    val shouldColorPixel = bitmapMatrix?.get(x, y) ?: false
-                    val pixelColor = if (shouldColorPixel) Color.BLACK else Color.WHITE
-                    newBitmap.setPixel(x, y, pixelColor)
-                }
-            }
-            bitmap = newBitmap
-        }
-    }
-    return remember(bitmap) {
-        val currentBitmap = bitmap ?: Bitmap.createBitmap(
-            sizePx, sizePx,
-            Bitmap.Config.ARGB_8888,
-        ).apply { eraseColor(Color.TRANSPARENT) }
-        BitmapPainter(currentBitmap.asImageBitmap())
-    }
 }
