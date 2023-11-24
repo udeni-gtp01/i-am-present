@@ -30,10 +30,16 @@ class TodaysLectureListViewModel @Inject constructor(
     private val _groupedLectureList = MutableLiveData<Map<String, List<Lecture>>>()
     val groupedLectureList: LiveData<Map<String, List<Lecture>>> = _groupedLectureList
 
+    /**
+     * Initializes the ViewModel and triggers the retrieval of today's lecture list.
+     */
     init {
         findTodaysLectureList()
     }
 
+    /**
+     * Retrieves today's lecture list from the repository.
+     */
     fun findTodaysLectureList() {
         _lectureListResult.value = Result.Loading
         viewModelScope.launch {
@@ -51,42 +57,68 @@ class TodaysLectureListViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Group the lecture list by start time.
+     */
     fun groupLectureListByStartTime() {
         _groupedLectureList.value =
             lectureList.value?.sortedByDescending { it.startDate }?.groupBy { it.startDate }
     }
 
+    /**
+     * Group the lecture list by lecture status.
+     */
     fun groupLectureListByLectureStatus() {
         _groupedLectureList.value =
             lectureList.value?.sortedByDescending { it.lectureStatus.statusName }
                 ?.groupBy { it.lectureStatus.statusName }
     }
 
+    /**
+     * Group the lecture list by batch.
+     */
     fun groupLectureListByBatch() {
         _groupedLectureList.value =
             lectureList.value?.sortedByDescending { it.batch }?.groupBy { it.batch }
     }
 
+    /**
+     * Group the lecture list by subject.
+     */
     fun groupLectureListBySubject() {
         _groupedLectureList.value =
             lectureList.value?.sortedByDescending { it.subject }?.groupBy { it.subject }
     }
 
+    /**
+     * Group the lecture list by lecturer name.
+     */
     fun groupLectureListByLecturer() {
         _groupedLectureList.value =
             lectureList.value?.sortedByDescending { it.lecturer.name }?.groupBy { it.lecturer.name }
     }
 
+    /**
+     * Group the lecture list by location.
+     */
     fun groupLectureListByLocation() {
         _groupedLectureList.value =
             lectureList.value?.sortedByDescending { it.location }?.groupBy { it.location }
     }
 }
 
+/**
+ * UI state class for managing the lecture list data in [TodaysLectureListViewModel].
+ */
 class TodaysLectureListUiState {
     private val _lectureList: MutableLiveData<List<Lecture>> = MutableLiveData(emptyList())
     val lectureList: LiveData<List<Lecture>> = _lectureList
 
+    /**
+     * Loads the provided lecture list into the UI state.
+     *
+     * @param lectureList The list of lectures to be loaded.
+     */
     fun loadLectureList(lectureList: List<Lecture>) {
         _lectureList.value = lectureList
     }

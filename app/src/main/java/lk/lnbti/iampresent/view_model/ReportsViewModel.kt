@@ -34,6 +34,9 @@ class ReportsViewModel @Inject constructor(
         findAttendanceList()
     }
 
+    /**
+     * Retrieves the attendance list from the repository.
+     */
     fun findAttendanceList() {
         _attendanceListResult.value = Result.Loading
         viewModelScope.launch {

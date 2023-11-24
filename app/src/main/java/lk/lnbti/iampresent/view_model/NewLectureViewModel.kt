@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import lk.lnbti.iampresent.constant.Constant
 import lk.lnbti.iampresent.data.Lecture
 import lk.lnbti.iampresent.data.LectureStatus
 import lk.lnbti.iampresent.data.Result
@@ -102,47 +101,87 @@ class NewLectureViewModel @Inject constructor(
     private val _savedLectureId = MutableLiveData("0")
     val savedLectureId: LiveData<String> = _savedLectureId
 
+    /**
+     * Observes changes in the batch value and updates the batch LiveData.
+     *
+     * @param newBatch The new batch value.
+     */
     fun onBatchChange(newBatch: String) {
         _batch.value = newBatch
         checkBatchValidation()
     }
 
+    /**
+     * Checks the validity of the batch value and updates the error state.
+     */
     private fun checkBatchValidation() {
         _isBatchError.value = _batch.value.isNullOrBlank()
     }
 
+    /**
+     * Observes changes in the semester value and updates the semester LiveData.
+     *
+     * @param newSemester The new semester value.
+     */
     fun onSemesterChange(newSemester: String) {
         _semester.value = newSemester
         checkSemesterValidation()
     }
 
+    /**
+     * Checks the validity of the semester value and updates the error state.
+     */
     private fun checkSemesterValidation() {
         _isSemesterError.value = _semester.value.isNullOrBlank()
     }
 
+    /**
+     * Observes changes in the subject value and updates the subject LiveData.
+     *
+     * @param newSubject The new subject value.
+     */
     fun onSubjectChange(newSubject: String) {
         _subject.value = newSubject
         checkSubjectValidation()
     }
 
+    /**
+     * Checks the validity of the subject value and updates the error state.
+     */
     private fun checkSubjectValidation() {
         _isSubjectError.value = _subject.value.isNullOrBlank()
     }
 
+    /**
+     * Observes changes in the location value and updates the location LiveData.
+     *
+     * @param newLocation The new location value.
+     */
     fun onLocationChange(newLocation: String) {
         _location.value = newLocation
         checkLocationValidation()
     }
 
+    /**
+     * Checks the validity of the location value and updates the error state.
+     */
     private fun checkLocationValidation() {
         _isLocationError.value = _location.value.isNullOrBlank()
     }
 
+    /**
+     * Observes changes in the start date value and updates the start date LiveData.
+     *
+     * @param newStartDate The new start date value.
+     */
     fun onStartDateChange(newStartDate: String) {
         _startDate.value = newStartDate
         checkStartDateValidation()
     }
 
+    /**
+     * Checks the validity of the start date value and updates the error state.
+     */
     private fun checkStartDateValidation() {
         if (_startDate.value.isNullOrBlank()) {
             _isStartDateError.value = true
@@ -172,11 +211,19 @@ class NewLectureViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Observes changes in the start time value and updates the start time LiveData.
+     *
+     * @param newStartTime The new start time value.
+     */
     fun onStartTimeChange(newStartTime: String) {
         _startTime.value = newStartTime
         checkStartTimeValidation()
     }
 
+    /**
+     * Checks the validity of the start time value and updates the error state.
+     */
     private fun checkStartTimeValidation() {
         if (_startDate.value.isNullOrBlank() || _startTime.value.isNullOrBlank()) {
             _isStartTimeError.value = true
@@ -201,11 +248,19 @@ class NewLectureViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Observes changes in the end date value and updates the end date LiveData.
+     *
+     * @param newEndDate The new end date value.
+     */
     fun onEndDateChange(newEndDate: String) {
         _endDate.value = newEndDate
         checkEndDateValidation()
     }
 
+    /**
+     * Checks the validity of the end date value and updates the error state.
+     */
     private fun checkEndDateValidation() {
         if (_startDate.value.isNullOrBlank() || _endDate.value.isNullOrBlank()) {
             _isEndDateError.value = true
@@ -223,11 +278,19 @@ class NewLectureViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Observes changes in the end time value and updates the end time LiveData.
+     *
+     * @param newEndTime The new end time value.
+     */
     fun onEndTimeChange(newEndTime: String) {
         _endTime.value = newEndTime
         checkEndTimeValidation()
     }
 
+    /**
+     * Checks the validity of the end time value and updates the error state.
+     */
     private fun checkEndTimeValidation() {
         if (_startDate.value.isNullOrBlank() || _startTime.value.isNullOrBlank() || _endDate.value.isNullOrBlank() || _endTime.value.isNullOrBlank()) {
             _isEndTimeError.value = true
@@ -258,15 +321,28 @@ class NewLectureViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Observes changes in the lecturer name value and updates the lecturer name LiveData.
+     *
+     * @param newLecturerName The new lecturer name value.
+     */
     fun onLecturerNameChange(newLecturerName: String) {
         _lecturerName.value = newLecturerName
         checkLecturerNameValidation()
     }
 
+    /**
+     * Checks the validity of the lecturer name value and updates the error state.
+     */
     private fun checkLecturerNameValidation() {
         _isLecturerNameError.value = _lecturerName.value.isNullOrBlank()
     }
 
+    /**
+     * Observes changes in the lecturer email value and updates the lecturer email LiveData.
+     *
+     * @param newLecturerEmail The new lecturer email value.
+     */
     fun onLecturerEmailChange(newLecturerEmail: String) {
         _lecturerEmail.value = newLecturerEmail
         checkLecturerEmailValidation()
@@ -371,6 +447,9 @@ class NewLectureViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Reloads the lecture list from the repository.
+     */
     private fun reloadLectureList() {
         viewModelScope.launch {
             val result: Result<List<Lecture>> = lectureRepo.findLectureList()
@@ -387,6 +466,12 @@ class NewLectureViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Converts the selected date to SQL format.
+     *
+     * @param myDate The selected date.
+     * @return The date in SQL format.
+     */
     private fun convertDateToSqlFormat(myDate: String): String {
         val selectedDateFormat = SimpleDateFormat("MMMM d, yyyy", Locale.getDefault())
         val sqlDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -395,6 +480,12 @@ class NewLectureViewModel @Inject constructor(
         return sqlDateFormat.format(selectedDate)
     }
 
+    /**
+     * Converts the selected time to SQL format.
+     *
+     * @param myTime The selected time.
+     * @return The time in SQL format.
+     */
     private fun convertTimeToSqlFormat(myTime: String): String {
         val selectedTimeFormat = SimpleDateFormat("h:mm a", Locale.getDefault())
         val sqlTimeFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
@@ -403,6 +494,9 @@ class NewLectureViewModel @Inject constructor(
         return sqlTimeFormat.format(selectedTime)
     }
 
+    /**
+     * Resets the lecture save result to null.
+     */
     fun resetLectureSaveResult() {
         _lectureSaveResult.value = null
     }

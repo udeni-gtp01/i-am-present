@@ -336,6 +336,11 @@ fun AddNewLectureButton(onNewLectureClicked: () -> Unit) {
     }
 }
 
+/**
+ * A composable function that displays a QR code image generated from the provided string.
+ *
+ * @param qrString The string content to be encoded into the QR code.
+ */
 @Composable
 fun ShowQR(qrString: String) {
     Column(
@@ -352,6 +357,14 @@ fun ShowQR(qrString: String) {
     }
 }
 
+/**
+ * Remembers and creates a [BitmapPainter] for a QR code image based on the provided content string.
+ *
+ * @param content The string content to be encoded into the QR code.
+ * @param size The size of the QR code image.
+ * @param padding The padding around the QR code.
+ * @return The [BitmapPainter] for the QR code image.
+ */
 @Composable
 fun rememberQrBitmapPainter(
     content: String,
