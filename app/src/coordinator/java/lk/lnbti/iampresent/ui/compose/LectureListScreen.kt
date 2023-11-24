@@ -31,6 +31,17 @@ import lk.lnbti.iampresent.data.Lecture
 import lk.lnbti.iampresent.data.Result
 import lk.lnbti.iampresent.view_model.LectureListViewModel
 
+/**
+ * Composable function for the Lecture List screen.
+ *
+ * @param onLectureItemClicked Callback function for when a lecture item is clicked.
+ * @param onNewLectureClicked Callback function for when the "New Lecture" button is clicked.
+ * @param lectureListViewModel ViewModel for managing the lecture list data.
+ * @param onTodayNavButtonClicked Callback function for the "Today" navigation button.
+ * @param onReportsNavButtonClicked Callback function for the "Reports" navigation button.
+ * @param onAllNavButtonClicked Callback function for the "All" navigation button.
+ * @param modifier Modifier for styling and layout customization.
+ */
 @Composable
 fun LectureListScreen(
     onLectureItemClicked: (String) -> Unit,
@@ -79,7 +90,7 @@ fun LectureListScreen(
 
                 is Result.Success -> {
                     // Handle success state
-                    groupBySection(
+                    GroupBySection(
                         onGroupByDateClicked = { lectureListViewModel.groupLectureListByStartDate() },
                         onGroupByLectureStatusClicked = { lectureListViewModel.groupLectureListByLectureStatus() },
                         onGroupByBatchClicked = { lectureListViewModel.groupLectureListByBatch() },
@@ -107,8 +118,18 @@ fun LectureListScreen(
     }
 }
 
+/**
+ * Composable function for the section that groups lectures based on specified criteria.
+ *
+ * @param onGroupByDateClicked Callback function for grouping by date.
+ * @param onGroupByLectureStatusClicked Callback function for grouping by lecture status.
+ * @param onGroupByBatchClicked Callback function for grouping by batch.
+ * @param onGroupBySubjectClicked Callback function for grouping by subject.
+ * @param onGroupByLecturerClicked Callback function for grouping by lecturer.
+ * @param onGroupByLocationClicked Callback function for grouping by location.
+ */
 @Composable
-private fun groupBySection(
+private fun GroupBySection(
     onGroupByDateClicked: () -> Unit,
     onGroupByLectureStatusClicked: () -> Unit,
     onGroupByBatchClicked: () -> Unit,
@@ -169,6 +190,13 @@ private fun groupBySection(
     }
 }
 
+/**
+ * Composable function for the section of the lecture list.
+ *
+ * @param groupedLectureList Map of grouped lectures.
+ * @param onLectureItemClicked Callback function for when a lecture item is clicked.
+ * @param modifier Modifier for styling and layout customization.
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun LectureListSection(

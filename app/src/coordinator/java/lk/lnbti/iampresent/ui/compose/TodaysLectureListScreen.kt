@@ -2,7 +2,6 @@ package lk.lnbti.iampresent.ui.compose
 
 import LoadingScreen
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -24,17 +23,25 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import lk.lnbti.iampresent.R
 import lk.lnbti.iampresent.data.Lecture
 import lk.lnbti.iampresent.data.Result
-import lk.lnbti.iampresent.ui.theme.CommonColorScheme
 import lk.lnbti.iampresent.view_model.TodaysLectureListViewModel
 
-
+/**
+ * Composable function for displaying the screen with today's lecture list.
+ *
+ * @param onLectureItemClicked Callback when a lecture item is clicked.
+ * @param onNewLectureClicked Callback when the "New Lecture" button is clicked.
+ * @param todayLectureListViewModel ViewModel for today's lecture list.
+ * @param onTodayNavButtonClicked Callback for the "Today" navigation button.
+ * @param onAllNavButtonClicked Callback for the "All" navigation button.
+ * @param onReportsNavButtonClicked Callback for the "Reports" navigation button.
+ * @param modifier Modifier for styling.
+ */
 @Composable
 fun TodaysLectureListScreen(
     onLectureItemClicked: (String) -> Unit,
@@ -86,7 +93,7 @@ fun TodaysLectureListScreen(
 
                 is Result.Success<*> -> {
                     // Handle success state
-                    groupBySection(
+                    GroupBySection(
                         onGroupByStartTimeClicked = { todayLectureListViewModel.groupLectureListByStartTime() },
                         onGroupByLectureStatusClicked = { todayLectureListViewModel.groupLectureListByLectureStatus() },
                         onGroupByBatchClicked = { todayLectureListViewModel.groupLectureListByBatch() },
@@ -114,8 +121,19 @@ fun TodaysLectureListScreen(
         }
     }
 }
+
+/**
+ * Composable function to display the section for grouping lectures.
+ *
+ * @param onGroupByStartTimeClicked Callback for the "Group by Start Time" button.
+ * @param onGroupByLectureStatusClicked Callback for the "Group by Lecture Status" button.
+ * @param onGroupByBatchClicked Callback for the "Group by Batch" button.
+ * @param onGroupBySubjectClicked Callback for the "Group by Subject" button.
+ * @param onGroupByLecturerClicked Callback for the "Group by Lecturer" button.
+ * @param onGroupByLocationClicked Callback for the "Group by Location" button.
+ */
 @Composable
-private fun groupBySection(
+private fun GroupBySection(
     onGroupByStartTimeClicked: () -> Unit,
     onGroupByLectureStatusClicked: () -> Unit,
     onGroupByBatchClicked: () -> Unit,
@@ -176,6 +194,13 @@ private fun groupBySection(
     }
 }
 
+/**
+ * Composable function to display the lecture list section.
+ *
+ * @param groupedLectureList Map of grouped lectures.
+ * @param onLectureItemClicked Callback when a lecture item is clicked.
+ * @param modifier Modifier for styling.
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun LectureListSection(

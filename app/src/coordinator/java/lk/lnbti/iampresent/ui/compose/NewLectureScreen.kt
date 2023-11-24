@@ -17,10 +17,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -47,6 +45,16 @@ import lk.lnbti.iampresent.view_model.NewLectureViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
 
+/**
+ * Composable function for the New Lecture screen.
+ *
+ * @param newLectureViewModel The ViewModel for managing the new lecture data.
+ * @param onSuccessfulSave Callback function invoked upon successful lecture save.
+ * @param onTodayNavButtonClicked Callback function for the "Today" navigation button.
+ * @param onAllNavButtonClicked Callback function for the "All" navigation button.
+ * @param modifier Modifier for styling and layout customization.
+ * @param onReportsNavButtonClicked Callback function for the "Reports" navigation button.
+ */
 @Composable
 fun NewLectureScreen(
     newLectureViewModel: NewLectureViewModel = hiltViewModel(),
@@ -180,6 +188,42 @@ fun NewLectureScreen(
     }
 }
 
+/**
+ * Composable function for the content of the New Lecture screen.
+ *
+ * @param batch Batch value.
+ * @param semester Semester value.
+ * @param subject Subject value.
+ * @param location Location value.
+ * @param startDate Start date value.
+ * @param startTime Start time value.
+ * @param endDate End date value.
+ * @param endTime End time value.
+ * @param lecturerName Lecturer name value.
+ * @param lecturerEmail Lecturer email value.
+ * @param isBatchError Flag indicating if there is a batch input error.
+ * @param isSemesterError Flag indicating if there is a semester input error.
+ * @param isSubjectError Flag indicating if there is a subject input error.
+ * @param isLocationError Flag indicating if there is a location input error.
+ * @param isStartdateError Flag indicating if there is a start date input error.
+ * @param isStartTimeError Flag indicating if there is a start time input error.
+ * @param isEndDateError Flag indicating if there is an end date input error.
+ * @param isEndTimeError Flag indicating if there is an end time input error.
+ * @param isLecturerNameError Flag indicating if there is a lecturer name input error.
+ * @param isLecturerEmailError Flag indicating if there is a lecturer email input error.
+ * @param onBatchChange Callback for batch value change.
+ * @param onSemesterChange Callback for semester value change.
+ * @param onSubjectChange Callback for subject value change.
+ * @param onLocationChange Callback for location value change.
+ * @param onStartDateChange Callback for start date value change.
+ * @param onStartTimeChange Callback for start time value change.
+ * @param onEndDateChange Callback for end date value change.
+ * @param onEndTimeChange Callback for end time value change.
+ * @param onLecturerNameChange Callback for lecturer name value change.
+ * @param onLecturerEmailChange Callback for lecturer email value change.
+ * @param onSaveButtonClicked Callback for the save button click.
+ * @param modifier Modifier for styling and layout customization.
+ */
 @Composable
 fun NewLectureContent(
     batch: String,
@@ -291,7 +335,7 @@ fun NewLectureContent(
             NewTimeField(
                 value = startTime,
                 label = stringResource(id = R.string.start_time),
-                isTimeError=isStartTimeError,
+                isTimeError = isStartTimeError,
                 onValueChange = onStartTimeChange
             )
         }
@@ -307,7 +351,7 @@ fun NewLectureContent(
             NewTimeField(
                 value = endTime,
                 label = stringResource(id = R.string.end_time),
-                isTimeError=isEndTimeError,
+                isTimeError = isEndTimeError,
                 onValueChange = onEndTimeChange
             )
         }
@@ -346,20 +390,20 @@ fun NewLectureContent(
         item {
             Spacer(modifier = Modifier.height(16.dp))
             Button(
-            colors = ButtonDefaults.outlinedButtonColors(contentColor = CommonColorScheme.dark_text),
+                colors = ButtonDefaults.outlinedButtonColors(contentColor = CommonColorScheme.dark_text),
                 onClick = onSaveButtonClicked,
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(
-                            CommonColorScheme.shade_yellow,
-                            CommonColorScheme.main_orange
-                        )
-                    ),
-                    shape = RoundedCornerShape(dimensionResource(R.dimen.round_corner))
-                )
-        ){
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                CommonColorScheme.shade_yellow,
+                                CommonColorScheme.main_orange
+                            )
+                        ),
+                        shape = RoundedCornerShape(dimensionResource(R.dimen.round_corner))
+                    )
+            ) {
                 Text(
                     text = stringResource(R.string.save),
                     fontSize = 16.sp
@@ -369,6 +413,18 @@ fun NewLectureContent(
     }
 }
 
+/**
+ * Composable function for an outlined text field with specific styling.
+ *
+ * @param value Current value of the text field.
+ * @param label Label for the text field.
+ * @param onValueChange Callback for value change.
+ * @param singleLine Whether the text field should be a single line.
+ * @param isError Whether the text field has an error.
+ * @param keyboardType Type of keyboard to display.
+ * @param keyboardActions Actions to be associated with the keyboard.
+ * @param modifier Modifier for styling and layout customization.
+ */
 @Composable
 fun NewOutlinedTextField(
     value: String,
@@ -396,11 +452,19 @@ fun NewOutlinedTextField(
     Spacer(Modifier.height(dimensionResource(id = R.dimen.padding_between_field)))
 }
 
+/**
+ * Composable function for a time input field.
+ *
+ * @param value Current value of the time field.
+ * @param label Label for the time field.
+ * @param isTimeError Whether the time field has an error.
+ * @param onValueChange Callback for value change.
+ */
 @Composable
 fun NewDateField(
     value: String,
     label: String,
-    isDateError:Boolean,
+    isDateError: Boolean,
     onValueChange: (String) -> Unit,
 ) {
     val context = LocalContext.current
@@ -435,10 +499,12 @@ fun NewDateField(
         ) {
             Text(text = label)
         }
-        if(isDateError){
-            Text(text = stringResource(id = R.string.invalid_date),
-                color = MaterialTheme.colorScheme.error)
-        }else {
+        if (isDateError) {
+            Text(
+                text = stringResource(id = R.string.invalid_date),
+                color = MaterialTheme.colorScheme.error
+            )
+        } else {
             Text(text = value)
         }
     }
@@ -449,7 +515,7 @@ fun NewDateField(
 fun NewTimeField(
     value: String,
     label: String,
-    isTimeError:Boolean,
+    isTimeError: Boolean,
     onValueChange: (String) -> Unit,
 ) {
     val context = LocalContext.current
@@ -483,10 +549,12 @@ fun NewTimeField(
         ) {
             Text(text = label)
         }
-        if(isTimeError){
-            Text(text = stringResource(id = R.string.invalid_time),
-                color = MaterialTheme.colorScheme.error)
-        }else {
+        if (isTimeError) {
+            Text(
+                text = stringResource(id = R.string.invalid_time),
+                color = MaterialTheme.colorScheme.error
+            )
+        } else {
             Text(text = value)
         }
 

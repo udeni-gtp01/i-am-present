@@ -10,24 +10,31 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import lk.lnbti.iampresent.R
 import lk.lnbti.iampresent.ui.theme.CommonColorScheme
 
+/**
+ * Composable function for Coordinator Bottom Navigation.
+ *
+ * @param onTodayNavButtonClicked Callback function for the "Today" navigation button.
+ * @param onReportsNavButtonClicked Callback function for the "Reports" navigation button.
+ * @param onAllNavButtonClicked Callback function for the "All" navigation button.
+ * @param isTodayNavItemSelected True if the "Today" navigation item is selected, false otherwise.
+ * @param isReportsNavItemSelected True if the "Reports" navigation item is selected, false otherwise.
+ * @param isAllNavItemSelected True if the "All" navigation item is selected, false otherwise.
+ * @param modifier Modifier for styling and layout customization.
+ */
 @Composable
 fun CoordinatorBottomNavigation(
     onTodayNavButtonClicked: () -> Unit,
     onReportsNavButtonClicked: () -> Unit,
     onAllNavButtonClicked: () -> Unit,
-    isTodayNavItemSelected:Boolean,
-    isReportsNavItemSelected:Boolean,
-    isAllNavItemSelected:Boolean,
+    isTodayNavItemSelected: Boolean,
+    isReportsNavItemSelected: Boolean,
+    isAllNavItemSelected: Boolean,
     modifier: Modifier = Modifier,
 ) {
     NavigationBar(

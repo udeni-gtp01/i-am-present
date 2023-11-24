@@ -1,67 +1,52 @@
 package lk.lnbti.iampresent.ui.compose
 
-import android.graphics.Bitmap
-import android.graphics.Color
 import androidx.annotation.StringRes
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.graphics.painter.BitmapPainter
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import com.google.zxing.BarcodeFormat
-import com.google.zxing.EncodeHintType
-import com.google.zxing.WriterException
-import com.google.zxing.qrcode.QRCodeWriter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import lk.lnbti.iampresent.R
 import lk.lnbti.iampresent.data.Lecture
 import lk.lnbti.iampresent.ui.theme.CommonColorScheme
-import lk.lnbti.iampresent.ui.theme.IAmPresentTheme
 import lk.lnbti.iampresent.view_model.LectureInfoViewModel
 
+/**
+ * Composable function for the Lecture Info screen.
+ *
+ * @param lectureId The ID of the lecture to display information for.
+ * @param lectureInfoViewModel ViewModel for managing lecture information.
+ * @param onDeleteButtonClicked Callback function for the delete button.
+ * @param onTodayNavButtonClicked Callback function for the "Today" navigation button.
+ * @param onAllNavButtonClicked Callback function for the "All" navigation button.
+ * @param modifier Modifier for styling and layout customization.
+ * @param onReportsNavButtonClicked Callback function for the "Reports" navigation button.
+ */
 @Composable
 fun LectureInfoScreen(
     lectureId: String?,
     lectureInfoViewModel: LectureInfoViewModel = hiltViewModel(),
-    onCancelButtonClicked: () -> Unit,
     onDeleteButtonClicked: () -> Unit,
+    onCancelButtonClicked: () -> Unit,
     onEditButtonClicked: () -> Unit,
     onTodayNavButtonClicked: () -> Unit,
     onAllNavButtonClicked: () -> Unit,
@@ -116,6 +101,16 @@ fun LectureInfoScreen(
     }
 }
 
+/**
+ * Composable function for the content of the Lecture Info screen.
+ *
+ * @param lecture Lecture data to display.
+ * @param qrText QR code text.
+ * @param onOpenButtonClicked Callback function for the "Open for Attendance" button.
+ * @param onDeleteButtonClicked Callback function for the "Delete Lecture" button.
+ * @param onCloseButtonClicked Callback function for the "Close for Attendance" button.
+ * @param modifier Modifier for styling and layout customization.
+ */
 @Composable
 fun LectureInfoContent(
     lecture: Lecture,
@@ -221,6 +216,12 @@ fun LectureInfoContent(
     }
 }
 
+/**
+ * Composable function for displaying a header label.
+ *
+ * @param text String resource ID for the label text.
+ * @param modifier Modifier for styling and layout customization.
+ */
 @Composable
 fun LabelHeader(
     @StringRes text: Int,
@@ -237,6 +238,12 @@ fun LabelHeader(
     Spacer(Modifier.height(dimensionResource(id = R.dimen.padding_between_label_header)))
 }
 
+/**
+ * Composable function for displaying a body label.
+ *
+ * @param text The text to display.
+ * @param modifier Modifier for styling and layout customization.
+ */
 @Composable
 fun LabelBody(
     text: String,

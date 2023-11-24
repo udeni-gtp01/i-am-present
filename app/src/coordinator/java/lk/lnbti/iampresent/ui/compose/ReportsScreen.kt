@@ -3,8 +3,6 @@ package lk.lnbti.iampresent.ui.compose
 import LoadingScreen
 import android.content.*
 import android.net.Uri
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -13,20 +11,15 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -55,8 +48,15 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 
-
-@RequiresApi(Build.VERSION_CODES.Q)
+/**
+ * Composable function for displaying the Reports screen.
+ *
+ * @param reportsViewModel ViewModel for handling reports data.
+ * @param onTodayNavButtonClicked Callback for the "Today" navigation button.
+ * @param onReportsNavButtonClicked Callback for the "Reports" navigation button.
+ * @param onAllNavButtonClicked Callback for the "All" navigation button.
+ * @param modifier Modifier for styling.
+ */
 @Composable
 fun ReportsScreen(
     reportsViewModel: ReportsViewModel = hiltViewModel(),
@@ -119,6 +119,12 @@ fun ReportsScreen(
 }
 
 
+/**
+ * Composable function to display the filter section.
+ *
+ * @param attendanceList List of attendance data.
+ * @param modifier Modifier for styling.
+ */
 @Composable
 private fun FilterSection(
     attendanceList: List<Attendance>,
@@ -163,6 +169,13 @@ private fun FilterSection(
     }
 }
 
+/**
+ * Composable function to display a filter item.
+ *
+ * @param criteria Filter criteria.
+ * @param isSelected True if the filter item is selected, false otherwise.
+ * @param onClick Callback when the filter item is clicked.
+ */
 @Composable
 fun ReportFilterItem(
     @StringRes criteria: Int,
@@ -188,7 +201,13 @@ fun ReportFilterItem(
     )
 }
 
-
+/**
+ * Composable function to display the option dropdown based on the selected filter.
+ *
+ * @param attendanceList List of attendance data.
+ * @param selectedFilter Currently selected filter.
+ * @param modifier Modifier for styling.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OptionDropdown(
@@ -199,7 +218,6 @@ fun OptionDropdown(
     var grouped: Map<String, List<Attendance>>? = null
     var listItems = mutableListOf<String>()
     var itemResults = mutableListOf<List<Attendance>>()
-    // remember the selected item
 
     when (selectedFilter) {
         R.string.filter_by_date -> {
@@ -293,18 +311,25 @@ fun OptionDropdown(
     }
     Column {
         if (itemResults.isNotEmpty() && listItems.indexOf(selectedItem) > -1) {
-            var fileName="Attendance_report_${stringResource(id = selectedFilter)}_${selectedItem}.csv"
+            var fileName =
+                "Attendance_report_${stringResource(id = selectedFilter)}_${selectedItem}.csv"
             ResultViewer(
-                fileName=fileName,
+                fileName = fileName,
                 itemResults[listItems.indexOf(selectedItem)],
             )
         }
     }
 }
 
+/**
+ * Composable function to display the results and provide an option to export.
+ *
+ * @param fileName Name of the file to be exported.
+ * @param attendanceList List of attendance data.
+ */
 @Composable
 fun ResultViewer(
-    fileName:String,
+    fileName: String,
     attendanceList: List<Attendance>,
 ) {
     val context = LocalContext.current
@@ -313,33 +338,46 @@ fun ResultViewer(
     }
 
     if (onShareDataOpen.value) {
-        val uri = saveFileAndGetUri(context,fileName, attendanceList = attendanceList)
+        // Save the file and get its URI
+        val uri = saveFileAndGetUri(context, fileName, attendanceList = attendanceList)
+        // Create an intent to share the file
         val intent = Intent(Intent.ACTION_SEND)
         intent.type = "text/csv"
         intent.putExtra(Intent.EXTRA_SUBJECT, stringResource(id = R.string.export_result))
         intent.putExtra(Intent.EXTRA_STREAM, uri)
 
+        // Create a chooser and start the activity
         val chooser = Intent.createChooser(intent, stringResource(id = R.string.export_result))
         ContextCompat.startActivity(
             context,
             chooser,
             null
         )
+        // Reset the state after sharing
         onShareDataOpen.value = false
     }
     Spacer(modifier = Modifier.height(30.dp))
-
+    // Text composable to display the number of results available
     Text(text = "Results: ${attendanceList.size} available.")
+
     Spacer(modifier = Modifier.height(30.dp))
+
     Button(onClick = { onShareDataOpen.value = true }) {
         Text(text = stringResource(id = R.string.export_result))
     }
 }
 
-// Function to save data to a file and return its content URI
+/**
+ * Function to save data to a file and return its content URI.
+ *
+ * @param context Application context.
+ * @param fileName Name of the file to be saved.
+ * @param attendanceList List of attendance data.
+ * @return URI of the saved file.
+ */
 private fun saveFileAndGetUri(
     context: Context,
-    fileName:String,
+    fileName: String,
     attendanceList: List<Attendance>
 ): Uri {
     try {
@@ -355,7 +393,7 @@ private fun saveFileAndGetUri(
                 "Arrival time"
             ),
         )
-// Convert lectureList into a list of arrays
+        // Convert lectureList into a list of arrays
         attendanceList.map { attendanceItem ->
             data1.add(
                 arrayOf(
@@ -390,4 +428,3 @@ private fun saveFileAndGetUri(
         file
     )
 }
-

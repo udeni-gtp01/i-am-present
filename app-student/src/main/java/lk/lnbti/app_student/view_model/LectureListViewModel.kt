@@ -1,4 +1,4 @@
-package lk.lnbti.iampresent.view_model
+package lk.lnbti.app_student.view_model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
