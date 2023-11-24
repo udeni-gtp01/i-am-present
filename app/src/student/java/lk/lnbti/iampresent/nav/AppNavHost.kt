@@ -7,11 +7,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import lk.lnbti.iampresent.ui.compose.AttendanceInfoScreen
 import lk.lnbti.iampresent.ui.compose.AttendanceListScreen
-import lk.lnbti.iampresent.ui.compose.NewLectureScreen
+import lk.lnbti.iampresent.ui.compose.NewAttendanceScreen
 
+/**
+ * Composable function representing the main navigation host for the student app.
+ *
+ * @param navController Navigation controller used for navigating between destinations.
+ */
 @Composable
 fun AppNavHost(navController: NavHostController) {
     NavHost(navController = navController, startDestination = AttendanceListDestination.route) {
+        // Attendance List Screen
         composable(route = AttendanceListDestination.route) {
             AttendanceListScreen(
                 onAttendanceItemClicked = { lectureId ->
@@ -24,12 +30,14 @@ fun AppNavHost(navController: NavHostController) {
                 }
             )
         }
+        // New Attendance Screen
         composable(route = NewAttendanceDestination.route) {
-            NewLectureScreen(
+            NewAttendanceScreen(
                 onYesButtonClicked = { navController.navigateSingleTopTo(AttendanceListDestination.route) },
                 onRetryButtonClicked = { navController.navigateSingleTopTo(NewAttendanceDestination.route) }
             )
         }
+        // Attendance Info Screen
         composable(
             route = AttendLectureInfoDestination.routeWithArgs,
             arguments = AttendLectureInfoDestination.arguments
@@ -43,6 +51,11 @@ fun AppNavHost(navController: NavHostController) {
     }
 }
 
+/**
+ * Extension function for the [NavHostController] to navigate to a destination in single top mode.
+ *
+ * @param route The route to navigate to.
+ */
 fun NavHostController.navigateSingleTopTo(route: String) =
     this.navigate(route) { // Pop up to the start destination of the graph to
         // avoid building up a large stack of destinations
@@ -59,6 +72,11 @@ fun NavHostController.navigateSingleTopTo(route: String) =
         restoreState = true
     }
 
+/**
+ * Extension function for [NavHostController] to navigate to the lecture info destination in single top mode.
+ *
+ * @param lectureId The ID of the lecture to navigate to.
+ */
 private fun NavHostController.navigateToLectureInfo(lectureId: String) {
     this.navigateSingleTopTo("${AttendLectureInfoDestination.route}/$lectureId")
 }

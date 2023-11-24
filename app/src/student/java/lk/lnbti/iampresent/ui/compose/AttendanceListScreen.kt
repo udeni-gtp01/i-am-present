@@ -53,6 +53,14 @@ import lk.lnbti.iampresent.view_model.AttendanceListViewModel
 
 typealias OnAttendanceItemClicked = (String) -> Unit
 
+/**
+ * Composable for displaying the list of attendance records.
+ *
+ * @param onAttendanceItemClicked Callback function for handling clicks on attendance items.
+ * @param onNewAttendanceClicked Callback function for handling clicks on the "Add New Attendance" button.
+ * @param attendanceListViewModel View model for managing attendance-related data.
+ * @param modifier Modifier for customization.
+ */
 @Composable
 fun AttendanceListScreen(
     onAttendanceItemClicked: OnAttendanceItemClicked,
@@ -80,7 +88,7 @@ fun AttendanceListScreen(
             modifier
                 .padding(padding)
         ) {
-            groupBySection(
+            GroupBySection(
                 onGroupByDateClicked = { attendanceListViewModel.groupAttendanceListByDate() },
                 onGroupByLectureStatusClicked = { attendanceListViewModel.groupAttendanceListByLectureStatus() },
                 onGroupBySubjectClicked = { attendanceListViewModel.groupAttendanceListBySubject() },
@@ -97,6 +105,11 @@ fun AttendanceListScreen(
     }
 }
 
+/**
+ * Custom FloatingActionButton for adding new attendance.
+ *
+ * @param onNewAttendanceClicked Callback function for handling clicks on the button.
+ */
 @Composable
 fun AddNewAttendanceButton(onNewAttendanceClicked: () -> Unit) {
     FloatingActionButton(
@@ -125,8 +138,17 @@ fun AddNewAttendanceButton(onNewAttendanceClicked: () -> Unit) {
     }
 }
 
+/**
+ * Section for grouping criteria.
+ *
+ * @param onGroupByDateClicked Callback for handling clicks on the "Group By Date" item.
+ * @param onGroupByLectureStatusClicked Callback for handling clicks on the "Group By Lecture Status" item.
+ * @param onGroupBySubjectClicked Callback for handling clicks on the "Group By Subject" item.
+ * @param onGroupByLecturerClicked Callback for handling clicks on the "Group By Lecturer" item.
+ * @param onGroupByLocationClicked Callback for handling clicks on the "Group By Location" item.
+ */
 @Composable
-private fun groupBySection(
+private fun GroupBySection(
     onGroupByDateClicked: () -> Unit,
     onGroupByLectureStatusClicked: () -> Unit,
     onGroupBySubjectClicked: () -> Unit,
@@ -181,6 +203,13 @@ private fun groupBySection(
     }
 }
 
+/**
+ * Section for displaying the grouped attendance list.
+ *
+ * @param groupedAttendanceList Map of grouped attendance items.
+ * @param onAttendanceItemClicked Callback for handling clicks on attendance items.
+ * @param modifier Modifier for customization.
+ */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AttendanceListSection(
@@ -197,10 +226,8 @@ fun AttendanceListSection(
             modifier = modifier
         ) {
             groupedAttendanceList.forEach { (initial, attendanceList) ->
-                initial?.let {
-                    stickyHeader {
-                        ListGroupHeader(initial)
-                    }
+                stickyHeader {
+                    ListGroupHeader(initial)
                 }
 
                 items(attendanceList) { attendanceItem ->
@@ -218,9 +245,14 @@ fun AttendanceListSection(
     }
 }
 
+/**
+ * Wrapper composable for the content of each AttendanceListItem.
+ *
+ * @param content Content of the item.
+ */
 @Composable
 fun AttendanceListItemContent(
-    content: @Composable() (ColumnScope.() -> Unit)
+    content: @Composable (ColumnScope.() -> Unit)
 ) {
     Box(
         modifier = Modifier
@@ -242,6 +274,12 @@ fun AttendanceListItemContent(
     }
 }
 
+/**
+ * Composable for displaying individual attendance items.
+ *
+ * @param item Attendance item to display.
+ * @param onAttendanceItemClicked Callback for handling clicks on the item.
+ */
 @Composable
 fun AttendanceListItem(
     item: Attendance,
@@ -276,7 +314,7 @@ fun AttendanceListItem(
                     shape = RoundedCornerShape(dimensionResource(R.dimen.round_corner)),
                 ) {
                     Text(
-                        text = "${stringResource(id = R.string.ongoing)}",
+                        text = stringResource(id = R.string.ongoing),
                         style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier.padding(7.dp),
                         color = CommonColorScheme.dark_text
@@ -290,7 +328,7 @@ fun AttendanceListItem(
                     modifier = Modifier
                 ) {
                     Text(
-                        text = "${stringResource(id = R.string.complete)}",
+                        text = stringResource(id = R.string.complete),
                         style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier.padding(7.dp),
                         color = CommonColorScheme.dark_text
@@ -320,7 +358,7 @@ fun AttendanceListItem(
             Text(
                 text = item.lecture.startDate,
                 style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(start = 10.dp,top = 6.dp, bottom = 6.dp),
+                modifier = Modifier.padding(start = 10.dp, top = 6.dp, bottom = 6.dp),
                 color = CommonColorScheme.dark_text
             )
         }
@@ -352,7 +390,7 @@ fun AttendanceListItem(
                     tint = CommonColorScheme.dark_text
                 )
                 Text(
-                    text = "${item.lecture.location}",
+                    text = item.lecture.location,
                     style = MaterialTheme.typography.bodyMedium,
                     color = CommonColorScheme.dark_text
                 )

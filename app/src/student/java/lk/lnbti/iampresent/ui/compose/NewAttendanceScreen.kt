@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -47,9 +46,17 @@ import lk.lnbti.iampresent.view_model.NewAttendanceViewModel
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
+/**
+ * Composable function for displaying the NewAttendanceScreen.
+ *
+ * @param newAttendanceViewModel ViewModel for managing new attendance.
+ * @param onYesButtonClicked Callback when 'Yes' button is clicked.
+ * @param onRetryButtonClicked Callback when 'Retry' button is clicked.
+ * @param modifier Additional modifier for styling.
+ */
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun NewLectureScreen(
+fun NewAttendanceScreen(
     newAttendanceViewModel: NewAttendanceViewModel = hiltViewModel(),
     onYesButtonClicked: () -> Unit,
     onRetryButtonClicked: () -> Unit,
@@ -67,12 +74,11 @@ fun NewLectureScreen(
             )
         },
 
-    ) { padding ->
+        ) { padding ->
         Surface(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding),
-            //color = MaterialTheme.colorScheme.background
         ) {
             Column(
                 verticalArrangement = Arrangement.Bottom,
@@ -97,7 +103,8 @@ fun NewLectureScreen(
                             errorMessage = errorMessage,
                             onRetry = {
                                 newAttendanceViewModel.resetSaveAttendanceResult()
-                                onRetryButtonClicked()})
+                                onRetryButtonClicked()
+                            })
                     }
 
                     else -> {
@@ -142,6 +149,14 @@ fun NewLectureScreen(
     }
 }
 
+/**
+ * Composable function for the camera preview.
+ *
+ * @param qrData The QR code data.
+ * @param onQrScanned Callback when a QR code is scanned.
+ * @param isValidQr Callback to check if the scanned QR code is valid.
+ * @param onYesButtonClicked Callback when 'Yes' button is clicked.
+ */
 @Composable
 fun CameraPreview(
     qrData: String?,
@@ -202,7 +217,7 @@ fun CameraPreview(
             ProcessCameraProvider.getInstance(context)
 
         cameraProviderFuture.addListener({
-            preview = androidx.camera.core.Preview.Builder().build().also {
+            preview = Preview.Builder().build().also {
                 it.setSurfaceProvider(previewView.surfaceProvider)
             }
             val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
@@ -217,7 +232,6 @@ fun CameraPreview(
                         } else {
                             showErrorDialog = true
                         }
-                        //Toast.makeText(context, barcodeValue, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -243,6 +257,13 @@ fun CameraPreview(
     }
 }
 
+/**
+ * Composable function for the confirmation dialog.
+ *
+ * @param onConfirm Callback when confirmation is accepted.
+ * @param onDismiss Callback when dialog is dismissed.
+ * @param qrData The QR code data.
+ */
 @Composable
 fun ConfirmationDialog(
     onConfirm: () -> Unit,
@@ -270,6 +291,11 @@ fun ConfirmationDialog(
     )
 }
 
+/**
+ * Composable function for the error dialog.
+ *
+ * @param onDismiss Callback when dialog is dismissed.
+ */
 @Composable
 fun ErrorDialog(
     onDismiss: () -> Unit,

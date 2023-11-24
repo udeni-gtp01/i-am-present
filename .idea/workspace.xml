@@ -10,7 +10,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="09752cd7-2185-4973-ab93-8732b59a454f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/data/TestData.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.3/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.3/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.3/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.3/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.3/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.3/fileHashes/fileHashes.bin" afterDir="false" />
@@ -18,19 +17,15 @@
       <change beforePath="$PROJECT_DIR$/.gradle/8.3/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.3/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/nav/AppNavHost.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/nav/AppNavHost.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/compose/LectureInfoScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/compose/LectureInfoScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/compose/NewLectureScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/compose/NewLectureScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/compose/ReportsScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/compose/ReportsScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/compose/TodaysLectureListScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/compose/TodaysLectureListScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/constant/Constant.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/constant/Constant.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/ui/compose/Components.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/ui/compose/Components.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/view_model/LectureInfoViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/view_model/LectureInfoViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/view_model/NewLectureViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/view_model/NewLectureViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/student/java/lk/lnbti/iampresent/di/StudentNetworkModule.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/student/java/lk/lnbti/iampresent/di/StudentNetworkModule.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/student/java/lk/lnbti/iampresent/nav/AppDestination.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/student/java/lk/lnbti/iampresent/nav/AppDestination.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/student/java/lk/lnbti/iampresent/nav/AppNavHost.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/student/java/lk/lnbti/iampresent/nav/AppNavHost.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/student/java/lk/lnbti/iampresent/ui/compose/AttendanceInfoScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/student/java/lk/lnbti/iampresent/ui/compose/AttendanceInfoScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/student/java/lk/lnbti/iampresent/ui/compose/AttendanceListScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/student/java/lk/lnbti/iampresent/ui/compose/AttendanceListScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/student/java/lk/lnbti/iampresent/ui/compose/BarcodeAnalyser.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/student/java/lk/lnbti/iampresent/ui/compose/BarcodeAnalyser.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/student/java/lk/lnbti/iampresent/ui/compose/NewLectureScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/student/java/lk/lnbti/iampresent/ui/compose/NewAttendanceScreen.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/student/java/lk/lnbti/iampresent/view_model/AttendanceInfoViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/student/java/lk/lnbti/iampresent/view_model/AttendanceInfoViewModel.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/student/java/lk/lnbti/iampresent/view_model/NewAttendanceViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/student/java/lk/lnbti/iampresent/view_model/NewAttendanceViewModel.kt" afterDir="false" />
     </list>
@@ -39,7 +34,7 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[2b099b450e3f7ece]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />

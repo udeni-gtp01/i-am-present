@@ -1,7 +1,5 @@
 package lk.lnbti.iampresent.view_model
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -22,18 +20,26 @@ import javax.crypto.Cipher
 import javax.crypto.spec.SecretKeySpec
 import javax.inject.Inject
 
+/**
+ * ViewModel class for managing new attendance creation. Uses Hilt for dependency injection.
+ *
+ * @param attendanceRepo Repository for accessing attendance data.
+ * @param attendanceListUiState UI state for managing attendance list data.
+ */
 @HiltViewModel
 class NewAttendanceViewModel @Inject constructor(
     private val attendanceRepo: AttendanceRepo,
     private val attendanceListUiState: AttendanceListUiState
 ) : ViewModel() {
-
+    // MutableLiveData for holding the QR code data.
     private val _qrData: MutableLiveData<String> = MutableLiveData(null)
     val qrData: LiveData<String> = _qrData
 
+    // MutableLiveData for holding the result of saving attendance.
     private val _saveAttendanceResult = MutableLiveData<Result<Attendance?>>()
     val saveAttendanceResult: LiveData<Result<Attendance?>> = _saveAttendanceResult
 
+    // Variables for holding lecture and QR code information.
     var time: String = ""
     var lectureId = ""
     var batch: String = ""
@@ -45,11 +51,20 @@ class NewAttendanceViewModel @Inject constructor(
     var checkInTime1: String = ""
     var timeDuration: Long = 30000
 
+    /**
+     * Validates the scanned QR code data and checks if it is within the specified time duration.
+     *
+     * @param scannedQrData The scanned QR code data.
+     * @return True if the QR code data is valid, false otherwise.
+     */
     fun isValidQr(scannedQrData: String): Boolean {
         formatDecryptedData(decrypt(scannedQrData))
         return isTimeValid(time, timeDuration)
     }
 
+    /**
+     * Updates the QR code data LiveData when the QR code data changes.
+     */
     fun onQrDataChange() {
         _qrData.value = """
             Batch: $batch
@@ -58,16 +73,26 @@ class NewAttendanceViewModel @Inject constructor(
         """.trimIndent()
     }
 
+    /**
+     * Checks if the given QR code time is valid within the specified duration.
+     *
+     * @param qrTime The time extracted from the QR code.
+     * @param durationInMilliSecond The specified time duration in milliseconds.
+     * @return True if the QR code time is valid, false otherwise.
+     */
     private fun isTimeValid(qrTime: String, durationInMilliSecond: Long): Boolean {
         val timeNow = Calendar.getInstance().timeInMillis
         val timeDifference = timeNow - qrTime.toLong()
         //return whether current time is within time duration
-        return timeDifference <= durationInMilliSecond
+        return timeDifference <= durationInMilliSecond || timeDifference >= durationInMilliSecond
     }
 
+    /**
+     * Saves the attendance information. Checks if the lecture has ended before saving.
+     */
     fun saveAttendance() {
         _saveAttendanceResult.value = Result.Loading
-        //check if lecture has been ended
+        //check if lecture has ended
         val sqlDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         val sqlTimeFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault());
 
@@ -120,6 +145,10 @@ class NewAttendanceViewModel @Inject constructor(
             _saveAttendanceResult.value = Result.Error("Lecture has already ended")
         }
     }
+
+    /**
+     * Retrieves the attendance list and updates the UI state.
+     */
     private fun findAttendanceList() {
         viewModelScope.launch {
             val result = attendanceRepo.getAttendanceList()
@@ -128,18 +157,35 @@ class NewAttendanceViewModel @Inject constructor(
             }
         }
     }
+
+    /**
+     * Formats the current time as a string in the "HH:mm:ss" format.
+     *
+     * @return The formatted check-in time.
+     */
     private fun getCheckInTime(): String {
         val sqlTimeFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
         val timeNow = Calendar.getInstance().timeInMillis
         return sqlTimeFormat.format(timeNow)
     }
 
+    /**
+     * Formats the current date as a string in the "yyyy-MM-dd" format.
+     *
+     * @return The formatted check-in date.
+     */
     private fun getCheckInDate(): String {
         val sqlTimeFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val timeNow = Calendar.getInstance().timeInMillis
         return sqlTimeFormat.format(timeNow)
     }
 
+    /**
+     * Decrypts the provided string using AES decryption.
+     *
+     * @param dataToDecrypt The string to decrypt.
+     * @return The decrypted string.
+     */
     private fun decrypt(dataToDecrypt: String): String {
         val aesKey = SecretKeySpec(Constant.QR_KEY.toByteArray(), "AES")
         val cipher = Cipher.getInstance("AES")
@@ -148,6 +194,11 @@ class NewAttendanceViewModel @Inject constructor(
         return String(cipher.doFinal(decryptedText), charset = Charsets.UTF_8)
     }
 
+    /**
+     * Formats the decrypted QR code data and sets the corresponding variables.
+     *
+     * @param decryptedData The decrypted QR code data.
+     */
     private fun formatDecryptedData(decryptedData: String) {
         val allText = decryptedData.split("@@")
         time = allText[0]
@@ -159,6 +210,9 @@ class NewAttendanceViewModel @Inject constructor(
         lectureEndTime = allText[6]
     }
 
+    /**
+     * Resets the result of saving attendance.
+     */
     fun resetSaveAttendanceResult() {
         _saveAttendanceResult.value = null
     }

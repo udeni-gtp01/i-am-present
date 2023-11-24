@@ -7,6 +7,9 @@ import dagger.hilt.components.SingletonComponent
 import lk.lnbti.app_student.view_model.AttendanceInfoUiState
 import javax.inject.Singleton
 
+/**
+ * Dagger Hilt module responsible for providing dependencies related to the student network.
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 object StudentNetworkModule {

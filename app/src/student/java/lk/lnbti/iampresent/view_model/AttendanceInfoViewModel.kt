@@ -19,16 +19,24 @@ import javax.crypto.Cipher
 import javax.crypto.spec.SecretKeySpec
 import javax.inject.Inject
 
+/**
+ * ViewModel class for managing attendance information. Uses Hilt for dependency injection.
+ *
+ * @param lectureRepo Repository for accessing lecture data.
+ * @param attendanceInfoUiState UI state for managing attendance information.
+ */
 @HiltViewModel
 class AttendanceInfoViewModel @Inject constructor(
     private val lectureRepo: LectureRepo,
     private val attendanceInfoUiState: AttendanceInfoUiState
 ) : ViewModel() {
-
+    // LiveData for the current lecture information.
     val lecture: LiveData<Lecture> = attendanceInfoUiState.lecture
 
+    // Coroutine job for updating QR code text.
     private var qrCoroutine: Job? = null
 
+    // MutableLiveData for holding the QR code text.
     private val _qrtext: MutableLiveData<String?> = MutableLiveData(null)
     val qrText: LiveData<String?> = _qrtext
 
@@ -43,8 +51,8 @@ class AttendanceInfoViewModel @Inject constructor(
             attendanceInfoUiState.loadLecture(lectureRepo.findLectureById(lectureId))
             if (lecture.value?.lectureStatus?.lectureStatusId == 2) {
                 setQrText()
-            }else{
-                _qrtext.value=null
+            } else {
+                _qrtext.value = null
             }
         }
     }

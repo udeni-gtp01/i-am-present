@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Divider
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -27,7 +26,13 @@ import lk.lnbti.iampresent.R
 import lk.lnbti.iampresent.data.Lecture
 import lk.lnbti.iampresent.ui.theme.CommonColorScheme
 
-@OptIn(ExperimentalMaterial3Api::class)
+/**
+ * Composable function for displaying the AttendanceInfoScreen.
+ *
+ * @param lectureId The ID of the lecture to display.
+ * @param attendanceInfoViewModel ViewModel for managing attendance information.
+ * @param modifier Additional modifier for styling.
+ */
 @Composable
 fun AttendanceInfoScreen(
     lectureId: String?,
@@ -61,6 +66,14 @@ fun AttendanceInfoScreen(
     }
 }
 
+/**
+ * Composable function for displaying the section of lecture information for attendance.
+ * QR code will be automatically visible only when the lecture is opened to mark attendance.
+ *
+ * @param lecture The lecture information to display.
+ * @param qrText The QR code text to display.
+ * @param modifier Additional modifier for styling.
+ */
 @Composable
 fun AttendingLectureInfoSection(
     lecture: Lecture,
@@ -97,16 +110,16 @@ fun AttendingLectureInfoSection(
             }
         }
         item {
-                Column {
-                    Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
-                    LabelHeader(text = R.string.starts_at)
-                    LabelBody(text = "${lecture.startDate} @ ${lecture.startTime}")
-                    LabelHeader(text = R.string.ends_at)
-                    LabelBody(text = "${lecture.endDate} @ ${lecture.endTime}")
-                    LabelHeader(text = R.string.location)
-                    LabelBody(text = lecture.location)
-                    Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
-                }
+            Column {
+                Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
+                LabelHeader(text = R.string.starts_at)
+                LabelBody(text = "${lecture.startDate} @ ${lecture.startTime}")
+                LabelHeader(text = R.string.ends_at)
+                LabelBody(text = "${lecture.endDate} @ ${lecture.endTime}")
+                LabelHeader(text = R.string.location)
+                LabelBody(text = lecture.location)
+                Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
+            }
         }
 
         item {
@@ -122,6 +135,12 @@ fun AttendingLectureInfoSection(
     }
 }
 
+/**
+ * Composable function for displaying a labeled header text.
+ *
+ * @param text The resource ID for the header text.
+ * @param modifier Additional modifier for styling.
+ */
 @Composable
 fun LabelHeader(
     @StringRes text: Int,
@@ -138,6 +157,12 @@ fun LabelHeader(
     Spacer(Modifier.height(dimensionResource(id = R.dimen.padding_between_label_header)))
 }
 
+/**
+ * Composable function for displaying labeled body text.
+ *
+ * @param text The text to display.
+ * @param modifier Additional modifier for styling.
+ */
 @Composable
 fun LabelBody(
     text: String,
