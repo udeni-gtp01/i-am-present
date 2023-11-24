@@ -341,91 +341,6 @@ fun AddNewLectureButton(onNewLectureClicked: () -> Unit) {
         }
     }
 }
-
-/**
- * Composable function for creating a custom Bottom Navigation Bar with three navigation buttons.
- *
- * @param onTodayNavButtonClicked Callback function for handling clicks on the "Today" navigation button.
- * @param onReportsNavButtonClicked Callback function for handling clicks on the "Reports" navigation button.
- * @param onAllNavButtonClicked Callback function for handling clicks on the "All" navigation button.
- */
-@Composable
-fun BottomNavigation(
-    onTodayNavButtonClicked: () -> Unit,
-    onReportsNavButtonClicked: () -> Unit,
-    onAllNavButtonClicked: () -> Unit,
-) {
-    NavigationBar(
-        containerColor = CommonColorScheme.nav_blue,
-        contentColor = Color.White
-    ) {
-        NavigationBarItem(
-            icon = {
-                Icon(
-                    imageVector = Icons.Default.Star,
-                    contentDescription = null
-                )
-            },
-            label = {
-                Text(stringResource(R.string.today))
-            },
-            colors = NavigationBarItemDefaults
-                .colors(
-                    selectedIconColor = CommonColorScheme.shade_yellow,
-                    selectedTextColor = CommonColorScheme.shade_yellow,
-                    unselectedTextColor = Color.White,
-                    indicatorColor = CommonColorScheme.nav_light_blue,
-                    unselectedIconColor = Color.White,
-
-                    ),
-            selected = true,
-            onClick = onTodayNavButtonClicked,
-        )
-        NavigationBarItem(
-            icon = {
-                Icon(
-                    imageVector = Icons.Default.DateRange,
-                    contentDescription = null
-                )
-            },
-            label = {
-                Text(stringResource(R.string.reports))
-            },
-            selected = false,
-            onClick = onReportsNavButtonClicked,
-            colors = NavigationBarItemDefaults
-                .colors(
-                    selectedIconColor = CommonColorScheme.shade_yellow,
-                    selectedTextColor = CommonColorScheme.shade_yellow,
-                    unselectedTextColor = Color.White,
-                    indicatorColor = CommonColorScheme.nav_light_blue,
-                    unselectedIconColor = Color.White,
-                )
-        )
-        NavigationBarItem(
-            icon = {
-                Icon(
-                    imageVector = Icons.Default.List,
-                    contentDescription = null
-                )
-            },
-            label = {
-                Text(stringResource(R.string.all))
-            },
-            colors = NavigationBarItemDefaults
-                .colors(
-                    selectedIconColor = CommonColorScheme.shade_yellow,
-                    selectedTextColor = CommonColorScheme.shade_yellow,
-                    unselectedTextColor = Color.White,
-                    indicatorColor = CommonColorScheme.nav_light_blue,
-                    unselectedIconColor = Color.White,
-                ),
-            selected = false,
-            onClick = onAllNavButtonClicked
-        )
-    }
-}
-
 @Composable
 fun ShowQR(qrString: String) {
     Column(
@@ -441,7 +356,6 @@ fun ShowQR(qrString: String) {
         )
     }
 }
-
 @Composable
 fun rememberQrBitmapPainter(
     content: String,

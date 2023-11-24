@@ -25,6 +25,7 @@ import javax.inject.Inject
 @HiltViewModel
 class NewAttendanceViewModel @Inject constructor(
     private val attendanceRepo: AttendanceRepo,
+    private val attendanceListUiState: AttendanceListUiState
 ) : ViewModel() {
 
     private val _qrData: MutableLiveData<String> = MutableLiveData(null)
@@ -61,18 +62,18 @@ class NewAttendanceViewModel @Inject constructor(
         val timeNow = Calendar.getInstance().timeInMillis
         val timeDifference = timeNow - qrTime.toLong()
         //return whether current time is within time duration
-        return timeDifference <= durationInMilliSecond || timeDifference >= durationInMilliSecond
+        return timeDifference <= durationInMilliSecond
     }
 
     fun saveAttendance() {
         _saveAttendanceResult.value = Result.Loading
         //check if lecture has been ended
-        val sqlDateFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd");
-        val sqlTimeFormat: SimpleDateFormat = SimpleDateFormat("HH:mm:ss");
+        val sqlDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        val sqlTimeFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault());
 
-        val endDate: Date = sqlDateFormat.parse(lectureEndDate);
-        val endTime: Date = sqlTimeFormat.parse(lectureEndTime);
-        val cutoff: Date = Date(
+        val endDate = sqlDateFormat.parse(lectureEndDate);
+        val endTime = sqlTimeFormat.parse(lectureEndTime);
+        val cutoff = Date(
             endDate.getYear(),
             endDate.getMonth(),
             endDate.getDate(),
@@ -82,9 +83,9 @@ class NewAttendanceViewModel @Inject constructor(
         checkInDate1 = getCheckInDate()
         checkInTime1 = getCheckInTime()
 
-        val checkinDate: Date = sqlDateFormat.parse(checkInDate1);
-        val checkinTime: Date = sqlTimeFormat.parse(checkInTime1);
-        val checkin: Date = Date(
+        val checkinDate = sqlDateFormat.parse(checkInDate1);
+        val checkinTime = sqlTimeFormat.parse(checkInTime1);
+        val checkin = Date(
             checkinDate.getYear(),
             checkinDate.getMonth(),
             checkinDate.getDate(),
@@ -107,35 +108,26 @@ class NewAttendanceViewModel @Inject constructor(
                 checkintime = checkInTime1,
                 checkindate = checkInDate1
             )
-            val respose = ""
             viewModelScope.launch {
                 val result: Result<Attendance?> =
                     attendanceRepo.saveAttendance(attendance = newAttendance)
                 _saveAttendanceResult.value = result
                 if (result is Result.Success) {
-                    findLectureList()
+                    findAttendanceList()
                 }
-
             }
         } else {
             _saveAttendanceResult.value = Result.Error("Lecture has already ended")
         }
     }
-
-    fun findLectureList() {
+    private fun findAttendanceList() {
         viewModelScope.launch {
-            //lectureListUiState.loadLectureList(attendanceRepo.getAttendanceList())
+            val result = attendanceRepo.getAttendanceList()
+            if (result is Result.Success) {
+                attendanceListUiState.loadAttendanceList(result.data)
+            }
         }
     }
-
-    private fun convertDateToSqlFormat(myDate: String): String {
-        val selectedDateFormat = SimpleDateFormat("MMMM d, yyyy", Locale.getDefault())
-        val sqlDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-
-        val selectedDate: Date = selectedDateFormat.parse(myDate)
-        return sqlDateFormat.format(selectedDate)
-    }
-
     private fun getCheckInTime(): String {
         val sqlTimeFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
         val timeNow = Calendar.getInstance().timeInMillis
@@ -148,9 +140,8 @@ class NewAttendanceViewModel @Inject constructor(
         return sqlTimeFormat.format(timeNow)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun decrypt(dataToDecrypt: String): String {
-        val aesKey = SecretKeySpec(Constant.qrKey.toByteArray(), "AES")
+        val aesKey = SecretKeySpec(Constant.QR_KEY.toByteArray(), "AES")
         val cipher = Cipher.getInstance("AES")
         cipher.init(Cipher.DECRYPT_MODE, aesKey)
         var decryptedText = java.util.Base64.getDecoder().decode(dataToDecrypt)

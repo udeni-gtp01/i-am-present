@@ -6,9 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import lk.lnbti.iampresent.constant.Constant
 import lk.lnbti.iampresent.data.Lecture
 import lk.lnbti.iampresent.data.LectureStatus
 import lk.lnbti.iampresent.data.Result
+import lk.lnbti.iampresent.data.TestData
 import lk.lnbti.iampresent.data.User
 import lk.lnbti.iampresent.repo.LectureRepo
 import java.text.SimpleDateFormat
@@ -61,7 +63,7 @@ class NewLectureViewModel @Inject constructor(
     private val _lecturerName: MutableLiveData<String> = MutableLiveData("")
     val lecturerName: LiveData<String> = _lecturerName
 
-    private val _lecturerEmail: MutableLiveData<String> = MutableLiveData("")
+    private val _lecturerEmail: MutableLiveData<String> = MutableLiveData(TestData.TEST_EMAIL)
     val lecturerEmail: LiveData<String> = _lecturerEmail
 
     private val _isBatchError: MutableLiveData<Boolean> = MutableLiveData(false)

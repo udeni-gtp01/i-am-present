@@ -206,7 +206,6 @@ fun OptionDropdown(
             val sortedAttendanceList = attendanceList.sortedBy { it.lecture.startDate }
             grouped = sortedAttendanceList.groupBy { it.lecture.startDate }
             listItems = emptyList<String>().toMutableList()
-//            selectedItem= mutableStateOf("").toString()
         }
 
         R.string.filter_by_lecture_status -> {
@@ -214,35 +213,30 @@ fun OptionDropdown(
                 attendanceList.sortedBy { it.lecture.lectureStatus.statusName }
             grouped = sortedAttendanceList.groupBy { it.lecture.lectureStatus.statusName }
             listItems = emptyList<String>().toMutableList()
-//            selectedItem=""
         }
 
         R.string.filter_by_batch -> {
             val sortedAttendanceList = attendanceList.sortedBy { it.lecture.batch }
             grouped = sortedAttendanceList.groupBy { it.lecture.batch }
             listItems = emptyList<String>().toMutableList()
-//            selectedItem=""
         }
 
         R.string.filter_by_lecturer -> {
             val sortedAttendanceList = attendanceList.sortedBy { it.lecture.lecturer.name }
             grouped = sortedAttendanceList.groupBy { it.lecture.lecturer.name }
             listItems = emptyList<String>().toMutableList()
-//            selectedItem=""
         }
 
         R.string.filter_by_student -> {
             val sortedAttendanceList = attendanceList.sortedBy { it.student.email }
             grouped = sortedAttendanceList.groupBy { it.student.email!! }
             listItems = emptyList<String>().toMutableList()
-//            selectedItem=""
         }
 
         R.string.filter_by_location -> {
             val sortedAttendanceList = attendanceList.sortedBy { it.lecture.location }
             grouped = sortedAttendanceList.groupBy { it.lecture.location }
             listItems = emptyList<String>().toMutableList()
-//            selectedItem=""
         }
     }
 
@@ -254,7 +248,6 @@ fun OptionDropdown(
     var selectedItem by rememberSaveable {
         mutableStateOf("")
     }
-    // state of the menu
     var expanded by remember {
         mutableStateOf(false)
     }

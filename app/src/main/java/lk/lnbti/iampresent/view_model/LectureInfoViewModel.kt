@@ -82,6 +82,7 @@ class LectureInfoViewModel @Inject constructor(
 
     /**
      * Opens the lecture for attendance and sets up the QR code text updates.
+     * Lecture can be opened for attendance during the lecture time only.
      *
      * @param lectureId The ID of the lecture to open for attendance.
      */
@@ -93,7 +94,8 @@ class LectureInfoViewModel @Inject constructor(
                     SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
                 val currentDateTime = Calendar.getInstance().time
                 val startDateTime = dateTimeFormat.parse("${currentLecture.startDate} ${currentLecture.startTime}")
-                if (startDateTime.before(currentDateTime)) {
+                val endDateTime = dateTimeFormat.parse("${currentLecture.endDate} ${currentLecture.endTime}")
+                if (startDateTime.before(currentDateTime) && endDateTime.after(currentDateTime)) {
                     viewModelScope.launch {
                         val lecture: Lecture? = lectureRepo.openLectureForAttendance(lectureId)
                         lecture?.let {
@@ -156,7 +158,7 @@ fun deleteLecture(lectureId: Long) {
  * @return The encrypted string.
  */
 private fun encrypt(stringToEncrypt: String): String {
-    val aesKey = SecretKeySpec(Constant.qrKey.toByteArray(), "AES")
+    val aesKey = SecretKeySpec(Constant.QR_KEY.toByteArray(), "AES")
     val cipher = Cipher.getInstance("AES")
     cipher.init(Cipher.ENCRYPT_MODE, aesKey)
     val encryptedText = cipher.doFinal(stringToEncrypt.toByteArray(charset = Charsets.UTF_8))

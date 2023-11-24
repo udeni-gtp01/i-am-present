@@ -36,7 +36,7 @@
     <string name="ends_at">Ends at</string>
     <string name="lecturer_name">Lecturer</string>
     <string name="lecturer_email">Lecturer email</string>
-    <string name="current_status">Current lecture status</string>
+    <string name="current_status">Lecture status</string>
     <string name="open_for_attendance">Open for attendance</string>
     <string name="close_for_attendance">Close for attendance</string>
     <string name="all_description">See all lectures you coordinate</string>

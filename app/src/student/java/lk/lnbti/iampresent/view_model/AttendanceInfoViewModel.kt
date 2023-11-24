@@ -87,7 +87,7 @@ class AttendanceInfoViewModel @Inject constructor(
      * @return The encrypted string.
      */
     private fun encrypt(stringToEncrypt: String): String {
-        val aesKey = SecretKeySpec(Constant.qrKey.toByteArray(), "AES")
+        val aesKey = SecretKeySpec(Constant.QR_KEY.toByteArray(), "AES")
         val cipher = Cipher.getInstance("AES")
         cipher.init(Cipher.ENCRYPT_MODE, aesKey)
         val encryptedText = cipher.doFinal(stringToEncrypt.toByteArray(charset = Charsets.UTF_8))
@@ -101,7 +101,7 @@ class AttendanceInfoViewModel @Inject constructor(
      * @return The decrypted string.
      */
     private fun decrypt(dataToDecrypt: String): String {
-        val aesKey = SecretKeySpec(Constant.qrKey.toByteArray(), "AES")
+        val aesKey = SecretKeySpec(Constant.QR_KEY.toByteArray(), "AES")
         val cipher = Cipher.getInstance("AES")
         cipher.init(Cipher.DECRYPT_MODE, aesKey)
         val decryptedText = java.util.Base64.getDecoder().decode(dataToDecrypt)

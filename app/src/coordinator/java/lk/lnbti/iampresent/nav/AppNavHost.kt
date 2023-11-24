@@ -58,10 +58,6 @@ fun AppNavHost(navController: NavHostController) {
         // Define composable for the NewLectureDestination
         composable(route = NewLectureDestination.route) {
             NewLectureScreen(
-                onSaveButtonClicked = { lectureId ->
-                    navController.navigateToLectureInfo(lectureId)
-                },
-                onCancelButtonClicked = {},
                 onSuccessfulSave = { lectureId ->
                     navController.navigateToLectureInfo(lectureId)
                 },

@@ -184,16 +184,7 @@ private fun LectureListSection(
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        CommonColorScheme.main_orange,
-                        CommonColorScheme.main_blue
-                    )
-                )
-            )
-            .fillMaxSize()
+        modifier.fillMaxSize()
     ) {
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_between_list_item)),

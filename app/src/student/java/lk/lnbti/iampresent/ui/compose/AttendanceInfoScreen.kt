@@ -73,34 +73,39 @@ fun AttendingLectureInfoSection(
     ) {
         item {
             Column {
-                labelHeader(text = R.string.batch)
-                labelBody(text = lecture.batch)
-                labelHeader(text = R.string.semester)
-                labelBody(text = lecture.semester.toString())
-                labelHeader(text = R.string.subject)
-                labelBody(text = lecture.subject)
-                labelHeader(text = R.string.current_status)
-                labelBody(text = lecture.lectureStatus.statusName)
+                LabelHeader(text = R.string.batch)
+                LabelBody(text = lecture.batch)
+                LabelHeader(text = R.string.semester)
+                LabelBody(text = lecture.semester.toString())
+                LabelHeader(text = R.string.subject)
+                LabelBody(text = lecture.subject)
+                LabelHeader(text = R.string.current_status)
+                LabelBody(text = lecture.lectureStatus.statusName)
+                Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
                 Divider()
             }
         }
         item {
             Column {
-                labelHeader(text = R.string.lecturer_name)
-                labelBody(text = lecture.lecturer.name)
-                labelHeader(text = R.string.lecturer_email)
-                lecture.lecturer.email?.let { labelBody(text = it) }
+                Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
+                LabelHeader(text = R.string.lecturer_name)
+                LabelBody(text = lecture.lecturer.name)
+                LabelHeader(text = R.string.lecturer_email)
+                lecture.lecturer.email?.let { LabelBody(text = it) }
+                Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
                 Divider()
             }
         }
         item {
                 Column {
-                    labelHeader(text = R.string.starts_at)
-                    labelBody(text = "${lecture.startDate} @ ${lecture.startTime}")
-                    labelHeader(text = R.string.ends_at)
-                    labelBody(text = "${lecture.endDate} @ ${lecture.endTime}")
-                    labelHeader(text = R.string.location)
-                    labelBody(text = lecture.location)
+                    Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
+                    LabelHeader(text = R.string.starts_at)
+                    LabelBody(text = "${lecture.startDate} @ ${lecture.startTime}")
+                    LabelHeader(text = R.string.ends_at)
+                    LabelBody(text = "${lecture.endDate} @ ${lecture.endTime}")
+                    LabelHeader(text = R.string.location)
+                    LabelBody(text = lecture.location)
+                    Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
                 }
         }
 
@@ -118,7 +123,7 @@ fun AttendingLectureInfoSection(
 }
 
 @Composable
-fun labelHeader(
+fun LabelHeader(
     @StringRes text: Int,
     modifier: Modifier = Modifier,
 ) {
@@ -134,7 +139,7 @@ fun labelHeader(
 }
 
 @Composable
-fun labelBody(
+fun LabelBody(
     text: String,
     modifier: Modifier = Modifier,
 ) {

@@ -62,5 +62,5 @@ object Constant {
     /**
      * Key used for QR code generation and scanning.
      */
-    const val qrKey = "BYthSpKmqbDytmFU"
+    const val QR_KEY = "BYthSpKmqbDytmFU"
 }

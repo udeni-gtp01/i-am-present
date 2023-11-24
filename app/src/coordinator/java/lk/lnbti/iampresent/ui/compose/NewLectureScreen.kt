@@ -47,12 +47,9 @@ import lk.lnbti.iampresent.view_model.NewLectureViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewLectureScreen(
     newLectureViewModel: NewLectureViewModel = hiltViewModel(),
-    onSaveButtonClicked: (String) -> Unit,
-    onCancelButtonClicked: () -> Unit,
     onSuccessfulSave: (String) -> Unit,
     onTodayNavButtonClicked: () -> Unit,
     onAllNavButtonClicked: () -> Unit,
@@ -495,23 +492,4 @@ fun NewTimeField(
 
     }
     Spacer(Modifier.height(dimensionResource(id = R.dimen.padding_between_field)))
-}
-
-@Composable
-fun ErrorDialog(
-    onDismiss: () -> Unit,
-    text:String
-) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text("Error") },
-        text = { Text(text) },
-        confirmButton = {
-            Button(
-                onClick = onDismiss
-            ) {
-                Text("OK")
-            }
-        }
-    )
 }

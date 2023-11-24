@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -36,6 +37,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -54,7 +56,6 @@ import lk.lnbti.iampresent.ui.theme.CommonColorScheme
 import lk.lnbti.iampresent.ui.theme.IAmPresentTheme
 import lk.lnbti.iampresent.view_model.LectureInfoViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LectureInfoScreen(
     lectureId: String?,
@@ -80,10 +81,13 @@ fun LectureInfoScreen(
         },
 
         bottomBar = {
-            BottomNavigation(
+            CoordinatorBottomNavigation(
                 onTodayNavButtonClicked = onTodayNavButtonClicked,
+                onReportsNavButtonClicked = onReportsNavButtonClicked,
                 onAllNavButtonClicked = onAllNavButtonClicked,
-                onReportsNavButtonClicked = onReportsNavButtonClicked
+                isTodayNavItemSelected = false,
+                isReportsNavItemSelected = false,
+                isAllNavItemSelected = false
             )
         }
     ) { padding ->
@@ -123,43 +127,47 @@ fun LectureInfoContent(
 ) {
     LazyColumn(contentPadding = PaddingValues(dimensionResource(id = R.dimen.height_default_spacer))) {
         item {
-            labelHeader(text = R.string.batch)
-            labelBody(text = lecture.batch)
+            Column {
+                LabelHeader(text = R.string.batch)
+                LabelBody(text = lecture.batch)
+                LabelHeader(text = R.string.semester)
+                LabelBody(text = lecture.semester.toString())
+                LabelHeader(text = R.string.subject)
+                LabelBody(text = lecture.subject)
+                LabelHeader(text = R.string.current_status)
+                LabelBody(text = lecture.lectureStatus.statusName)
+                Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
+                Divider()
+            }
         }
         item {
-            labelHeader(text = R.string.semester)
-            labelBody(text = lecture.semester.toString())
+            Column {
+                Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
+                LabelHeader(text = R.string.lecturer_name)
+                LabelBody(text = lecture.lecturer.name)
+                LabelHeader(text = R.string.lecturer_email)
+                lecture.lecturer.email?.let { LabelBody(text = it) }
+                Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
+                Divider()
+            }
         }
         item {
-            labelHeader(text = R.string.subject)
-            labelBody(text = lecture.subject)
+            Column {
+                Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
+                LabelHeader(text = R.string.starts_at)
+                LabelBody(text = "${lecture.startDate} @ ${lecture.startTime}")
+                LabelHeader(text = R.string.ends_at)
+                LabelBody(text = "${lecture.endDate} @ ${lecture.endTime}")
+                LabelHeader(text = R.string.location)
+                LabelBody(text = lecture.location)
+                Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
+                Divider()
+            }
         }
-        item {
-            labelHeader(text = R.string.location)
-            labelBody(text = lecture.location)
-        }
-        item {
-            labelHeader(text = R.string.starts_at)
-            labelBody(text = "${lecture.startDate} @ ${lecture.startTime}")
-        }
-        item {
-            labelHeader(text = R.string.ends_at)
-            labelBody(text = "${lecture.endDate} @ ${lecture.endTime}")
-        }
-        item {
-            labelHeader(text = R.string.lecturer_name)
-            labelBody(text = lecture.lecturer.name)
-        }
-        item {
-            labelHeader(text = R.string.lecturer_email)
-            lecture.lecturer.email?.let { labelBody(text = it) }
-        }
-        item {
-            labelHeader(text = R.string.current_status)
-            labelBody(text = lecture.lectureStatus.statusName)
-        }
+
         if (lecture.lectureStatus.lectureStatusId != 2) {
             item {
+                Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
                 Button(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = {
@@ -170,7 +178,6 @@ fun LectureInfoContent(
                 ) {
                     Text(
                         text = stringResource(R.string.open_for_attendance),
-                        //fontSize = 16.sp
                     )
                 }
             }
@@ -185,6 +192,7 @@ fun LectureInfoContent(
             }
 
             item {
+                Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
                 Button(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = {
@@ -200,6 +208,7 @@ fun LectureInfoContent(
             }
         }
         item {
+            Spacer(Modifier.height(dimensionResource(id = R.dimen.height_default_spacer)))
             OutlinedButton(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = { onDeleteButtonClicked(lecture.lectureId) }
@@ -213,28 +222,31 @@ fun LectureInfoContent(
 }
 
 @Composable
-fun labelHeader(
+fun LabelHeader(
     @StringRes text: Int,
     modifier: Modifier = Modifier,
 ) {
     Text(
         text = stringResource(id = text),
-        style = MaterialTheme.typography.labelMedium,
+        style = MaterialTheme.typography.bodyMedium,
         modifier = modifier.fillMaxWidth(),
         color = CommonColorScheme.gray,
+        textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+        fontWeight = FontWeight.Bold
     )
     Spacer(Modifier.height(dimensionResource(id = R.dimen.padding_between_label_header)))
 }
 
 @Composable
-fun labelBody(
+fun LabelBody(
     text: String,
     modifier: Modifier = Modifier,
 ) {
     Text(
         text = text,
-        style = MaterialTheme.typography.labelLarge,
-        modifier = modifier.fillMaxWidth()
+        style = MaterialTheme.typography.bodyLarge,
+        modifier = modifier.fillMaxWidth(),
+        textAlign = androidx.compose.ui.text.style.TextAlign.Center
     )
     Spacer(Modifier.height(dimensionResource(id = R.dimen.padding_between_label)))
 }
