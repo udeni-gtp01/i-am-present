@@ -18,21 +18,13 @@
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/ui/theme/view/LectureListScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/ui/theme/view/LectureListScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/view_model/LectureListViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/view_model/LectureListViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/compose/CoordinatorComponents.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/compose/CoordinatorComponents.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/compose/LectureInfoScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/compose/LectureInfoScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/compose/LectureListScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/compose/LectureListScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/compose/NewLectureScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/compose/NewLectureScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/compose/ReportsScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/compose/ReportsScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/compose/TodaysLectureListScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/compose/TodaysLectureListScreen.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[8RBDU19228003748]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[2b099b450e3f7ece]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
