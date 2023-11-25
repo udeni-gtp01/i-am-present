@@ -9,30 +9,22 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="09752cd7-2185-4973-ab93-8732b59a454f" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gradle/8.3/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.3/executionHistory/executionHistory.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.3/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.3/executionHistory/executionHistory.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.3/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.3/fileHashes/fileHashes.bin" afterDir="false" />
+    <list default="true" id="231478d4-8a93-4c4f-b81b-bfd9e02988bd" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.gradle/8.3/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.3/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.3/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.3/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/ui/theme/view/LectureListScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/ui/theme/view/LectureListScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/view_model/LectureListViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/view_model/LectureListViewModel.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/compose/CoordinatorComponents.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/compose/CoordinatorComponents.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/compose/LectureInfoScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/compose/LectureInfoScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/compose/LectureListScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/compose/LectureListScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/compose/NewLectureScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/compose/NewLectureScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/compose/ReportsScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/compose/ReportsScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/compose/TodaysLectureListScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/compose/TodaysLectureListScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[8RBDU19228003748]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[2b099b450e3f7ece]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -96,9 +88,22 @@
     <option name="BUILD_TARGET_KEY" value="apk" />
   </component>
   <component name="Git.Settings">
+    <favorite-branches>
+      <branch-storage>
+        <map>
+          <entry type="REMOTE">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="origin/develop" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </favorite-branches>
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="student-app" />
+        <entry key="$PROJECT_DIR$" value="coordinator-app" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -127,23 +132,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ApkExportedModule&quot;: &quot;I_am_present.app-student&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;android-custom-viewC:/Users/ukuis/.gradle/caches/modules-2/files-2.1/androidx.compose.ui/ui-android/1.5.0/d096c6e1ab398990ce7c05e3003f79320b4235c/ui-android-1.5.0-sources.jar!/androidMain/androidx/compose/ui/platform/ComposeView.android.kt_SELECTED&quot;: &quot;AbstractComposeView&quot;,
-    &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
-    &quot;com.google.services.firebase.aqiPopupShown&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/AndroidStudioProjects/semester end/i-am-present/app/src/main/res/xml&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.17&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ApkExportedModule": "I_am_present.app-student",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "android-custom-viewC:/Users/ukuis/.gradle/caches/modules-2/files-2.1/androidx.compose.ui/ui-android/1.5.0/d096c6e1ab398990ce7c05e3003f79320b4235c/ui-android-1.5.0-sources.jar!/androidMain/androidx/compose/ui/platform/ComposeView.android.kt_SELECTED": "AbstractComposeView",
+    "cidr.known.project.marker": "true",
+    "com.google.services.firebase.aqiPopupShown": "true",
+    "last_opened_file_path": "D:/AndroidStudioProjects/semester end/i-am-present/app/src/main/res/xml",
+    "project.structure.last.edited": "Suggestions",
+    "project.structure.proportion": "0.17",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.keymap"
   }
-}</component>
+}]]></component>
   <component name="PsdUISettings">
     <option name="MODULE_TAB" value="Properties" />
     <option name="BUILD_VARIANTS_TAB" value="Flavors" />
@@ -526,7 +531,7 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="09752cd7-2185-4973-ab93-8732b59a454f" name="Changes" comment="" />
+      <changelist id="231478d4-8a93-4c4f-b81b-bfd9e02988bd" name="Changes" comment="" />
       <created>1693666272090</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
