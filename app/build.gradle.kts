@@ -108,9 +108,9 @@ dependencies {
     implementation("com.opencsv:opencsv:5.8")
     implementation("androidx.documentfile:documentfile:1.0.1")
 
-//permission
-    implementation ("com.google.accompanist:accompanist-permissions:0.32.0")
-//QR scan
+    //permission
+    implementation("com.google.accompanist:accompanist-permissions:0.32.0")
+    //QR scan
     // CameraX core library using the camera2 implementation
     val camerax_version = "1.3.0-rc01"
     implementation("androidx.camera:camera-core:${camerax_version}")

@@ -10,62 +10,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="231478d4-8a93-4c4f-b81b-bfd9e02988bd" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/build.gradle.kts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/proguard-rules.pro" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/androidTest/java/lk/lnbti/app_student/ExampleInstrumentedTest.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/AndroidManifest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/IamPresent.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/MainActivity.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/constant/Constant.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/data/Attendance.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/data/ContactData.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/data/Lecture.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/data/User.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/di/DispatchersModule.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/di/NetworkModule.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/nav/AppDestination.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/nav/AppNavHost.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/repo/AttendanceRepo.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/repo/LectureRepo.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/service/AttendenceService.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/service/LectureService.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/ui/theme/Color.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/ui/theme/Theme.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/ui/theme/Type.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/ui/theme/view/BarcodeAnalyser.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/ui/theme/view/LectureInfoScreen.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/ui/theme/view/LectureListScreen.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/ui/theme/view/NewLectureScreen.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/ui_state/LectureInfoUiState.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/ui_state/LectureListUiState.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/view_model/LectureInfoViewModel.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/view_model/LectureListViewModel.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/java/lk/lnbti/app_student/view_model/NewLectureViewModel.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/res/drawable/baseline_qr_code_scanner_24.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/res/drawable/ic_launcher_background.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/res/drawable/ic_launcher_foreground.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/res/mipmap-hdpi/ic_launcher.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/res/mipmap-hdpi/ic_launcher_round.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/res/mipmap-mdpi/ic_launcher.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/res/mipmap-mdpi/ic_launcher_round.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/res/mipmap-xhdpi/ic_launcher.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/res/mipmap-xhdpi/ic_launcher_round.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/res/mipmap-xxhdpi/ic_launcher.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/res/mipmap-xxhdpi/ic_launcher_round.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/res/mipmap-xxxhdpi/ic_launcher.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/res/mipmap-xxxhdpi/ic_launcher_round.webp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/res/values/colors.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/res/values/dimens.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/res/values/strings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/main/res/values/themes.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app-student/src/test/java/lk/lnbti/app_student/ExampleUnitTest.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/settings.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle.kts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
