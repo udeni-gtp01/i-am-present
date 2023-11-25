@@ -44,6 +44,4 @@ Identify potential future features and improvements, such as:
 - The app to operate offline, allowing attendance to be recorded without an internet connection.
 - The lecture schedule to be synchronized with all coordinators and lectures so that the app could be used to view the allocated classrooms and lecturers to prevent clashes when scheduling lectures.
 
----
-**Note:** Add any additional notes or considerations for users, administrators, or contributors.
 
