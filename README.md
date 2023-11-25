@@ -25,7 +25,7 @@ The current manual method of recording attendance using paper sheets at LNBTI po
      - IDE：Android Studio Giraffe | 2022.3.1
      - Kotlin：1.9.10
      - Java：17
-     - Gradle：7.3.0
+     - Gradle：7.3.1
      - minSdk：29
      - targetSdk：34
      - firebase crashlytics
