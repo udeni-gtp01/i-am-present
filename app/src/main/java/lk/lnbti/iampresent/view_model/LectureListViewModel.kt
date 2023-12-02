@@ -35,13 +35,6 @@ class LectureListViewModel @Inject constructor(
     val groupedLectureList: LiveData<Map<String, List<Lecture>>> = _groupedLectureList
 
     /**
-     * Initialization block to trigger the retrieval of the lecture list.
-     */
-    init {
-        findLectureList()
-    }
-
-    /**
      * Function to find and load the lecture list asynchronously.
      */
     fun findLectureList() {

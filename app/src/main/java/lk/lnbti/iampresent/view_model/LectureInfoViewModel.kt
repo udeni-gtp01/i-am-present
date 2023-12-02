@@ -30,7 +30,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LectureInfoViewModel @Inject constructor(
     private val lectureRepo: LectureRepo,
-    private val lectureInfoUiState: LectureInfoUiState
+    private val lectureInfoUiState: LectureInfoUiState,
 ) : ViewModel() {
 
     /**
