@@ -52,6 +52,7 @@ fun LectureListScreen(
     onAllNavButtonClicked: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    lectureListViewModel.findLectureList();
     val groupedLectureList: Map<String, List<Lecture>> by lectureListViewModel.groupedLectureList.observeAsState(
         emptyMap()
     )

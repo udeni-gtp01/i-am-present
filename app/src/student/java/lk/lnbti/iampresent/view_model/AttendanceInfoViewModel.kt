@@ -58,7 +58,7 @@ class AttendanceInfoViewModel @Inject constructor(
     }
 
     /**
-     * Sets up the coroutine to update the QR code text periodically.
+     * Sets up the coroutine to update the QR code text periodically once every 10 seconds
      */
     private fun setQrText() {
         qrCoroutine = qrCoroutine ?: viewModelScope.launch(Dispatchers.Default) {

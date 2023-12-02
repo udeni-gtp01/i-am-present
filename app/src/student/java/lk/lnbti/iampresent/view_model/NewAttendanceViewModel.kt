@@ -10,6 +10,7 @@ import lk.lnbti.iampresent.constant.Constant
 import lk.lnbti.iampresent.data.Attendance
 import lk.lnbti.iampresent.data.Lecture
 import lk.lnbti.iampresent.data.Result
+import lk.lnbti.iampresent.data.TestData
 import lk.lnbti.iampresent.data.User
 import lk.lnbti.iampresent.repo.AttendanceRepo
 import java.text.SimpleDateFormat
@@ -49,7 +50,7 @@ class NewAttendanceViewModel @Inject constructor(
     var lectureEndTime: String = ""
     var checkInDate1: String = ""
     var checkInTime1: String = ""
-    var timeDuration: Long = 30000
+    var timeDuration: Long = 10000
 
     /**
      * Validates the scanned QR code data and checks if it is within the specified time duration.
@@ -84,7 +85,7 @@ class NewAttendanceViewModel @Inject constructor(
         val timeNow = Calendar.getInstance().timeInMillis
         val timeDifference = timeNow - qrTime.toLong()
         //return whether current time is within time duration
-        return timeDifference <= durationInMilliSecond || timeDifference >= durationInMilliSecond
+        return timeDifference <= durationInMilliSecond
     }
 
     /**
@@ -129,7 +130,7 @@ class NewAttendanceViewModel @Inject constructor(
                     organizer = User(email = "")
                 ),
                 ispresent = 1,
-                student = User(email = ""),
+                student = User(email = TestData.TEST_EMAIL),
                 checkintime = checkInTime1,
                 checkindate = checkInDate1
             )
