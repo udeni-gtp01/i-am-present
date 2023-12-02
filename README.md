@@ -27,7 +27,7 @@ I AM PRESENT App comes in two flavors:
 
 ### Coordinator Flavor
 
-  <img src="docs/coordinator.gif" width="320">
+  <img src="docs/coordinator-demo.gif" width="320">
 
 #### Actions
 
@@ -59,7 +59,7 @@ I AM PRESENT App comes in two flavors:
 
 ### Student Flavor
 
-   <img src="https://github.com/udeni-gtp01/i-am-present/assets/115888754/a621996c-dfca-4a8b-ba5f-264ef8ac9a7f" width="320">
+  <img src="docs/student-demo.gif" width="320">
 
 #### Actions
 
@@ -88,7 +88,7 @@ I AM PRESENT App comes in two flavors:
 
 ## Future Enhancements
 
-Identify potential future features and improvements, such as:
+Identify potential future features and improvements such as,
 
 - The app to operate offline, allowing attendance to be recorded without an internet connection.
 - The lecture schedule to be synchronized with all coordinators and lectures so that the app could be used to view the allocated classrooms and lecturers to prevent clashes when scheduling lectures.
