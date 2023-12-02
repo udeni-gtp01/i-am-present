@@ -10,14 +10,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="231478d4-8a93-4c4f-b81b-bfd9e02988bd" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gradle/8.3/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.3/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.3/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.3/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.3/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.3/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.3/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.3/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.3/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.3/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/file-system.probe" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/file-system.probe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/compose/LectureListScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/compose/LectureListScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/compose/ReportsScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/coordinator/java/lk/lnbti/iampresent/ui/compose/ReportsScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/view_model/LectureInfoViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/view_model/LectureInfoViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/view_model/LectureListViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/lk/lnbti/iampresent/view_model/LectureListViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/student/java/lk/lnbti/iampresent/view_model/AttendanceInfoViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/student/java/lk/lnbti/iampresent/view_model/AttendanceInfoViewModel.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/student/java/lk/lnbti/iampresent/view_model/NewAttendanceViewModel.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/student/java/lk/lnbti/iampresent/view_model/NewAttendanceViewModel.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -139,14 +147,15 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.cidr.known.project.marker": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "ScreenRecorder.SavePath": "C:\\iampresent\\video",
     "android-custom-viewC:/Users/ukuis/.gradle/caches/modules-2/files-2.1/androidx.compose.ui/ui-android/1.5.0/d096c6e1ab398990ce7c05e3003f79320b4235c/ui-android-1.5.0-sources.jar!/androidMain/androidx/compose/ui/platform/ComposeView.android.kt_SELECTED": "AbstractComposeView",
     "cidr.known.project.marker": "true",
     "com.google.services.firebase.aqiPopupShown": "true",
-    "last_opened_file_path": "D:/AndroidStudioProjects/semester end/i-am-present/app/src/main/res/xml",
+    "last_opened_file_path": "C:/iampresent/video",
     "project.structure.last.edited": "Suggestions",
     "project.structure.proportion": "0.17",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.keymap"
+    "settings.editor.selected.configurable": "live.edit.configurable"
   }
 }]]></component>
   <component name="PsdUISettings">

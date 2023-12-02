@@ -158,7 +158,11 @@ private fun FilterSection(
             }
         }
 
-        Column(modifier = modifier.fillMaxWidth()) {
+        Column(
+            modifier = modifier
+                .padding(horizontal = 10.dp)
+                .fillMaxWidth()
+        ) {
             OptionDropdown(
                 attendanceList = attendanceList,
                 selectedFilter = selectedItem,
